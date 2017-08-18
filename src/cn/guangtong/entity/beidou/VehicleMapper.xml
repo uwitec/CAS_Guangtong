@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.beidou.VehicleDao">
+
+	<insert id="insert" parameterType="cn.guangtong.entity.beidou.Vehicle">
+		insert into logistics_beidou.vehicle
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="vehicleId != null">
+				vehicleId,
+			</if>
+			<if test="createDate != null">
+				createDate,
+			</if>
+			<if test="deleted != null">
+				deleted,
+			</if>
+			<if test="owner != null">
+				owner,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="tenantId != null">
+				tenantId,
+			</if>
+			<if test="buyTime != null">
+				buyTime,
+			</if>
+			<if test="depId != null">
+				depId,
+			</if>
+			<if test="depName != null">
+				depName,
+			</if>
+			<if test="driver != null">
+				driver,
+			</if>
+			<if test="driverMobile != null">
+				driverMobile,
+			</if>
+			<if test="gpsTerminalType != null">
+				gpsTerminalType,
+			</if>
+			<if test="industry != null">
+				industry,
+			</if>
+			<if test="installDate != null">
+				installDate,
+			</if>
+			<if test="lastCheckTime != null">
+				lastCheckTime,
+			</if>
+			<if test="memberId != null">
+				memberId,
+			</if>
+			<if test="monitor != null">
+				monitor,
+			</if>
+			<if test="monitorMobile != null">
+				monitorMobile,
+			</if>
+			<if test="motorId != null">
+				motorID,
+			</if>
+			<if test="offlineTime != null">
+				offlineTime,
+			</if>
+			<if test="onlineTime != null">
+				onlineTime,
+			</if>
+			<if test="operPermit != null">
+				operPermit,
+			</if>
+			<if test="plateColor != null">
+				plateColor,
+			</if>
+			<if test="plateNo != null">
+				plateNo,
+			</if>
+			<if test="region != null">
+				region,
+			</if>
+			<if test="routes != null">
+				routes,
+			</if>
+			<if test="runStatus != null">
+				runStatus,
+			</if>
+			<if test="simNo != null">
+				simNo,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="termId != null">
+				termId,
+			</if>
+			<if test="useType != null">
+				useType,
+			</if>
+			<if test="vehicleType != null">
+				vehicleType,
+			</if>
+			<if test="vendor != null">
+				vendor,
+			</if>
+			<if test="videodeviceId != null">
+				videoDeviceId,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="vehicleId != null">
+				#{vehicleId,jdbcType=INTEGER},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deleted != null">
+				#{deleted,jdbcType=BIT},
+			</if>
+			<if test="owner != null">
+				#{owner,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="tenantId != null">
+				#{tenantId,jdbcType=INTEGER},
+			</if>
+			<if test="buyTime != null">
+				#{buyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="depId != null">
+				#{depId,jdbcType=INTEGER},
+			</if>
+			<if test="depName != null">
+				#{depName,jdbcType=VARCHAR},
+			</if>
+			<if test="driver != null">
+				#{driver,jdbcType=VARCHAR},
+			</if>
+			<if test="driverMobile != null">
+				#{driverMobile,jdbcType=VARCHAR},
+			</if>
+			<if test="gpsTerminalType != null">
+				#{gpsTerminalType,jdbcType=VARCHAR},
+			</if>
+			<if test="industry != null">
+				#{industry,jdbcType=VARCHAR},
+			</if>
+			<if test="installDate != null">
+				#{installDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastCheckTime != null">
+				#{lastCheckTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="memberId != null">
+				#{memberId,jdbcType=INTEGER},
+			</if>
+			<if test="monitor != null">
+				#{monitor,jdbcType=VARCHAR},
+			</if>
+			<if test="monitorMobile != null">
+				#{monitorMobile,jdbcType=VARCHAR},
+			</if>
+			<if test="motorId != null">
+				#{motorId,jdbcType=VARCHAR},
+			</if>
+			<if test="offlineTime != null">
+				#{offlineTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="onlineTime != null">
+				#{onlineTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="operPermit != null">
+				#{operPermit,jdbcType=VARCHAR},
+			</if>
+			<if test="plateColor != null">
+				#{plateColor,jdbcType=INTEGER},
+			</if>
+			<if test="plateNo != null">
+				#{plateNo,jdbcType=VARCHAR},
+			</if>
+			<if test="region != null">
+				#{region,jdbcType=VARCHAR},
+			</if>
+			<if test="routes != null">
+				#{routes,jdbcType=VARCHAR},
+			</if>
+			<if test="runStatus != null">
+				#{runStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="simNo != null">
+				#{simNo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="termId != null">
+				#{termId,jdbcType=INTEGER},
+			</if>
+			<if test="useType != null">
+				#{useType,jdbcType=VARCHAR},
+			</if>
+			<if test="vehicleType != null">
+				#{vehicleType,jdbcType=VARCHAR},
+			</if>
+			<if test="vendor != null">
+				#{vendor,jdbcType=VARCHAR},
+			</if>
+			<if test="videodeviceId != null">
+				#{videodeviceId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="update" parameterType="cn.guangtong.entity.beidou.Vehicle">
+		update logistics_beidou.vehicle
+		<set>
+			<if test="createDate != null">
+				createDate = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deleted != null">
+				deleted = #{deleted,jdbcType=BIT},
+			</if>
+			<if test="owner != null">
+				owner = #{owner,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="tenantId != null">
+				tenantId = #{tenantId,jdbcType=INTEGER},
+			</if>
+			<if test="buyTime != null">
+				buyTime = #{buyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="depId != null">
+				depId = #{depId,jdbcType=INTEGER},
+			</if>
+			<if test="depName != null">
+				depName = #{depName,jdbcType=VARCHAR},
+			</if>
+			<if test="driver != null">
+				driver = #{driver,jdbcType=VARCHAR},
+			</if>
+			<if test="driverMobile != null">
+				driverMobile = #{driverMobile,jdbcType=VARCHAR},
+			</if>
+			<if test="gpsTerminalType != null">
+				gpsTerminalType = #{gpsTerminalType,jdbcType=VARCHAR},
+			</if>
+			<if test="industry != null">
+				industry = #{industry,jdbcType=VARCHAR},
+			</if>
+			<if test="installDate != null">
+				installDate = #{installDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastCheckTime != null">
+				lastCheckTime = #{lastCheckTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="memberId != null">
+				memberId = #{memberId,jdbcType=INTEGER},
+			</if>
+			<if test="monitor != null">
+				monitor = #{monitor,jdbcType=VARCHAR},
+			</if>
+			<if test="monitorMobile != null">
+				monitorMobile = #{monitorMobile,jdbcType=VARCHAR},
+			</if>
+			<if test="motorId != null">
+				motorID = #{motorId,jdbcType=VARCHAR},
+			</if>
+			<if test="offlineTime != null">
+				offlineTime = #{offlineTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="onlineTime != null">
+				onlineTime = #{onlineTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="operPermit != null">
+				operPermit = #{operPermit,jdbcType=VARCHAR},
+			</if>
+			<if test="plateColor != null">
+				plateColor = #{plateColor,jdbcType=INTEGER},
+			</if>
+			<if test="plateNo != null">
+				plateNo = #{plateNo,jdbcType=VARCHAR},
+			</if>
+			<if test="region != null">
+				region = #{region,jdbcType=VARCHAR},
+			</if>
+			<if test="routes != null">
+				routes = #{routes,jdbcType=VARCHAR},
+			</if>
+			<if test="runStatus != null">
+				runStatus = #{runStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="simNo != null">
+				simNo = #{simNo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="termId != null">
+				termId = #{termId,jdbcType=INTEGER},
+			</if>
+			<if test="useType != null">
+				useType = #{useType,jdbcType=VARCHAR},
+			</if>
+			<if test="vehicleType != null">
+				vehicleType = #{vehicleType,jdbcType=VARCHAR},
+			</if>
+			<if test="vendor != null">
+				vendor = #{vendor,jdbcType=VARCHAR},
+			</if>
+			<if test="videodeviceId != null">
+				videoDeviceId = #{videodeviceId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where vehicleId = #{vehicleId,jdbcType=INTEGER}
+	</update>
+	
+	<select id="getVehiclebySimNo" parameterType="string" resultType="cn.guangtong.entity.beidou.Vehicle">
+		select * from logistics_beidou.vehicle where simNo=#{simNo}
+	</select>
+
+</mapper>

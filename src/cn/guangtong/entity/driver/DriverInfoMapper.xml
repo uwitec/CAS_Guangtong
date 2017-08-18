@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.guangtong.dao.driver.DriverInfoDao">
+
+	<!-- 司机总记录数 sDriverInfoCount -->
+	<select id="sDriverInfoCount" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM (SELECT a.id
+		FROM logistics_driver.driver_info a
+		LEFT JOIN logistics_cooperation.cooperation_info b ON
+		a.cooperationId
+		=
+		b.id
+		LEFT JOIN logistics_cms.admin_cooperation c ON
+		b.id=c.cooperationId
+		<if test="adminId!=null&amp;&amp;adminId!='admin'">
+			WHERE c.adminId=#{adminId}
+		</if>
+		GROUP BY a.id)a
+	</select>
+
+	<!-- 司机总记录数 sDriverInfoCountAll -->
+	<select id="sDriverInfoCountAll" parameterType="cn.guangtong.controller.driver.DriverPageBean"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM
+		(SELECT
+		a.id,a.dName,a.tel,b.cName,a.defaultVehicleNum,a.driverClass,cast(a.available
+		as UNSIGNED
+		INTEGER)available
+		FROM logistics_driver.driver_info a
+		LEFT
+		JOIN logistics_cooperation.cooperation_info b ON a.cooperationId =
+		b.id
+		LEFT JOIN logistics_cms.admin_cooperation c ON
+		b.id=c.cooperationId
+		where
+		1=1
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and a.id like "%"#{id}"%"
+		</if>
+		<if test='dName!=null&amp;&amp;!dName.equals("")'>
+			and a.dName like "%"#{dName}"%"
+		</if>
+		<if test='tel!=null&amp;&amp;!tel.equals("")'>
+			and a.tel like "%"#{tel}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and b.cName like "%"#{cName}"%"
+		</if>
+		<if test='defaultVehicleNum!=null&amp;&amp;!defaultVehicleNum.equals("")'>
+			and a.defaultVehicleNum like "%"#{defaultVehicleNum}"%"
+		</if>
+		<if test='driverClass!=null&amp;&amp;!driverClass.equals("")'>
+			and a.driverClass like "%"#{driverClass}"%"
+		</if>
+		<if test="adminId!=null&amp;&amp;adminId!=''">
+			and c.adminId=#{adminId}
+		</if>
+		GROUP BY a.id)as tmp
+	</select>
+
+	<!-- 查询所有司机信息+分页+排序+模糊查询 sDriverInfoA -超级管理员 -->
+	<select id="sDriverInfoA" parameterType="cn.guangtong.controller.driver.DriverPageBean"
+		resultType="java.util.Map">
+		SELECT
+		a.id,a.dName,a.tel,b.cName,a.defaultVehicleNum,a.driverClass,cast(a.available
+		as UNSIGNED INTEGER)available
+		FROM
+		logistics_driver.driver_info a
+		LEFT
+		JOIN logistics_cooperation.cooperation_info b ON a.cooperationId =
+		b.id
+		where
+		1=1
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and a.id like "%"#{id}"%"
+		</if>
+		<if test='dName!=null&amp;&amp;!dName.equals("")'>
+			and a.dName like "%"#{dName}"%"
+		</if>
+		<if test='tel!=null&amp;&amp;!tel.equals("")'>
+			and a.tel like "%"#{tel}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and b.cName like "%"#{cName}"%"
+		</if>
+		<if test='defaultVehicleNum!=null&amp;&amp;!defaultVehicleNum.equals("")'>
+			and a.defaultVehicleNum like "%"#{defaultVehicleNum}"%"
+		</if>
+		<if test='driverClass!=null&amp;&amp;!driverClass.equals("")'>
+			and a.driverClass like "%"#{driverClass}"%"
+		</if>
+		LIMIT
+		#{begin},#{pageCount}
+	</select>
+
+	<!-- 超级管理员 -->
+	<select id="sDriverCount" parameterType="cn.guangtong.controller.driver.DriverPageBean"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM
+		(SELECT
+		a.id,a.dName,a.tel,b.cName,a.defaultVehicleNum,a.driverClass,cast(a.available
+		as UNSIGNED
+		INTEGER)available
+		FROM logistics_driver.driver_info a
+		LEFT
+		JOIN logistics_cooperation.cooperation_info b ON a.cooperationId =
+		b.id
+		where
+		1=1
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and a.id like "%"#{id}"%"
+		</if>
+		<if test='dName!=null&amp;&amp;!dName.equals("")'>
+			and a.dName like "%"#{dName}"%"
+		</if>
+		<if test='tel!=null&amp;&amp;!tel.equals("")'>
+			and a.tel like "%"#{tel}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and b.cName like "%"#{cName}"%"
+		</if>
+		<if test='defaultVehicleNum!=null&amp;&amp;!defaultVehicleNum.equals("")'>
+			and a.defaultVehicleNum like "%"#{defaultVehicleNum}"%"
+		</if>
+		<if test='driverClass!=null&amp;&amp;!driverClass.equals("")'>
+			and a.driverClass like "%"#{driverClass}"%"
+		</if>
+		)as tmp
+	</select>
+
+
+
+	<!-- 查询所有司机信息+分页+排序+模糊查询 sDriverInfoA -普通用户 -->
+	<select id="sDriverInfo" parameterType="cn.guangtong.controller.driver.DriverPageBean"
+		resultType="java.util.Map">
+
+		SELECT
+		b.id,b.dName,b.tel,c.cName,b.defaultVehicleNum,b.driverClass,b.available
+		FROM logistics_cms.admin_cooperation a
+		RIGHT
+		JOIN
+		logistics_driver.driver_info b ON a.cooperationId=b.cooperationId
+		LEFT
+		JOIN
+		logistics_cooperation.cooperation_info c ON
+		b.cooperationId=c.id
+		WHERE a.adminid=#{adminId}
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='dName!=null&amp;&amp;!dName.equals("")'>
+			and b.dName like "%"#{dName}"%"
+		</if>
+		<if test='tel!=null&amp;&amp;!tel.equals("")'>
+			and b.tel like "%"#{tel}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and c.cName like "%"#{cName}"%"
+		</if>
+		<if test='defaultVehicleNum!=null&amp;&amp;!defaultVehicleNum.equals("")'>
+			and b.defaultVehicleNum like "%"#{defaultVehicleNum}"%"
+		</if>
+		<if test='driverClass!=null&amp;&amp;!driverClass.equals("")'>
+			and b.driverClass like "%"#{driverClass}"%"
+		</if>
+		LIMIT
+		#{begin},#{pageCount}
+	</select>
+
+	<!-- 普通用户 -->
+	<select id="sDriverCountS" parameterType="cn.guangtong.controller.driver.DriverPageBean"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM
+		(SELECT
+		b.id,b.dName,b.tel,c.cName,b.defaultVehicleNum,b.driverClass,b.available
+		FROM
+		logistics_cms.admin_cooperation a
+		RIGHT JOIN
+		logistics_driver.driver_info b ON a.cooperationId=b.cooperationId
+		LEFT
+		JOIN
+		logistics_cooperation.cooperation_info c ON b.cooperationId=c.id
+		WHERE a.adminid=#{adminId}
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='dName!=null&amp;&amp;!dName.equals("")'>
+			and b.dName like "%"#{dName}"%"
+		</if>
+		<if test='tel!=null&amp;&amp;!tel.equals("")'>
+			and b.tel like "%"#{tel}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and c.cName like "%"#{cName}"%"
+		</if>
+		<if test='defaultVehicleNum!=null&amp;&amp;!defaultVehicleNum.equals("")'>
+			and b.defaultVehicleNum like "%"#{defaultVehicleNum}"%"
+		</if>
+		<if test='driverClass!=null&amp;&amp;!driverClass.equals("")'>
+			and b.driverClass like "%"#{driverClass}"%"
+		</if>
+		)as tmp
+	</select>
+
+
+	<!-- 导出司机信息+分页+排序+模糊查询 excelFul -->
+	<select id="excelFul" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="cn.guangtong.excel.Driver">
+		SELECT
+		a.id,a.dName,a.tel,b.cName,a.defaultVehicleNum,a.cooperationId,a.driverClass,cast(a.available
+		as UNSIGNED
+		INTEGER)available
+		FROM logistics_driver.driver_info a
+		LEFT
+		JOIN logistics_cooperation.cooperation_info b ON a.cooperationId =
+		b.id
+		LEFT JOIN logistics_cms.admin_cooperation c ON
+		b.id=c.cooperationId
+		where
+		1=1
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and a.id like "%"#{id}"%"
+		</if>
+		<if test='dName!=null&amp;&amp;!dName.equals("")'>
+			and a.dName like "%"#{dName}"%"
+		</if>
+		<if test='tel!=null&amp;&amp;!tel.equals("")'>
+			and a.tel like "%"#{tel}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and b.cName like "%"#{cName}"%"
+		</if>
+		<if test='defaultVehicleNum!=null&amp;&amp;!defaultVehicleNum.equals("")'>
+			and a.defaultVehicleNum like "%"#{defaultVehicleNum}"%"
+		</if>
+		<if test='driverClass!=null&amp;&amp;!driverClass.equals("")'>
+			and a.driverClass like "%"#{driverClass}"%"
+		</if>
+		<if test="adminId!=null&amp;&amp;adminId!=''">
+			and c.adminId=#{adminId}
+		</if>
+		GROUP BY a.id
+		ORDER BY ${sortInfo} ${sortType}
+	</select>
+
+	<!-- 查询所有司机信息 sDriverInfoAll -->
+	<select id="sDriverInfoAll" resultType="cn.guangtong.excel.Driver">
+		SELECT
+		a.id,dName,b.cName,PASSWORD,cooperationId,a.tel,a.addr,idCardNum,idCardValidDate,defaultVehicleNum,
+		DLNum,DLValidDate,driverClass,professionNum,institutionName,professionValidDate,professionYearCheck,
+		CAST(a.available AS
+		UNSIGNED
+		INTEGER)available,professionCount,lastEditor,updateTime
+		FROM
+		logistics_driver.driver_info a
+		LEFT JOIN
+		logistics_cooperation.cooperation_info b ON a.cooperationId = b.id
+	</select>
+
+	<!-- 冻结+解冻司机 uDriverInfoFreezing -->
+	<update id="uDriverInfoFreezing" parameterType="java.lang.String">
+		UPDATE
+		logistics_driver.driver_info t SET t.available = #{type}
+		WHERE
+		t.id =
+		#{employeeId}
+	</update>
+
+	
+	<select id="sDriverInfoOne" parameterType="cn.guangtong.utils.PageBean"
+		resultType="java.util.Map">
+		SELECT
+		a.id,dName,b.cName,a.tel,a.addr,idCardNum,
+		date_format(idCardValidDate,'%Y-%c-%d %H:%i:%s') as idCardValidDate,
+		defaultVehicleNum,DLNum,
+		date_format(DLValidDate,'%Y-%c-%d %H:%i:%s') as DLValidDate,
+		driverClass,
+		professionNum,institutionName,
+		date_format(professionValidDate,'%Y-%c-%d %H:%i:%s') as professionValidDate,
+		date_format(professionYearCheck,'%Y-%c-%d %H:%i:%s')as professionYearCheck,
+		professionCount,idCardFrontImg,idCardBackImg,DLImg,DLImg2,professionImg,professionimg2
+		FROM logistics_driver.driver_info a
+		LEFT JOIN
+		logistics_cooperation.cooperation_info b
+		ON a.cooperationId=b.id
+		WHERE
+		a.id = #{id}
+	</select>
+<!-- 修改驾驶员信息 uDriverInfo 查询一名司机信息 sDriverInfoOne 驾驶员姓名 dName 所属企业 cName 
+		联系方式 tel 现居住地址 addr 身份证号 idCardNum 身份证有效期 idCardValidDate 行驶车辆车牌号 defaultVehicleNum 
+		驾驶证号 DLNum 驾驶证有效期 DLValidDate 准驾车型 driverClass 从业资格证号 professionNum 发证机构名称 
+		institutionName 从业资格有效期 professionValidDate 从业资格年检 professionYearCheck 从业资格继续教育次数 
+		professionCount 身份证正面 idCardFrontImg 身份证反面 idCardBackImg 驾驶证正面 DLImg 驾驶证副本 
+		DLImg2 从业资格证图片 professionImg 从业资格继续教育照片 professionImg2 最后修改人员 lasteditor 
+		最后修改时间 updatetime -->
+	<update id="uDriverInfo" parameterType="cn.guangtong.entity.driver.DriverInfo">
+		UPDATE logistics_driver.driver_info
+		<set>
+			<if test="dName!=null">dName = #{dName},</if>
+			<if test="cooperationId!=null">cooperationId = #{cooperationId},</if>
+			<if test="tel!=null">tel = #{tel},</if>
+			<if test="addr!=null">addr = #{addr},</if>
+			<if test="idCardNum!=null">idCardNum = #{idCardNum},</if>
+			<if test="idCardValidDate!=null">idCardValidDate = #{idCardValidDate},</if>
+			<if test="driverClass!=null">driverClass = #{driverClass},</if>
+			<if test="professionNum!=null">professionNum = #{professionNum},</if>
+			<if test="institutionName!=null">institutionName = #{institutionName},</if>
+			<if test="professionValidDate!=null">professionValidDate = #{professionValidDate},</if>
+			<if test="professionYearCheck!=null">professionYearCheck = #{professionYearCheck},</if>
+			<if test="professionCount!=null">professionCount = #{professionCount},</if>
+			<if test="idCardFrontImg!=null">idCardFrontImg = #{idCardFrontImg},</if>
+			<if test="idCardBackImg!=null">idCardBackImg = #{idCardBackImg},</if>
+			<if test="DLNum!=null">DLNum = #{DLNum},</if>
+			<if test="DLValidDate!=null">DLValidDate = #{DLValidDate},</if>
+			<if test="defaultVehicleNum!=null">defaultVehicleNum = #{defaultVehicleNum},</if>
+			<if test="DLImg!=null">DLImg = #{DLImg},</if>
+			<if test="DLImg2!=null">DLImg2 = #{DLImg2},</if>
+			<if test="professionImg!=null">professionImg = #{professionImg},</if>
+			<if test="professionImg2!=null">professionImg2 = #{professionImg2},</if>
+			<if test="lastEditor!=null">lastEditor = #{lastEditor},</if>
+			<if test="updateTime!=null">updateTime = #{updateTime},</if>
+			<if test="reviewNote!=null">reviewNote = #{reviewNote},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<!-- 增加一名司机 iDriverInfo 查询全部的商家 sCooperationInfoA 驾驶员姓名 dName 所属企业 cName 
+		联系方式 tel 现居住地址 addr 身份证号 idCardNum 身份证有效期 idCardValidDate 行驶车辆车牌号 defaultVehicleNum 
+		驾驶证号 DLNum 驾驶证有效期 DLValidDate 准驾车型 driverClass 从业资格证号 professionNum 发证机构名称 
+		institutionName 从业资格有效期 professionValidDate 从业资格年检 professionYearCheck 从业资格继续教育次数 
+		professionCount 身份证正面 idCardFrontImg 身份证反面 idCardBackImg 驾驶证正面 DLImg 驾驶证副本 
+		DLImg2 从业资格证图片 professionImg 从业资格继续教育照片 professionImg2 最后修改人员 lastEditor 
+		最后修改时间 updateTime -->
+	<select id="sCooperationInfoA" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT id,cName FROM
+		logistics_cooperation.cooperation_info
+	</select>
+	<insert id="iDriverInfo" parameterType="cn.guangtong.entity.driver.DriverInfo"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO logistics_driver.driver_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id!=null">id,</if>
+			<if test="dName!=null">dName,</if>
+			<if test="password!=null">password,</if>
+			<if test="cooperationId!=null">cooperationId,</if>
+			<if test="tel!=null">tel,</if>
+			<if test="addr!=null">addr,</if>
+			<if test="idCardNum!=null">idCardNum,</if>
+			<if test="idCardValidDate!=null">idCardValidDate,</if>
+			<if test="defaultVehicleNum!=null">defaultVehicleNum,</if>
+			<if test="DLNum!=null">DLNum,</if>
+			<if test="DLValidDate!=null">DLValidDate,</if>
+			<if test="driverClass!=null">driverClass,</if>
+			<if test="professionNum!=null">professionNum,</if>
+			<if test="institutionName!=null">institutionName,</if>
+			<if test="professionValidDate!=null">professionValidDate,</if>
+			<if test="professionYearCheck!=null">professionYearCheck,</if>
+			<if test="professionCount!=null">professionCount,</if>
+			<if test="idCardFrontImg!=null">idCardFrontImg,</if>
+			<if test="idCardBackImg!=null">idCardBackImg,</if>
+			<if test="DLImg!=null">DLImg,</if>
+			<if test="DLImg2!=null">DLImg2,</if>
+			<if test="professionImg!=null">professionImg,</if>
+			<if test="professionImg2!=null">professionImg2,</if>
+			<if test="lastEditor!=null">lastEditor,</if>
+			<if test="updateTime!=null">updateTime,</if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+			<if test="id!=null">#{id},</if>
+			<if test="dName!=null">#{dName},</if>
+			<if test="password!=null">#{password},</if>
+			<if test="cooperationId!=null">#{cooperationId},</if>
+			<if test="tel!=null">#{tel},</if>
+			<if test="addr!=null">#{addr},</if>
+			<if test="idCardNum!=null">#{idCardNum},</if>
+			<if test="idCardValidDate!=null">#{idCardValidDate},</if>
+			<if test="defaultVehicleNum!=null">#{defaultVehicleNum},</if>
+			<if test="DLNum!=null">#{DLNum},</if>
+			<if test="DLValidDate!=null">#{DLValidDate},</if>
+			<if test="driverClass!=null">#{driverClass},</if>
+			<if test="professionNum!=null">#{professionNum},</if>
+			<if test="institutionName!=null">#{institutionName},</if>
+			<if test="professionValidDate!=null">#{professionValidDate},</if>
+			<if test="professionYearCheck!=null">#{professionYearCheck},</if>
+			<if test="professionCount!=null">#{professionCount},</if>
+			<if test="idCardFrontImg!=null">#{idCardFrontImg},</if>
+			<if test="idCardBackImg!=null">#{idCardBackImg},</if>
+			<if test="DLImg!=null">#{DLImg},</if>
+			<if test="DLImg2!=null">#{DLImg2},</if>
+			<if test="professionImg!=null">#{professionImg},</if>
+			<if test="professionImg2!=null">#{professionImg2},</if>
+			<if test="lastEditor!=null">#{lastEditor},</if>
+			<if test="updateTime!=null">#{updateTime},</if>
+		</trim>
+	</insert>
+	<!-- 驾驶证有效期统计 超管-->
+	<select id="validCheck" resultType="map">
+ <![CDATA[
+	select count(if(TO_DAYS(dio.DLValidDate) - TO_DAYS(now()) > 30,true,null)) as tt,
+	count(if(TO_DAYS(dio.DLValidDate) - TO_DAYS(now()) < 0,true,null)) as ff,
+	count(if(TO_DAYS(dio.DLValidDate) - TO_DAYS(now()) between 0 and 30,true,null)) as tf
+	from logistics_driver.driver_info dio
+	]]>
+		<where>
+			<if test='coopList != null &amp;&amp; coopList.size() > 0'>
+				dio.cooperationId in
+				<foreach collection="coopList" item="coopList" index="index"
+					open="(" close=")" separator=",">
+					#{coopList}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+	<!-- 行驶证有效期统计 超管-->
+	<select id="rankCheck" resultType="map">
+ <![CDATA[	
+	select count(if(TO_DAYS(vio.rankCheckDate) - TO_DAYS(now()) > 30,true,null)) as tt,
+	count(if(TO_DAYS(vio.rankCheckDate) - TO_DAYS(now()) < 0,true,null)) as ff,
+	count(if(TO_DAYS(vio.rankCheckDate) - TO_DAYS(now()) between 0 and 30,true,null)) as tf
+	from logistics_vehicle.vehicle_info vio 
+	]]>
+		<where>
+			<if test='coopList != null &amp;&amp; coopList.size() > 0'>
+				vio.cooperationId in
+				<foreach collection="coopList" item="coopList" index="index"
+					open="(" close=")" separator=",">
+					#{coopList}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+	<!-- 从业资格证有效期统计 超管-->
+	<select id="professionValidCheck" resultType="map">
+ <![CDATA[	
+	select count(if(TO_DAYS(dio.professionValidDate) - TO_DAYS(now()) > 30,true,null)) as tt,
+	count(if(TO_DAYS(dio.professionValidDate) - TO_DAYS(now()) < 0,true,null)) as ff,
+	count(if(TO_DAYS(dio.professionValidDate) - TO_DAYS(now()) between 0 and 30,true,null)) as tf
+	from logistics_driver.driver_info dio 
+	]]>
+		<where>
+			<if test='coopList != null &amp;&amp; coopList.size() > 0'>
+				dio.cooperationId in
+				<foreach collection="coopList" item="coopList" index="index"
+					open="(" close=")" separator=",">
+					#{coopList}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	<!-- 驾驶证有效期统计 普通-->
+	<select id="validCheckByOther" resultType="map">
+ <![CDATA[
+	select count(if(TO_DAYS(dio.DLValidDate) - TO_DAYS(now()) > 30,true,null)) as tt,
+	count(if(TO_DAYS(dio.DLValidDate) - TO_DAYS(now()) < 0,true,null)) as ff,
+	count(if(TO_DAYS(dio.DLValidDate) - TO_DAYS(now()) between 0 and 30,true,null)) as tf
+	from logistics_driver.driver_info dio
+	LEFT JOIN logistics_cooperation.cooperation_info lcci ON dio.cooperationId = lcci.id 
+	LEFT JOIN logistics_cms.admin_cooperation lcac ON lcac.cooperationId = lcci.id 
+	]]>
+		WHERE 1 = 1
+			<if test='adminId != null &amp;&amp; !adminId.equals("")'>
+				AND lcac.adminId = #{adminId}
+			</if>
+			<if test='coopList != null &amp;&amp; coopList.size() > 0'>
+				AND dio.cooperationId in
+				<foreach collection="coopList" item="coopList" index="index"
+					open="(" close=")" separator=",">
+					#{coopList}
+				</foreach>
+			</if>
+	</select>
+
+	<!-- 行驶证有效期统计 普通-->
+	<select id="rankCheckByOther" resultType="map">
+ <![CDATA[	
+	select count(if(TO_DAYS(vio.rankCheckDate) - TO_DAYS(now()) > 30,true,null)) as tt,
+	count(if(TO_DAYS(vio.rankCheckDate) - TO_DAYS(now()) < 0,true,null)) as ff,
+	count(if(TO_DAYS(vio.rankCheckDate) - TO_DAYS(now()) between 0 and 30,true,null)) as tf
+	from logistics_vehicle.vehicle_info vio 
+	LEFT JOIN logistics_cooperation.cooperation_info lcci ON vio.cooperationId = lcci.id 
+	LEFT JOIN logistics_cms.admin_cooperation lcac ON lcac.cooperationId = lcci.id 
+	]]>
+		WHERE 1 = 1
+			<if test='adminId != null &amp;&amp; !adminId.equals("")'>
+				AND lcac.adminId = #{adminId}
+			</if>
+			<if test='coopList != null &amp;&amp; coopList.size() > 0'>
+				AND vio.cooperationId in
+				<foreach collection="coopList" item="coopList" index="index"
+					open="(" close=")" separator=",">
+					#{coopList}
+				</foreach>
+			</if>
+	</select>
+
+	<!-- 从业资格证有效期统计 普通-->
+	<select id="professionValidCheckByOther" resultType="map">
+ <![CDATA[	
+	select count(if(TO_DAYS(dio.professionValidDate) - TO_DAYS(now()) > 30,true,null)) as tt,
+	count(if(TO_DAYS(dio.professionValidDate) - TO_DAYS(now()) < 0,true,null)) as ff,
+	count(if(TO_DAYS(dio.professionValidDate) - TO_DAYS(now()) between 0 and 30,true,null)) as tf
+	from logistics_driver.driver_info dio 
+	LEFT JOIN logistics_cooperation.cooperation_info lcci ON dio.cooperationId = lcci.id 
+	LEFT JOIN logistics_cms.admin_cooperation lcac ON lcac.cooperationId = lcci.id 
+	]]>
+		WHERE 1 = 1
+			<if test='adminId != null &amp;&amp; !adminId.equals("")'>
+				AND lcac.adminId = #{adminId}
+			</if>
+			<if test='coopList != null &amp;&amp; coopList.size() > 0'>
+				AND dio.cooperationId in
+				<foreach collection="coopList" item="coopList" index="index"
+					open="(" close=")" separator=",">
+					#{coopList}
+				</foreach>
+			</if>
+	</select>
+
+	<!-- 分页查询驾驶员记录报表数据 普通 -->
+	<select id="driverOfTable" parameterType="cn.guangtong.controller.driver.DriverPageBean"
+		resultType="cn.guangtong.entity.driver.DriverRecord">
+		SELECT
+		lddi.id AS id,
+		lddi.dName AS dName,
+		lddi.professionNum AS professionNum,
+		lddi.institutionName AS institutionName,
+		lddi.professionValidDate AS professionValidDate,
+		lddi.defaultVehicleNum AS defaultVehicleNum,
+		lbv.VMColor AS plateColor,
+		date_format(
+		lddo.onlineTime,
+		'%Y-%c-%d %h:%i:%s'
+		) AS onlineTime,
+		date_format(
+		lddo.offlineTime,
+		'%Y-%c-%d %h:%i:%s'
+		) AS offlineTime,
+		lbv.simNo
+		FROM
+		logistics_cms.admin_vehicle a
+		LEFT JOIN logistics_vehicle.vehicle_info lbv ON a.vehicleid = lbv.id
+		LEFT JOIN logistics_driver.driver_info lddi ON lbv.num =
+		lddi.defaultVehicleNum
+		LEFT JOIN logistics_driver.driver_online lddo ON lddi.id = lddo.driverId
+		WHERE
+		1 = 1 and lddi.defaultVehicleNum!='' and a.adminid=#{adminId} 
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lddo.onlineTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lddo.onlineTime &lt;= #{endTime}
+		</if>
+		<if test='dName != null &amp;&amp; !dName.equals("")'>
+			and lddi.dName like concat(concat('%', #{dName}), '%')
+		</if>
+		<if test='simNo!=null &amp;&amp; !simNo.equals("")'>
+			and lbv.simNo = #{simNo}
+		</if>
+		limit #{begin},#{pageCount}
+	</select>
+
+	<!-- 驾驶员记录报表数据导出 普通 -->
+	<select id="driverOfTableExcel" parameterType="cn.guangtong.controller.driver.DriverPageBean"
+		resultType="cn.guangtong.entity.driver.DriverRecord">
+		SELECT
+		lddi.id AS id,
+		lddi.dName AS dName,
+		lddi.professionNum AS professionNum,
+		lddi.institutionName AS institutionName,
+		lddi.professionValidDate AS professionValidDate,
+		lddi.defaultVehicleNum AS defaultVehicleNum,
+		lbv.VMColor AS plateColor,
+		date_format(
+		lddo.onlineTime,
+		'%Y-%c-%d %h:%i:%s'
+		) AS onlineTime,
+		date_format(
+		lddo.offlineTime,
+		'%Y-%c-%d %h:%i:%s'
+		) AS offlineTime,
+		lbv.simNo
+		FROM
+		logistics_cms.admin_vehicle a
+		LEFT JOIN logistics_vehicle.vehicle_info lbv ON a.vehicleid = lbv.id
+		LEFT JOIN logistics_driver.driver_info lddi ON lbv.num =
+		lddi.defaultVehicleNum
+		LEFT JOIN logistics_driver.driver_online lddo ON lddi.id = lddo.driverId
+		WHERE
+		1 = 1 and lddi.defaultVehicleNum!='' and a.adminid=#{adminId} 
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lddo.onlineTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lddo.onlineTime &lt;= #{endTime}
+		</if>
+		<if test='dName != null &amp;&amp; !dName.equals("")'>
+			and lddi.dName like concat(concat('%', #{dName}), '%')
+		</if>
+		<if test='simNo!=null &amp;&amp; !simNo.equals("")'>
+			and lbv.simNo = #{simNo}
+		</if>
+	</select>
+
+	<!-- 驾驶员记录报表记录数  普通-->
+	<select id="countOfDriver" parameterType="cn.guangtong.controller.driver.DriverPageBean"
+		resultType="int">
+		SELECT count(*) as count
+		FROM
+		logistics_cms.admin_vehicle a
+		LEFT JOIN logistics_vehicle.vehicle_info lbv ON a.vehicleid = lbv.id
+		LEFT JOIN logistics_driver.driver_info lddi ON lbv.num =
+		lddi.defaultVehicleNum
+		LEFT JOIN logistics_driver.driver_online lddo ON lddi.id = lddo.driverId
+		WHERE
+		1 = 1 and lddi.defaultVehicleNum!='' and a.adminid=#{adminId} 
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lddo.onlineTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lddo.onlineTime &lt;= #{endTime}
+		</if>
+		<if test='dName != null &amp;&amp; !dName.equals("")'>
+			and lddi.dName like concat(concat('%', #{dName}), '%')
+		</if>
+		<if test='simNo!=null &amp;&amp; !simNo.equals("")'>
+			and lbv.simNo like concat(concat('%', #{simNo}), '%')
+		</if>
+	</select>
+
+<!-- 分页查询驾驶员记录报表数据 超管 -->
+	<select id="driverOfTableSuperTube" parameterType="cn.guangtong.controller.driver.DriverPageBean"
+		resultType="cn.guangtong.entity.driver.DriverRecord">
+		SELECT
+		lddi.id AS id,
+		lddi.dName AS dName,
+		lddi.professionNum AS professionNum,
+		lddi.institutionName AS institutionName,
+		lddi.professionValidDate AS professionValidDate,
+		lddi.defaultVehicleNum AS defaultVehicleNum,
+		lbv.VMColor AS plateColor,
+		date_format(
+		lddo.onlineTime,
+		'%Y-%c-%d %h:%i:%s'
+		) AS onlineTime,
+		date_format(
+		lddo.offlineTime,
+		'%Y-%c-%d %h:%i:%s'
+		) AS offlineTime,
+		lbv.simNo
+		FROM
+	    logistics_vehicle.vehicle_info lbv 
+		LEFT JOIN logistics_driver.driver_info lddi ON lbv.num =
+		lddi.defaultVehicleNum
+		LEFT JOIN logistics_driver.driver_online lddo ON lddi.id = lddo.driverId
+		WHERE
+		1 = 1 AND lddi.defaultVehicleNum  !=''
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lddo.onlineTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lddo.onlineTime &lt;= #{endTime}
+		</if>
+		<if test='dName != null &amp;&amp; !dName.equals("")'>
+			and lddi.dName like concat(concat('%', #{dName}), '%')
+		</if>
+		<if test='simNo!=null &amp;&amp; !simNo.equals("")'>
+			and lbv.simNo = #{simNo}
+		</if>
+		limit #{begin},#{pageCount}
+	</select>
+
+	<!-- 驾驶员记录报表数据导出 超管 -->
+	<select id="driverOfTableExcelSuperTube" parameterType="cn.guangtong.controller.driver.DriverPageBean"
+		resultType="cn.guangtong.entity.driver.DriverRecord">
+			SELECT
+		lddi.id AS id,
+		lddi.dName AS dName,
+		lddi.professionNum AS professionNum,
+		lddi.institutionName AS institutionName,
+		lddi.professionValidDate AS professionValidDate,
+		lddi.defaultVehicleNum AS defaultVehicleNum,
+		lbv.VMColor AS plateColor,
+		date_format(
+		lddo.onlineTime,
+		'%Y-%c-%d %h:%i:%s'
+		) AS onlineTime,
+		date_format(
+		lddo.offlineTime,
+		'%Y-%c-%d %h:%i:%s'
+		) AS offlineTime,
+		lbv.simNo
+		FROM
+	    logistics_vehicle.vehicle_info lbv 
+		LEFT JOIN logistics_driver.driver_info lddi ON lbv.num =
+		lddi.defaultVehicleNum
+		LEFT JOIN logistics_driver.driver_online lddo ON lddi.id = lddo.driverId
+		WHERE
+		1 = 1 AND lddi.defaultVehicleNum  !=''
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lddo.onlineTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lddo.onlineTime &lt;= #{endTime}
+		</if>
+		<if test='dName != null &amp;&amp; !dName.equals("")'>
+			and lddi.dName like concat(concat('%', #{dName}), '%')
+		</if>
+		<if test='simNo!=null &amp;&amp; !simNo.equals("")'>
+			and lbv.simNo = #{simNo}
+		</if>
+	</select>
+
+	<!-- 驾驶员记录报表记录数  超管-->
+	<select id="countOfDriverSuperTube" parameterType="cn.guangtong.controller.driver.DriverPageBean"
+		resultType="int">
+		SELECT count(*) as count
+		FROM
+	    logistics_vehicle.vehicle_info lbv 
+		LEFT JOIN logistics_driver.driver_info lddi ON lbv.num =
+		lddi.defaultVehicleNum
+		LEFT JOIN logistics_driver.driver_online lddo ON lddi.id = lddo.driverId
+		WHERE
+		1 = 1 AND lddi.defaultVehicleNum  !=''
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lddo.onlineTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lddo.onlineTime &lt;= #{endTime}
+		</if>
+		<if test='dName != null &amp;&amp; !dName.equals("")'>
+			and lddi.dName like concat(concat('%', #{dName}), '%')
+		</if>
+		<if test='simNo!=null &amp;&amp; !simNo.equals("")'>
+			and lbv.simNo like concat(concat('%', #{simNo}), '%')
+		</if>
+	</select>
+
+	<!-- 获取新增加驾驶员数量 -->
+	<select id="getNewDriverCount" parameterType="java.lang.String"
+		resultType="Map">
+  <![CDATA[	
+ 	SELECT lcci.cName as cName,lddi.reviewTime as reviewTime,count(*) as count 
+	FROM logistics_driver.driver_info lddi 
+	LEFT JOIN logistics_cooperation.cooperation_info lcci ON lddi.cooperationId = lcci.id 
+	LEFT JOIN logistics_cms.admin_cooperation lcac ON lcac.cooperationId = lcci.id 
+	WHERE 1 = 1 
+	and reviewStatus = 1 
+	and lcci.cName is not null
+		]]>
+		<if test='adminId != null &amp;&amp; !adminId.equals("")'>
+			AND lcac.adminId = #{adminId}
+		</if>
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and reviewTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and reviewTime &lt;= #{endTime}
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			group by lcci.cName,day(reviewTime)
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			group by lcci.cName,month(reviewTime)
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			group by lcci.cName,year(reviewTime)
+		</if>
+		order by lcci.cName
+	</select>
+
+
+</mapper>

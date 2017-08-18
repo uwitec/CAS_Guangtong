@@ -1,0 +1,30 @@
+<meta charset="utf-8" />
+<div class="pophead_xk red"><span><span><img src="img/u6.png"></span><span>确认删除？</span></span><i><img src="img/close.png" alt="" /></i></div>
+<div class="popbody_xk  noborder gray1" style="width:300px;">
+	<div class="popcomfirm_xk" style="text-align: center;padding: 0;">
+		<a class="button blue del" style="margin:40px 15px;">删除</a>
+		<a class="button blue" style="margin:40px 15px;">取消</a>
+	</div>
+</div>
+<script type="text/javascript" src="zyl_js/transportationinfoVehicletype_zyl.js"></script>
+<script type="text/javascript">
+	$(".del").click(function() {
+		var this_id = $(".popwindow_xk .popup_xk").attr("this_id");
+		$.ajax(config.url + "model/deleteModelInfo", {
+			data: {
+				"id": this_id,
+			},
+			dataType: "json",
+			type: "POST",
+			timeout: 10000,
+			success: function(data) {
+				//console.log(data.success);
+				alert(data.msg);
+				$("popwindow_xk .popup_xk").html("");
+				$(".popwindow_xk").css("visibility", "hidden");
+				selectModelInfoAll();
+			}
+		});
+		
+	})
+</script>

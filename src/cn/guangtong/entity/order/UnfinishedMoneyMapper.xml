@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.order.UnfinishedMoneyDao">
+	<!-- 新建订单 iUnfinishedMoney -->
+	<insert id="insertMoney" parameterType="cn.guangtong.entity.order.UnfinishedMoney"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO logistics_order.unfinished_money
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="ordernum != null">ordernum,</if>
+			<if test="driverid != null">driverid,</if>
+			<if test="insurancefee != null">insurancefee,</if>
+			<if test="floorfee != null">floorfee,</if>
+			<if test="handlingfee != null">handlingfee,</if>
+			<if test="freightfee != null">freightfee,</if>
+			<if test="drivermoney != null">drivermoney,</if>
+			<if test="totalmoney != null">totalmoney,</if>
+			<if test="paytime != null">paytime,</if>
+			<if test="settle != null">settle,</if>
+			<if test="settleamount != null">settleamount,</if>
+			<if test="payment != null">payment,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="ordernum != null">#{ordernum},</if>
+			<if test="driverid != null">#{driverid},</if>
+			<if test="insurancefee != null">#{insurancefee},</if>
+			<if test="floorfee != null">#{floorfee},</if>
+			<if test="handlingfee != null">#{handlingfee},</if>
+			<if test="freightfee != null">#{freightfee},</if>
+			<if test="drivermoney != null">#{drivermoney},</if>
+			<if test="totalmoney != null">#{totalmoney},</if>
+			<if test="paytime != null">#{paytime},</if>
+			<if test="settle != null">#{settle},</if>
+			<if test="settleamount != null">#{settleamount},</if>
+			<if test="payment != null">#{payment},</if>
+		</trim>
+	</insert>
+
+	<!-- 编辑订单 updateMoneyEdit -->
+	<update id="updateMoneyEdit" parameterType="cn.guangtong.entity.order.UnfinishedMoney">
+		UPDATE logistics_order.unfinished_money
+		<set>
+			<if test="driverid != null">driverid = #{driverid},</if>
+			<if test="insurancefee != null">insurancefee = #{insurancefee},</if>
+			<if test="floorfee != null">floorfee = #{floorfee},</if>
+			<if test="handlingfee != null">handlingfee = #{handlingfee},</if>
+			<if test="freightfee != null">freightfee = #{freightfee},</if>
+			<if test="drivermoney != null">drivermoney = #{drivermoney},</if>
+			<if test="totalmoney != null">totalmoney = #{totalmoney},</if>
+			<if test="paytime != null">paytime = #{paytime},</if>
+			<if test="settle != null">settle = #{settle},</if>
+			<if test="settleamount != null">settleamount = #{settleamount},</if>
+			<if test="payment != null">payment = #{payment}</if>
+		</set>
+		WHERE orderNum = #{ordernum}
+	</update>
+	<!-- 根据orderNum查询 -->
+	<select id="getMoneyByNum" parameterType="java.lang.String"
+		resultType="cn.guangtong.entity.order.UnfinishedMoney">
+		SELECT * FROM logistics_order.unfinished_money WHERE orderNum = #{ordernum}
+	</select>
+	<!-- 查询orderNum的所有订单 queryUnfinishedMoneyNum -->
+	<select id="queryUnfinishedMoneyNum" parameterType="java.lang.String"
+		resultType="cn.guangtong.entity.order.UnfinishedMoney">
+		SELECT * FROM logistics_order.unfinished_money WHERE
+		orderNum = #{ordernum}
+	</select>
+
+	<!-- 删除orderNum的订单 deleteUnfinishedOrderNum -->
+	<delete id="deleteUnfinishedMoneyNum" parameterType="java.lang.String">
+		DELETE FROM logistics_order.unfinished_money WHERE orderNum = #{ordernum}
+	</delete>
+</mapper>

@@ -1,0 +1,78 @@
+<meta charset="utf-8" />
+<style>
+.admin_list_zyl{
+background:#fff;
+padding:0 ;
+margin:0;
+display:block;
+height:150px;
+overflow-y:scroll;
+}
+.admin_list_zyl li{
+border:none !important;
+padding:0px 5px  !important;
+margin:0;
+line-height:24px;
+cursor: pointer;
+}
+.active_zyl{
+	background:#999;
+	color:#fff;
+}
+</style> 
+<div class="pophead_xk skyblue"><span><span><img src="img/u6.png"></span><span>编辑管理员</span></span><i><img src="img/close.png" alt="" /></i></div>
+<div class="popbody_xk  noborder gray1">
+	<table cellspacing="0" class="poptable2_xk poptable2_xk_zyl">
+		<tbody>
+			<tr>
+				<th>管理员编号：</th>
+				<td><span>12321</span></td>
+			</tr>
+			<!-- <tr>
+				<th>所属管理：</th>
+				<td><select name="" class="select">
+				</select><input type="text" class="search"/></td>
+			</tr> -->
+			<tr>
+				<th>登录名：</th>
+				<td><input type="text" class="search"/></td>
+			</tr>
+			<tr>
+				<th>密码：</th>
+				<td><input type="password" class="search"/></td>
+			</tr>
+			<!-- <tr>
+				<th>管理员类型：</th>
+				<td><select name="" class="select">
+				</select></td>
+			</tr> -->
+			<tr>
+				<th>有效起始时间：</th>
+				<td><input type="text" class="search time_plugin_lv_onclick" time_plugin_lv_type="2"/></td>
+			</tr>
+			<tr>
+				<th>有效结束时间：</th>
+				<td><input type="text" class="search time_plugin_lv_onclick" time_plugin_lv_type="2"/></td>
+			</tr>
+			<tr>
+				<th style="vertical-align:middle;">企业:</th>
+				<td><!-- <select name="education" id="education" multiple="multiple"
+					style="max-width:180px;min-width:150px;" size="8">
+				</select> -->
+				 <ul class="admin_list_zyl">
+				</ul>
+				</td>
+			</tr> 
+		</tbody>
+		<tfoot>
+			<tr>
+				<td class="popcomfirm_xk" colspan="2">
+					<a class="button blue save">保存</a>
+					<a class="button orange">放弃</a>
+				</td>
+			</tr>
+
+		</tfoot>
+	</table>
+</div>
+<script type="text/javascript" src="zyl_js/systeminfoAdmin_zyl.js" ></script>

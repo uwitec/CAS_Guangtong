@@ -1,0 +1,187 @@
+<meta charset="utf-8" />
+<script type="text/javascript" src="wd_js/SpecialStorage_wd.js"></script>
+<script type="text/javascript" src="http://webapi.amap.com/demos/js/liteToolbar.js"></script>
+<div class="listgrp_xk" style="padding: 0;height:100%;">
+	<ul class="map_xk">
+		<li class="map_left_xk">
+			<div class="map_main_xk" id="container" style="margin-right:10px;">
+				<input type='text' class='search' id='positionsearch' placeholder='输入地址' style="display: none;"/>
+			</div>
+			<div class="map_top_xk">
+				<ul class="mapbtn_xk">
+					<li>在途路线监控</li>
+					<li>固定路线管理</li>
+				</ul>
+			</div>
+			<div class="map_bottom_xk" id="mapdefaulttab" style="display:none">
+				<div class="tab_main_xk" style="height:182px;">
+					<div class="ctrlgrp" style="height:170px;">
+						<table border="0" cellspacing="0" cellpadding="0" class="on_xk">
+							<thead>
+								<tr>
+									<td>
+										<ul class="ctrlgrptabbtn">
+											<li class="on_xk"><span>全部</span><i>100</i></li>
+											<li><span>运行</span><i>10</i></li>
+											<li><span>停车</span><i>1</i></li>
+											<li><span>报警</span><i>100</i></li>
+											<li><span>离线</span><i>100</i></li>
+										</ul>
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style="padding-top:6px;"><table id="tabcommoninfo"  border="0" cellspacing="0" cellpadding="0" class="bodyscrolltable">
+											<thead>
+												<tr>
+													<td><table border="0" cellspacing="0" cellpadding="0">
+															<tr>
+																<td>车牌号</td>
+																<td>车载设备ID</td>
+																<td>车辆类型</td>
+																<td>驾驶员</td>
+																<td>速度与方向</td>
+																<td>位置信息</td>
+																<td>发送时间</td>
+																<td>状态</td>
+																<td>报警信息</td>
+																<td style="border-right:none;">厂商ID</td>
+															</tr>
+														</table></td>
+													<td class="scrollspace"></td>
+											</thead>
+											<tbody>
+												<tr>
+													<td colspan="2">
+														<div class="tablistcontent_xk">
+															<table border="0" cellspacing="0" cellpadding="0">
+																<tr>
+																	<td title="aaa">aaa</td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																</tr>
+															</table>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table></td>
+								</tr>
+							</tbody>
+						</table>
+						<table id="tabcommandreply" border="0" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td style="padding-top:6px;"><table border="0" cellspacing="0" cellpadding="0" class="bodyscrolltable">
+											<thead>
+												<tr>
+													<td><table border="0" cellspacing="0" cellpadding="0">
+															<tr>
+																<td>车牌号</td>
+																<td>车辆颜色</td>
+																<td>发送时间</td>
+																<td>命令ID</td>
+																<td>发送命令内容</td>
+																<td>发送结果</td>
+																<td>流水号</td>
+																<td>确认时间</td>
+																<td>回复ID</td>
+																<td style="border-right:none;">回复参数</td>
+															</tr>
+														</table></td>
+													<td class="scrollspace"></td>
+											</thead>
+											<tbody>
+												<tr>
+													<td colspan="2">
+														<div class="tablistcontent_xk">
+															<table border="0" cellspacing="0" cellpadding="0">
+																<tr>
+																	<td title="aaa">aaa</td>
+																	<td title="aaa">aaa</td>
+																	<td title="aaa">aaa</td>
+																	<td title="aaa">aaa</td>
+																	<td title="aaa">aaa</td>
+																	<td title="aaa">aaa</td>
+																	<td title="aaa">aaa</td>
+																	<td title="aaa">aaa</td>
+																	<td title="aaa">aaa</td>
+																	<td title="aaa">aaa</td>
+																</tr>
+															</table>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<a class="button positionbtn white on_xk"
+						style="left:10px;top:40px;">一般信息</a> <a
+						class="button positionbtn white" style="left:10px;top:94px;">命令回复</a>
+				</div>
+			</div>
+			<div class="map_bottom_xk" id="mapbottomnottab" style="display:none;"></div>
+			<div class="map_bottom_xk" id="mapbottomtab">
+				<ul class="tab_xk">
+					<li class="tab_clicktab_xk">一般信息</li>
+					<li class="tab_clicktab_xk">附加信息</li>
+					<li class="tab_clicktab_xk">终端报警</li>
+					<li class="tab_clicktab_xk">平台报警</li>
+					<li class="tab_clicktab_xk">驾驶员信息</li>
+					<li class="tab_clicktab_xk">电子运单</li>
+					<li class="tab_clicktab_xk">车辆控制</li>
+					<li class="tab_clicktab_xk">历史轨迹</li>
+					<li class="tab_closebtn_xk"><img src="img/gbl.png" /></li>
+					<li class="tab_minimize_xk"><img src="img/zxh.png" /></li>
+				</ul>
+				<div class="tab_main_xk" style="height:160px;position: relative;"></div>
+			</div>
+		</li>
+		<li class="map_right_xk">
+			<div class="map_right_top_xk">
+				<ul>
+					<li><img src="img/sz.png" title="操作设置" /></li>
+					<li><img src="img/bjxx.png" title="报警设置" /></li>
+					<li><img src="img/zl.png" title="车辆控制" /></li>
+					<!-- <li><img src="img/sx.png" title="筛选车辆" /></li> -->
+					<li><img src="img/sblj.png" title="连接服务器" /></li>
+					<li><img src="img/dw.png" title="地名定位查找" /></li>
+					<!-- <li><img src="img/bz.png" title="帮助信息" /></li> -->
+				</ul>
+				<!--<i><img src="img/收缩.png" title="隐藏" /></i>-->
+			</div>
+			<div class="map_right_title_xk">所有车辆</div>
+			<div style="text-align: center;padding-top:6px;"><label for="">找车</label><input type="text" style="width:120px;" placeholder="输入车牌号并回车" list="checkCars" /></div>
+			<div class="dendrogram_xk">
+				<dl>
+					<dt><i><img src="img/u380.png"/></i><b class="cherked_xk"><img src="img/uncherked.jpg" carListClick /></b><i><img src="img/qb.png" style="height:16px;"/></i>全部车辆</dt>
+					<dd id="carLists">
+					</dd>
+				</dl>
+			</div>
+		</li>
+	</ul>
+</div>
+<script>
+$(".map_xk").on("dblclick","#tabcommoninfo",function(){
+	
+});
+$(".map_xk").on("dblclick","#tabcommandreply",function(){
+	$(".popwindow_xk .popup_xk").html(popup("commandInfo.html"));
+})
+$(".map_xk").on("click",".ctrlgrptabbtn li",function(){
+	$(this).siblings("li").removeClass("on_xk");
+	$(this).addClass("on_xk");
+})
+</script>

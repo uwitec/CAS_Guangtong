@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.cms.MenuDao">
+
+	<select id="getMenus" parameterType="cn.guangtong.utils.MenuPageBean" resultType="cn.guangtong.entity.cms.Menu">
+		select * from logistics_cms.menu
+		<where>
+			<if test='name!=null &amp;&amp; !name.equals("")'>
+				and name like concat(concat('%',#{name}),'%')
+			</if>
+			<if test='contentDiv!=null &amp;&amp; !contentDiv.equals("")'>
+				and contentDiv like concat(concat('%',#{contentDiv}),'%')
+			</if>
+		</where>
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+
+	<select id="getCounts" resultType="int">
+		select count(*) from logistics_cms.menu
+		<where>
+			<if test='name!=null &amp;&amp; !name.equals("")'>
+				and name like concat(concat('%',#{name}),'%')
+			</if>
+			<if test='contentDiv!=null &amp;&amp; !contentDiv.equals("")'>
+				and contentDiv like concat(concat('%',#{contentDiv}),'%')
+			</if>
+		</where>
+	</select>
+
+	<insert id="addMenu" parameterType="cn.guangtong.entity.cms.Menu" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		logistics_cms.menu (id,parentid,name,contentdiv,time,msort,iscoop,onlypermission)
+		values
+		(#{id},#{parentid},#{name},#{contentdiv},#{time},#{msort},#{iscoop},#{onlypermission})
+	</insert>
+
+	<delete id="deleteMenu" parameterType="int">
+		delete from logistics_cms.menu where id=#{id}
+	</delete>
+
+	<update id="updateMenu" parameterType="cn.guangtong.entity.cms.Menu">
+		update logistics_cms.menu
+		<set>
+			<if test="parentid!=0">parentid=#{parentid},</if>
+			<if test="name!=null">name=#{name},</if>
+			<if test="contentdiv!=null">contentdiv=#{contentdiv},</if>
+			<if test="msort!=null">msort=#{msort},</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<select id="getMenuById" parameterType="int" resultType="cn.guangtong.entity.cms.Menu">
+		select * from logistics_cms.menu where id=#{id}
+	</select>
+
+	<delete id="batchDelete" parameterType="cn.guangtong.entity.cms.Menu">
+		delete from logistics_cms.menu_permission where adminId=#{adminId}
+	</delete>
+
+	<select id="getAll" resultType="cn.guangtong.entity.cms.Menu">
+		select * from logistics_cms.menu
+	</select>
+
+	<!-- select ap.adminId,m.* from admin a LEFT JOIN admin_permission ap on a.id=ap.adminId LEFT JOIN menu m on m.id=ap.menuId where 
+		a.id=#{adminId} select * from v_wudi_admin_menu where adminId=#{adminId} -->
+	<select id="getMenusByAid" parameterType="int" resultType="cn.guangtong.entity.cms.Menu">
+		select * from logistics_cms.menu
+		lcm,logistics_cms.admin_permission lcap,logistics_cms.admin lca
+		where lcm.id = lcap.menuId and lcap.adminId = lca.id and
+		lca.id = #{adminId} order by lcm.mSort desc
+	</select>
+
+	<!-- 获取管理员的所有一级权限 -->
+	<select id="getFirMenusByAid" parameterType="int" resultType="cn.guangtong.entity.cms.Menu">
+		select * from logistics_cms.menu
+		lcm,logistics_cms.admin_permission lcap,logistics_cms.admin lca
+		where lcm.id = lcap.menuId and lcap.adminId = lca.id and
+		lca.id = #{adminId} and lcm.parentId= 0
+	</select>
+
+
+	<select id="getMenusByAdminId" parameterType="int" resultType="cn.guangtong.entity.cms.Menu">
+		SELECT * FROM logistics_cms.menu a
+		LEFT JOIN (SELECT *
+		FROM logistics_cms.admin_permission WHERE adminId=#{adminId}) b
+		ON a.id=b.menuId
+	</select>
+</mapper>

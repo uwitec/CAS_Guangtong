@@ -1,0 +1,40 @@
+<meta charset="utf-8" />
+<div class="pophead_xk red">
+	<span><span><img src="img/u6.png"></span><span>确认删除？</span></span><i><img
+		src="img/close.png" alt="" /></i>
+</div>
+<div class="popbody_xk  noborder gray1" style="width:300px;">
+	<div class="popcomfirm_xk" style="text-align: center;padding: 0;">
+		<a class="button blue del" style="margin:40px 15px;">删除</a> <a
+			class="button blue" style="margin:40px 15px;">取消</a>
+	</div>
+</div>
+<script type="text/javascript">
+//批量删除
+	function deleteAdminNotices_zyl() {
+		 $(".del").click(function() {
+			var this_delId = [];
+			$(".list_xk tbody").find("img[src='img/cherked.jpg']").each(function() {
+				this_delId.push($(this).parent("td").parent("tr").attr("zyl_id"));
+			});
+			$.ajax(config.url + "notices/deleteAdminNotices", {
+				data : {
+					"ids" : this_delId,
+				},
+				dataType : "json",
+				type : "POST",
+				async:false,
+				timeout : 10000,
+				success : function(data) {
+					//console.log(data.success);
+					alert(data.msg);
+				}
+			});
+			$("popwindow_xk .popup_xk").html("");
+			$(".popwindow_xk").css("visibility", "hidden");
+			getNoticesAll();
+			$(".cherked_xk img").attr("src",'img/uncherked.jpg');  
+		}) 
+	}
+	deleteAdminNotices_zyl();
+</script>

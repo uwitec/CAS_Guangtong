@@ -1,0 +1,169 @@
+<meta charset="utf-8" />
+<style>
+.admin_list_zyl{
+background:#fff;
+padding:0 ;
+margin:0;
+display:block;
+height:150px;
+overflow-y:scroll;
+}
+.admin_list_zyl li{
+border:none !important;
+padding:0px 5px  !important;
+margin:0;
+line-height:24px;
+cursor: pointer;
+}
+.active_zyl{
+	background:#f1f1f1;
+	color:#fff;
+}
+</style>
+<div class="pophead_xk skyblue">
+	<span><span><img src="img/u6.png"></span><span>新增管理员</span></span><i><img
+		src="img/close.png" alt="" /></i>
+</div>
+<div class="popbody_xk  noborder gray1">
+	<table cellspacing="0" class="poptable2_xk poptable2_xk_zyl">
+		<tbody>
+			<!--<tr>
+				<th>所属管理：</th>
+				<td>
+					<select name="" class="select">
+						<option value="21">admin</option>
+					</select>
+				</td>
+			</tr>-->
+			<tr>
+				<th>登录名：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>密码：</th>
+				<td><input type="password" class="search" /></td>
+			</tr>
+			<!-- <tr>
+				<th>管理员类型：</th>
+				<td>
+					<select name="" class="select">
+						<option value="0">普通管理员</option>
+						<option value="21">超级管理员</option>
+					</select>
+				</td>
+			</tr> -->
+			<tr>
+				<th>有效起始时间：</th>
+				<td><input type="text" class="search time_plugin_lv_onclick"
+					time_plugin_lv_type="2" /></td>
+			</tr>
+			<tr>
+				<th>有效结束时间：</th>
+				<td><input type="text" class="search time_plugin_lv_onclick"
+					time_plugin_lv_type="2" /></td>
+			</tr>
+			 <tr>
+				<th style="vertical-align:middle;">企业:</th>
+				<td><!-- <select name="education" id="education" multiple="multiple"
+					style="max-width:180px;min-width:150px;" size="8">
+				</select> -->
+				<ul class="admin_list_zyl">
+					<!-- <li class="active_zyl">123123</li>
+					<li>123123</li><li>123123</li>
+					<li>123123</li>
+					<li>123123</li>
+					<li>123123</li>
+					<li>123123</li> -->
+				</ul>
+				</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td class="popcomfirm_xk" colspan="2"><a
+					class="button blue save">保存</a> <a class="button orange">放弃</a></td>
+			</tr>
+
+		</tfoot>
+	</table>
+</div>
+<script>
+function getCooperationByAdmin() {
+	data_json = {};
+	$.ajax(config.url + "AdminCooperation/getCooperationByAdmin", {
+		data: data_json,
+		dataType: "json",
+		type: "POST",
+		timeout: 10000,
+		success: function(data) {
+			//console.log(data.success);
+			if(data.success){
+				for(var i=0; i<data.obj.length;i++){
+					$(".admin_list_zyl").append('<li value="' + data.obj[i].id + '" zyl_id="' + data.obj[i].id + '">' + data.obj[i].cName + '</li>');
+				}
+				$(".admin_list_zyl li").click(function(){
+					if($(this).attr("class") == "active_zyl"){
+						$(this).attr("class","");
+					}else{
+						$(this).attr("class","active_zyl");
+					}
+				})
+			addAdmin();
+			}
+			
+		}
+	});
+}
+
+
+//增加
+function addAdmin() {
+	
+	var arr = [];
+	 $(".popcomfirm_xk .save").click(function() {
+		data_json = {
+			"username": $(".poptable2_xk_zyl tbody tr:eq(0)  td input").val(),
+			"password": $(".poptable2_xk_zyl tbody tr:eq(1)  td input").val(),
+			//"atype": $(".poptable2_xk_zyl tbody tr:eq(2)  td select option").val(),
+			"startTime": $(".poptable2_xk_zyl tbody tr:eq(2)  td input").val(),
+			"endTime": $(".poptable2_xk_zyl tbody tr:eq(3)  td input").val(),
+			"cooperationArr[]":$.unique(arr),
+		}
+		switch("") {
+			case data_json["username"]:
+				alert("用户名不能为空！");
+				break;
+			case data_json["password"]:
+				alert("密码不能为空！");
+				break;
+			case data_json["startTime"]:
+				alert("开始时间不能为空！");
+				break;
+			case data_json["endTime"]:
+				alert("结束时间不能为空！");
+				break;
+			default:
+				$(".admin_list_zyl li[class=active_zyl]").each(function(){
+					arr.push($(this).attr("zyl_id"));
+				})
+				$.ajax(config.url + "cms/addAdmin", {
+					data: data_json,
+					dataType: "json",
+					type: "POST",
+					timeout: 10000,
+					success: function(data) {
+						//console.log(data.success);
+						if(data.success) {
+							alert(data.msg);
+							$("popwindow_xk .popup_xk").html("");
+							$(".popwindow_xk").css("visibility", "hidden");
+							getAdminsByPage();
+						}
+					}
+				});
+				break;
+		}
+	}); 
+}
+getCooperationByAdmin();
+</script>

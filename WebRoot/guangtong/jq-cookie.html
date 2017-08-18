@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head runat="server">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>jquery cookies操作</title>
+		<script type="text/javascript" src="js/jquery-1.11.0.js" ></script>
+		<script type="text/javascript" src="js/jquery.cookie.js" ></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var i = 1;
+				//当点击按钮的时候隐藏《p》  
+				$("#clk_submit").click(function() {
+					//判断是否存在cookies对象  
+					if($.cookie("exist") == null || $.cookie("exist") == "undefined") {
+						//创建cookies对象并且给其赋值，设置了生命周期为7天  
+						$.cookie("exist", i, { expires: 7 });
+					}
+					//获取cookies值  
+					i = $.cookie("exist");
+
+					//判断是否为0  
+					if(i % 2 != 0) {
+						$("p").hide();
+					} else {
+						$("p").show();
+					}
+					i++;
+					//保存到cookies里面  
+					$.cookie("exist", i);
+				})
+			});
+			
+		</script>
+	</head>
+
+	<body>
+		<form id="form1" runat="server">
+			<div>
+				<h2>this is a heading</h2>
+				<p>this is a paragraph.</p>
+				<p>this is another paragraph.</p>
+				<button type="button" id="clk_submit">click me</button>
+			</div>
+		</form>
+	</body>
+</html>

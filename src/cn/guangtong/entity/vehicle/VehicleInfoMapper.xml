@@ -1,0 +1,1172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.vehicle.VehicleInfoDao">
+
+	<!-- 查询所有车辆信息+分页+排序 sVehicleInfoA -->
+	<select id="sVehicleInfoA" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="java.util.Map">
+		SELECT b.id,b.num,b.nickname,d.cName,c.tName,e.`desc`
+		FROM
+		logistics_cms.admin_vehicle a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b
+		ON a.vehicleid=b.id
+		LEFT JOIN logistics_vehicle.vehicle_team c ON
+		b.teamId=c.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info d ON
+		c.cooperationId=d.id
+		LEFT JOIN logistics_vehicle.model_info e ON
+		b.modelId=e.id
+		WHERE a.adminid=#{adminId}
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='num!=null&amp;&amp;!num.equals("")'>
+			and b.num like "%"#{num}"%"
+		</if>
+		<if test='nickname!=null&amp;&amp;!nickname.equals("")'>
+			and b.nickname like "%"#{nickname}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and d.cName like "%"#{cName}"%"
+		</if>
+		<if test='tName!=null&amp;&amp;!tName.equals("")'>
+			and c.tName like "%"#{tName}"%"
+		</if>
+		<if test='desc!=null&amp;&amp;!desc.equals("")'>
+			and e.desc like "%"#{desc}"%"
+		</if>
+		LIMIT
+		#{begin},#{pageCount}
+	</select>
+
+
+	<!-- 车辆总记录数 sVehicleInfoCount -->
+	<select id="sVehicleCount" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM(
+		SELECT
+		b.id,b.num,b.nickname,d.cName,c.tName,e.`desc`
+		FROM
+		logistics_cms.admin_vehicle a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b
+		ON a.vehicleid=b.id
+		LEFT JOIN logistics_vehicle.vehicle_team c ON
+		b.teamId=c.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info d ON
+		c.cooperationId=d.id
+		LEFT JOIN logistics_vehicle.model_info e ON
+		b.modelId=e.id
+		WHERE a.adminid=#{adminId}
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='num!=null&amp;&amp;!num.equals("")'>
+			and b.num like "%"#{num}"%"
+		</if>
+		<if test='nickname!=null&amp;&amp;!nickname.equals("")'>
+			and b.nickname like "%"#{nickname}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and d.cName like "%"#{cName}"%"
+		</if>
+		<if test='tName!=null&amp;&amp;!tName.equals("")'>
+			and c.tName like "%"#{tName}"%"
+		</if>
+		<if test='desc!=null&amp;&amp;!desc.equals("")'>
+			and e.desc like "%"#{desc}"%"
+		</if>
+		)as tmp
+	</select>
+
+
+	<!-- 查询所有车辆信息+分页+排序 sVehicleInfo 超级管理员 -->
+	<select id="sVehicleInfo" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="java.util.Map">
+		SELECT b.id,b.num,b.nickname,d.cName,c.tName,e.`desc`
+		FROM
+		logistics_vehicle.vehicle_info b
+		LEFT JOIN
+		logistics_vehicle.vehicle_team c ON b.teamId=c.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info d ON
+		c.cooperationId=d.id
+		LEFT
+		JOIN logistics_vehicle.model_info e ON b.modelId=e.id
+		WHERE 1=1
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='num!=null&amp;&amp;!num.equals("")'>
+			and b.num like "%"#{num}"%"
+		</if>
+		<if test='nickname!=null&amp;&amp;!nickname.equals("")'>
+			and b.nickname like "%"#{nickname}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and d.cName like "%"#{cName}"%"
+		</if>
+		<if test='tName!=null&amp;&amp;!tName.equals("")'>
+			and c.tName like "%"#{tName}"%"
+		</if>
+		<if test='desc!=null&amp;&amp;!desc.equals("")'>
+			and e.desc like "%"#{desc}"%"
+		</if>
+		LIMIT
+		#{begin},#{pageCount}
+	</select>
+
+
+	<!-- 车辆总记录数 sVehicleInfoCount 超级管理员 -->
+	<select id="sVehicleCountS" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM(
+		SELECT
+		b.id,b.num,b.nickname,d.cName,c.tName,e.`desc`
+		FROM
+		logistics_vehicle.vehicle_info b
+		LEFT JOIN
+		logistics_vehicle.vehicle_team c ON b.teamId=c.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info d ON
+		c.cooperationId=d.id
+		LEFT
+		JOIN logistics_vehicle.model_info e ON b.modelId=e.id
+		WHERE 1=1
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='num!=null&amp;&amp;!num.equals("")'>
+			and b.num like "%"#{num}"%"
+		</if>
+		<if test='nickname!=null&amp;&amp;!nickname.equals("")'>
+			and b.nickname like "%"#{nickname}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and d.cName like "%"#{cName}"%"
+		</if>
+		<if test='tName!=null&amp;&amp;!tName.equals("")'>
+			and c.tName like "%"#{tName}"%"
+		</if>
+		<if test='desc!=null&amp;&amp;!desc.equals("")'>
+			and e.desc like "%"#{desc}"%"
+		</if>
+		)as tmp
+	</select>
+
+
+	<!-- 导出Excal queryVehicleExcal 非超管 -->
+	<select id="queryVehicleExcal" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="cn.guangtong.excel.Vehicle">
+		SELECT
+		b.id,b.num,b.nickname,d.cName,c.tName,e.`desc`,c.cooperationId,b.modelId
+		FROM logistics_cms.admin_vehicle a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b ON a.vehicleid=b.id
+		LEFT JOIN
+		logistics_vehicle.vehicle_team c ON b.teamId=c.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info d ON c.cooperationId=d.id
+		LEFT
+		JOIN logistics_vehicle.model_info e ON b.modelId=e.id
+		WHERE
+		a.adminid=#{adminId}
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='num!=null&amp;&amp;!num.equals("")'>
+			and b.num like "%"#{num}"%"
+		</if>
+		<if test='nickname!=null&amp;&amp;!nickname.equals("")'>
+			and b.nickname like "%"#{nickname}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and d.cName like "%"#{cName}"%"
+		</if>
+		<if test='tName!=null&amp;&amp;!tName.equals("")'>
+			and c.tName like "%"#{tName}"%"
+		</if>
+		<if test='desc!=null&amp;&amp;!desc.equals("")'>
+			and e.desc like "%"#{desc}"%"
+		</if>
+	</select>
+
+	<!-- 导出Excal queryVehicleExcalByAdmin 超管 -->
+	<select id="queryVehicleExcalByAdmin" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="cn.guangtong.excel.Vehicle">
+		SELECT
+		b.id,b.num,b.nickname,d.cName,c.tName,e.`desc`,c.cooperationId,b.modelId
+		FROM
+		logistics_vehicle.vehicle_info b
+		LEFT
+		JOIN
+		logistics_vehicle.vehicle_team c ON b.teamId=c.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info d ON
+		c.cooperationId=d.id
+		LEFT
+		JOIN logistics_vehicle.model_info e ON b.modelId=e.id
+		WHERE 1=1
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='num!=null&amp;&amp;!num.equals("")'>
+			and b.num like "%"#{num}"%"
+		</if>
+		<if test='nickname!=null&amp;&amp;!nickname.equals("")'>
+			and b.nickname like "%"#{nickname}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and d.cName like "%"#{cName}"%"
+		</if>
+		<if test='tName!=null&amp;&amp;!tName.equals("")'>
+			and c.tName like "%"#{tName}"%"
+		</if>
+		<if test='desc!=null&amp;&amp;!desc.equals("")'>
+			and e.desc like "%"#{desc}"%"
+		</if>
+	</select>
+
+	<!-- 根据ID查询车辆 sVehicleInfoOne -->
+	<select id="sVehicleInfoOne" parameterType="java.lang.String"
+		resultType="cn.guangtong.entity.vehicle.VehicleInfo">
+		SELECT
+		a.id,a.num,a.nickname,a.modelId,a.engineNum,a.VIN,a.vehicleImg,a.brandModel,
+		a.vehicleLicenseImg,a.operationLicenseImg,a.operationLicenseNum,a.operationYearCheck,
+		a.rankCheckDate,a.secondMaintainDate,a.TCICompany,a.TCINum,a.TCITel,
+		a.VCICompany,a.VCINum,a.VCIType,a.VCITel,a.operationType,a.cooperationId,
+		a.reviewStatus,a.reviewNote,a.createTime,a.available,a.cooperationAvailable,
+		a.vehicleLicenseImg2,a.isdel,a.receiveAutoSend,a.simNo,a.defaultDriverName,
+		a.lastEditor,a.updateTime,a.teamId,a.VMColor,a.specialId,a.subordinateBusinessId,
+		a.fuelTank,a.VMAvalidDate,a.operationLicenseDate,
+		date_format(a.reviewTime,'%Y-%c-%d %h:%i:%s') as reviewTime,
+		date_format(a.VCIValidDate,'%Y-%c-%d %h:%i:%s') as VCIValidDate,
+		date_format(a.TCIValidDate,'%Y-%c-%d %h:%i:%s') as
+		TCIValidDate,
+		e.desc,b.cName,d.tName,a.isRead FROM logistics_vehicle.vehicle_info a
+		LEFT JOIN logistics_vehicle.model_info e
+		ON
+		a.modelId = e.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info b ON a.cooperationId=b.id
+		LEFT
+		JOIN
+		logistics_vehicle.vehicle_team d ON a.teamId=d.id
+		WHERE
+		a.id =
+		#{id}
+	</select>
+
+	<!-- 返回车辆类型 -->
+	<select id="sVehicleInfoMold" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT a.id,a.desc FROM
+		logistics_vehicle.model_info a
+	</select>
+	<!-- 返回特别运输类型 -->
+	<select id="getSpecialtype" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT id,sName FROM
+		logistics_vehicle.specialtype
+	</select>
+
+	<!-- 返回全部的企业编号 -->
+	<select id="sAllVehicleInfoEnterpriseNumber" resultType="java.util.Map">
+		select
+		a.id,a.cName FROM
+		logistics_cooperation.cooperation_info a
+	</select>
+
+	<!-- 返回企业编号 -->
+	<select id="sVehicleInfoEnterpriseNumber" parameterType="java.lang.Integer"
+		resultType="java.util.Map">
+		select
+		a.id,a.cName
+		FROM
+		logistics_cooperation.cooperation_info a
+		where a.id
+		in (SELECT
+		ac.cooperationId from admin_cooperation ac where
+		ac.adminId=#{adminId})
+	</select>
+
+	<!-- 冻结+解冻司机 uVehicleInfoFreezing -->
+	<update id="uVehicleInfoFreezing" parameterType="java.lang.String">
+		UPDATE
+		logistics_vehicle.vehicle_info t SET t.available = #{type}
+		WHERE t.id =
+		#{employeeId}
+	</update>
+
+	<!-- 插入一个车辆信息 iVehicleInfo 车辆编号 车牌号 车架号 发动机号 车辆类型 车载设备号 车辆颜色 所属业务 所属业务编号 
+		默认驾驶员 车辆管理费有效期 行驶证年检 运营证有效期 运营证年检 车辆二级维护月份 交强险承保公司 车辆强制保险单号 交强险有效期 承保公司服务电话 
+		商业险承保公司名称 商业险保险单号 商业险联系电话 运营类型 审核时间 审核状态 审核信息备注 车辆状态 接受自动派单 企业可用状态 车辆照片 行驶证照片 
+		运营证照片 -->
+	<insert id="iVehicleInfo" parameterType="cn.guangtong.entity.vehicle.VehicleInfo"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into logistics_vehicle.vehicle_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="nickname != null">
+				nickname,
+			</if>
+			<if test="id != null">
+				id,
+			</if>
+			<if test="num != null">
+				num,
+			</if>
+			<if test="modelId != null">
+				modelId,
+			</if>
+			<if test="engineNum != null">
+				engineNum,
+			</if>
+			<if test="VIN != null">
+				VIN,
+			</if>
+			<if test="vehicleImg != null">
+				vehicleImg,
+			</if>
+			<if test="VMAvalidDate != null">
+				VMAvalidDate,
+			</if>
+			<if test="brandModel != null">
+				brandModel,
+			</if>
+			<if test="vehicleLicenseImg != null">
+				vehicleLicenseImg,
+			</if>
+			<if test="operationLicenseImg != null">
+				operationLicenseImg,
+			</if>
+			<if test="operationLicenseNum != null">
+				operationLicenseNum,
+			</if>
+			<if test="operationLicenseDate != null">
+				operationLicenseDate,
+			</if>
+			<if test="operationYearCheck != null">
+				operationYearCheck,
+			</if>
+			<if test="rankCheckDate != null">
+				rankCheckDate,
+			</if>
+			<if test="secondMaintainDate != null">
+				secondMaintainDate,
+			</if>
+			<if test="TCICompany != null">
+				TCICompany,
+			</if>
+			<if test="TCINum != null">
+				TCINum,
+			</if>
+			<if test="TCIValidDate != null">
+				TCIValidDate,
+			</if>
+			<if test="TCITel != null">
+				TCITel,
+			</if>
+			<if test="VCICompany != null">
+				VCICompany,
+			</if>
+			<if test="VCIValidDate != null">
+				VCIValidDate,
+			</if>
+			<if test="VCINum != null">
+				VCINum,
+			</if>
+			<if test="VCIType != null">
+				VCIType,
+			</if>
+			<if test="VCITel != null">
+				VCITel,
+			</if>
+			<if test="operationType != null">
+				operationType,
+			</if>
+			<if test="cooperationId != null">
+				cooperationId,
+			</if>
+			<if test="reviewTime != null">
+				reviewTime,
+			</if>
+			<if test="reviewStatus != null">
+				reviewStatus,
+			</if>
+			<if test="reviewNote != null">
+				reviewNote,
+			</if>
+			<if test="createTime != null">
+				createTime,
+			</if>
+			<if test="available != null">
+				available,
+			</if>
+			<if test="cooperationAvailable != null">
+				cooperationAvailable,
+			</if>
+			<if test="vehicleLicenseImg2 != null">
+				vehicleLicenseImg2,
+			</if>
+			<if test="isdel != null">
+				isdel,
+			</if>
+			<if test="receiveAutoSend != null">
+				receiveAutoSend,
+			</if>
+			<if test="simNo != null">
+				simNo,
+			</if>
+			<if test="defaultDriverName != null">
+				defaultDriverName,
+			</if>
+			<if test="lastEditor != null">
+				lastEditor,
+			</if>
+			<if test="updateTime != null">
+				updateTime,
+			</if>
+			<if test="teamId != null">
+				teamId,
+			</if>
+			<if test="VMColor != null">
+				VMColor,
+			</if>
+			<if test="specialId != null">
+				specialId,
+			</if>
+			<if test="subordinateBusinessId != null">
+				subordinateBusinessId,
+			</if>
+			<if test="fuelTank != null">
+				fuelTank,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="nickname != null">
+				#{nickname,jdbcType=CHAR},
+			</if>
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="num != null">
+				#{num,jdbcType=CHAR},
+			</if>
+			<if test="modelId != null">
+				#{modelId,jdbcType=CHAR},
+			</if>
+			<if test="engineNum != null">
+				#{engineNum,jdbcType=CHAR},
+			</if>
+			<if test="VIN != null">
+				#{VIN,jdbcType=CHAR},
+			</if>
+			<if test="vehicleImg != null">
+				#{vehicleImg,jdbcType=VARCHAR},
+			</if>
+			<if test="VMAvalidDate != null">
+				#{VMAvalidDate,jdbcType=DATE},
+			</if>
+			<if test="brandModel != null">
+				#{brandModel,jdbcType=CHAR},
+			</if>
+			<if test="vehicleLicenseImg != null">
+				#{vehicleLicenseImg,jdbcType=VARCHAR},
+			</if>
+			<if test="operationLicenseImg != null">
+				#{operationLicenseImg,jdbcType=VARCHAR},
+			</if>
+			<if test="operationLicenseNum != null">
+				#{operationLicenseNum,jdbcType=CHAR},
+			</if>
+			<if test="operationLicenseDate != null">
+				#{operationLicenseDate,jdbcType=DATE},
+			</if>
+			<if test="operationYearCheck != null">
+				#{operationYearCheck,jdbcType=DATE},
+			</if>
+			<if test="rankCheckDate != null">
+				#{rankCheckDate,jdbcType=DATE},
+			</if>
+			<if test="secondMaintainDate != null">
+				#{secondMaintainDate,jdbcType=INTEGER},
+			</if>
+			<if test="TCICompany != null">
+				#{TCICompany,jdbcType=VARCHAR},
+			</if>
+			<if test="TCINum != null">
+				#{TCINum,jdbcType=CHAR},
+			</if>
+			<if test="TCIValidDate != null">
+				#{TCIValidDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="TCITel != null">
+				#{TCITel,jdbcType=CHAR},
+			</if>
+			<if test="VCICompany != null">
+				#{VCICompany,jdbcType=VARCHAR},
+			</if>
+			<if test="VCIValidDate != null">
+				#{VCIValidDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="VCINum != null">
+				#{VCINum,jdbcType=CHAR},
+			</if>
+			<if test="VCIType != null">
+				#{VCIType,jdbcType=TINYINT},
+			</if>
+			<if test="VCITel != null">
+				#{VCITel,jdbcType=VARCHAR},
+			</if>
+			<if test="operationType != null">
+				#{operationType,jdbcType=BIT},
+			</if>
+			<if test="cooperationId != null">
+				#{cooperationId,jdbcType=CHAR},
+			</if>
+			<if test="reviewTime != null">
+				#{reviewTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="reviewStatus != null">
+				#{reviewStatus,jdbcType=TINYINT},
+			</if>
+			<if test="reviewNote != null">
+				#{reviewNote,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=DATE},
+			</if>
+			<if test="available != null">
+				#{available,jdbcType=BIT},
+			</if>
+			<if test="cooperationAvailable != null">
+				#{cooperationAvailable,jdbcType=BIT},
+			</if>
+			<if test="vehicleLicenseImg2 != null">
+				#{vehicleLicenseImg2,jdbcType=VARCHAR},
+			</if>
+			<if test="isdel != null">
+				#{isdel,jdbcType=BIT},
+			</if>
+			<if test="receiveAutoSend != null">
+				#{receiveAutoSend,jdbcType=BIT},
+			</if>
+			<if test="simNo != null">
+				#{simNo,jdbcType=CHAR},
+			</if>
+			<if test="defaultDriverName != null">
+				#{defaultDriverName,jdbcType=CHAR},
+			</if>
+			<if test="lastEditor != null">
+				#{lastEditor,jdbcType=CHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="teamId != null">
+				#{teamId,jdbcType=VARCHAR},
+			</if>
+			<if test="VMColor != null">
+				#{VMColor,jdbcType=VARCHAR},
+			</if>
+			<if test="specialId != null">
+				#{specialId,jdbcType=VARCHAR},
+			</if>
+			<if test="subordinateBusinessId != null">
+				#{subordinateBusinessId,jdbcType=VARCHAR},
+			</if>
+			<if test="fuelTank != null">
+				#{fuelTank,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 根据id修改一个车辆信息 uVehicleInfo -->
+	<update id="uVehicleInfo" parameterType="cn.guangtong.entity.vehicle.VehicleInfo">
+		update logistics_vehicle.vehicle_info
+		<set>
+			<if test="nickname != null &amp;&amp; !num.equals('')">
+				nickname = #{nickname,jdbcType=CHAR},
+			</if>
+			<if test="num != null &amp;&amp; !num.equals('')">
+				num = #{num,jdbcType=CHAR},
+			</if>
+			<if test="modelId != null&amp;&amp; !modelId.equals('')">
+				modelId = #{modelId,jdbcType=CHAR},
+			</if>
+			<if test="engineNum != null&amp;&amp; !engineNum.equals('')">
+				engineNum = #{engineNum,jdbcType=CHAR},
+			</if>
+			<if test="VIN != null&amp;&amp; !VIN.equals('')">
+				VIN = #{VIN,jdbcType=CHAR},
+			</if>
+			<if test="vehicleImg != null&amp;&amp; !vehicleImg.equals('')">
+				vehicleImg = #{vehicleImg,jdbcType=VARCHAR},
+			</if>
+			<if test="VMAvalidDate != null&amp;&amp; !VMAvalidDate.equals('')">
+				VMAvalidDate = #{VMAvalidDate,jdbcType=DATE},
+			</if>
+			<if test="brandModel != null&amp;&amp; !brandModel.equals('')">
+				brandModel = #{brandModel,jdbcType=CHAR},
+			</if>
+			<if
+				test="vehicleLicenseImg != null&amp;&amp; !vehicleLicenseImg.equals('')">
+				vehicleLicenseImg =
+				#{vehicleLicenseImg,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="operationLicenseImg != null&amp;&amp; !operationLicenseImg.equals('')">
+				operationLicenseImg =
+				#{operationLicenseImg,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="operationLicenseNum != null&amp;&amp; !operationLicenseNum.equals('')">
+				operationLicenseNum =
+				#{operationLicenseNum,jdbcType=CHAR},
+			</if>
+			<if
+				test="operationLicenseDate != null&amp;&amp; !operationLicenseDate.equals('')">
+				operationLicenseDate =
+				#{operationLicenseDate,jdbcType=DATE},
+			</if>
+			<if
+				test="operationYearCheck != null&amp;&amp; !operationYearCheck.equals('')">
+				operationYearCheck = #{operationYearCheck,jdbcType=DATE},
+			</if>
+			<if test="rankCheckDate != null&amp;&amp; !rankCheckDate.equals('')">
+				rankCheckDate = #{rankCheckDate,jdbcType=DATE},
+			</if>
+			<if
+				test="secondMaintainDate != null&amp;&amp; !secondMaintainDate.equals('')">
+				secondMaintainDate =
+				#{secondMaintainDate,jdbcType=INTEGER},
+			</if>
+			<if test="TCICompany != null&amp;&amp; !TCICompany.equals('')">
+				TCICompany = #{TCICompany,jdbcType=VARCHAR},
+			</if>
+			<if test="TCINum != null&amp;&amp; !TCINum.equals('')">
+				TCINum = #{TCINum,jdbcType=CHAR},
+			</if>
+			<if test="TCIValidDate != null&amp;&amp; !TCIValidDate.equals('')">
+				TCIValidDate = #{TCIValidDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="TCITel != null&amp;&amp; !TCITel.equals('')">
+				TCITel = #{TCITel,jdbcType=CHAR},
+			</if>
+			<if test="VCICompany != null&amp;&amp; !VCICompany.equals('')">
+				VCICompany = #{VCICompany,jdbcType=VARCHAR},
+			</if>
+			<if test="VCIValidDate != null&amp;&amp; !VCIValidDate.equals('')">
+				VCIValidDate = #{VCIValidDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="VCINum != null&amp;&amp; !VCINum.equals('')">
+				VCINum = #{VCINum,jdbcType=CHAR},
+			</if>
+			<if test="VCIType != null&amp;&amp; !VCIType.equals('')">
+				VCIType = #{VCIType,jdbcType=TINYINT},
+			</if>
+			<if test="VCITel != null&amp;&amp; !VCITel.equals('')">
+				VCITel = #{VCITel,jdbcType=VARCHAR},
+			</if>
+			<if test="operationType != null&amp;&amp; !operationType.equals('')">
+				operationType = #{operationType,jdbcType=BIT},
+			</if>
+			<if test="cooperationId != null&amp;&amp; !cooperationId.equals('')">
+				cooperationId = #{cooperationId,jdbcType=CHAR},
+			</if>
+			<if test="reviewTime != null&amp;&amp; !reviewTime.equals('')">
+				reviewTime = #{reviewTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="reviewStatus != null&amp;&amp; !reviewStatus.equals('')">
+				reviewStatus = #{reviewStatus,jdbcType=TINYINT},
+			</if>
+			<if test="reviewNote != null&amp;&amp; !reviewNote.equals('')">
+				reviewNote = #{reviewNote,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null&amp;&amp; !createTime.equals('')">
+				createTime = #{createTime,jdbcType=DATE},
+			</if>
+			<if test="available != null&amp;&amp; !available.equals('')">
+				available = #{available,jdbcType=BIT},
+			</if>
+			<if
+				test="cooperationAvailable != null&amp;&amp; !cooperationAvailable.equals('')">
+				cooperationAvailable =
+				#{cooperationAvailable,jdbcType=BIT},
+			</if>
+			<if
+				test="vehicleLicenseImg2 != null&amp;&amp; !vehicleLicenseImg2.equals('')">
+				vehicleLicenseImg2 =
+				#{vehicleLicenseImg2,jdbcType=VARCHAR},
+			</if>
+			<if test="isdel != null&amp;&amp; !isdel.equals('')">
+				isdel = #{isdel,jdbcType=BIT},
+			</if>
+			<if test="receiveAutoSend != null&amp;&amp; !receiveAutoSend.equals('')">
+				receiveAutoSend = #{receiveAutoSend,jdbcType=BIT},
+			</if>
+			<if test="simNo != null&amp;&amp; !simNo.equals('')">
+				simNo = #{simNo,jdbcType=CHAR},
+			</if>
+			<if
+				test="defaultDriverName != null&amp;&amp; !defaultDriverName.equals('')">
+				defaultDriverName = #{defaultDriverName,jdbcType=CHAR},
+			</if>
+			<if test="lastEditor != null&amp;&amp; !lastEditor.equals('')">
+				lastEditor = #{lastEditor,jdbcType=CHAR},
+			</if>
+			<if test="updateTime != null&amp;&amp; !updateTime.equals('')">
+				updateTime = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="teamId != null&amp;&amp; !teamId.equals('')">
+				teamId = #{teamId,jdbcType=VARCHAR},
+			</if>
+			<if test="VMColor != null&amp;&amp; !VMColor.equals('')">
+				VMColor = #{VMColor,jdbcType=VARCHAR},
+			</if>
+			<if test="specialId != null&amp;&amp; !specialId.equals('')">
+				specialId = #{specialId,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="subordinateBusinessId != null&amp;&amp; !subordinateBusinessId.equals('')">
+				subordinateBusinessId =
+				#{subordinateBusinessId,jdbcType=VARCHAR},
+			</if>
+			<if test="fuelTank != null&amp;&amp; !fuelTank.equals('')">
+				fuelTank = #{fuelTank,jdbcType=VARCHAR},
+			</if>
+			<if test="isRead != null&amp;&amp; !isRead.equals('')">
+				isRead = #{isRead},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<!-- 订单车辆运营报表 -->
+	<select id="getTotalOfVehicle" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="cn.guangtong.entity.vehicle.TotalOfVehicle">
+		select dor.orderNum as orderId,
+		vio.num as vNum,dio.dName as dName,
+		cio.cName as cName,cuio.cName as cuName,
+		dmy.totalMoney as
+		totalMoney,dmy.driverMoney as driverMoney,
+		dck.money as
+		money,dor.orderStatus as orderStatus,dmy.assessTime as endTime,
+		vtm.tName as tName
+		from logistics_order.done_order dor
+		right join
+		logistics_vehicle.vehicle_info vio on dor.vehicleId =
+		vio.id
+		left join
+		logistics_driver.driver_info dio on
+		dor.driverId = dio.id
+		left join
+		logistics_cooperation.cooperation_info
+		cio on
+		dio.cooperationId =
+		cio.id
+		left join
+		logistics_customer.customer_info cuio on dor.customerId
+		=
+		cuio.id
+		left join
+		logistics_order.done_money dmy on dor.orderNum =
+		dmy.orderNum
+		left join logistics_order.driver_chargeback dck on
+		dor.orderNum
+		= dck.money
+		left join
+		logistics_vehicle.vehicle_team vtm on
+		vio.teamId = vtm.id
+		where 1=1
+		<if
+			test='times != null &amp;&amp; !times.equals("") &amp;&amp; times != null &amp;&amp; !timee.equals("")'>
+			and dmy.assessTime between #{times} and #{timee}
+		</if>
+		limit #{begin},#{pageCount}
+	</select>
+
+	<!-- 订单车辆运营报表记录数 -->
+	<select id="getCountOfTotal" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="cn.guangtong.entity.vehicle.TotalOfVehicle">
+		select count(*) as orderId
+		from logistics_order.done_order dor
+		left join
+		logistics_vehicle.vehicle_info vio on dor.vehicleId
+		=
+		vio.id
+		left join
+		logistics_driver.driver_info dio on
+		dor.driverId = dio.id
+		left join
+		logistics_cooperation.cooperation_info
+		cio
+		on dio.cooperationId =
+		cio.id
+		left join
+		logistics_customer.customer_info cuio on dor.customerId
+		=
+		cuio.id
+		left join
+		logistics_order.done_money dmy on dor.orderNum =
+		dmy.orderNum
+		left join logistics_order.driver_chargeback dck on
+		dor.orderNum
+		= dck.money
+		left join
+		logistics_vehicle.vehicle_team vtm on
+		vio.teamId = vtm.id
+		where 1=1
+		<if
+			test='times != null &amp;&amp; !times.equals("") &amp;&amp; times != null &amp;&amp; !timee.equals("")'>
+			and dmy.assessTime between #{times} and #{timee}
+		</if>
+	</select>
+
+
+	<!-- 统计每个月的平均值 -->
+	<select id="avgOfMonth" resultType="Map"
+		parameterType="cn.guangtong.entity.vehicle.VehicleInfo">
+		select dmy.assessTime as month,
+		sum(dmy.totalMoney) / (select count(*)
+		from logistics_vehicle.vehicle_team) as avgMoney
+		from
+		logistics_order.done_order dor
+		left join logistics_vehicle.vehicle_info
+		vio on dor.vehicleId = vio.id
+		left join
+		logistics_order.done_money dmy
+		on dor.orderNum = dmy.orderNum
+		where 1=1
+		<if
+			test='times != null &amp;&amp; !times.equals("") &amp;&amp; timee != null &amp;&amp; !timee.equals("")'>
+			and dmy.assessTime between #{times} and #{timee}
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			group by day(dmy.assessTime)
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			group by Month(dmy.assessTime)
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			group by year(dmy.assessTime)
+		</if>
+	</select>
+
+	<!-- 统计各个车队的总金额 -->
+	<select id="totalMoney" resultType="Map" parameterType="java.lang.String">
+		select vtm.tName as name,sum(dmy.totalMoney) as y
+		from
+		logistics_order.done_order dor
+		right join
+		logistics_vehicle.vehicle_info vio on dor.vehicleId = vio.id
+		left join
+		logistics_vehicle.vehicle_team vtm on vio.teamId =
+		vtm.id
+		left join
+		logistics_order.done_money dmy on dor.orderNum = dmy.orderNum
+		where 1=1
+		<if
+			test='times != null &amp;&amp; !times.equals("") &amp;&amp; times != null &amp;&amp; !timee.equals("")'>
+			and dmy.assessTime between #{times} and #{timee}
+		</if>
+		group by vtm.tName
+	</select>
+
+	<!-- 统计每个车队各个月的金额 -->
+	<select id="detailOfMonth" resultType="Map" parameterType="java.lang.String">
+		select vtm.tName,
+		dmy.assessTime as month,
+		sum(dmy.totalMoney) as money
+		from logistics_order.done_order dor
+		left join
+		logistics_vehicle.vehicle_info vio on dor.vehicleId = vio.id
+		left join
+		logistics_vehicle.vehicle_team vtm on vio.teamId =
+		vtm.id
+		left join
+		logistics_order.done_money dmy on dor.orderNum = dmy.orderNum
+		where 1=1
+		<if
+			test='times != null &amp;&amp; !times.equals("") &amp;&amp; timee != null &amp;&amp; !timee.equals("")'>
+			and dmy.assessTime between #{times} and #{timee}
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			group by day(dmy.assessTime),vtm.tName
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			group by Month(dmy.assessTime),vtm.tName
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			group by year(dmy.assessTime),vtm.tName
+		</if>
+	</select>
+	<!-- 根据企业id，查询所有在线车辆 -->
+	<select id="findVehicleByCooperationId" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT
+		a.id,a.num,a.simNo,a.id,g.altitude,g.latitude,g.longitude,g.direction,s.sName
+		FROM
+		logistics_beidou.gpsrealdata g
+		LEFT JOIN
+		logistics_vehicle.vehicle_info a on a.simNo=g.simNo
+		LEFT JOIN
+		logistics_vehicle.specialtype s on s.id=a.specialId
+		WHERE
+		a.cooperationId=#{cooperationId}
+	</select>
+	<!-- 根据企业id，查询所有车辆 -->
+	<select id="getVehicleByCooperationId" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT
+		a.simNo,a.num,a.id,b.cName
+		FROM
+		logistics_vehicle.vehicle_info a
+		LEFT JOIN
+		logistics_cooperation.cooperation_info b ON a.cooperationId=b.id
+		WHERE
+		a.cooperationId=#{cooperationId}
+	</select>
+
+	<!-- 根据企业id车辆运营类型，查询所有在线车辆 -->
+	<select id="findVehicleByAdminAndSpecialType" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT
+		a.id,a.num,a.simNo,a.id,g.altitude,g.latitude,g.longitude,g.direction,s.sName
+		FROM
+		logistics_beidou.gpsrealdata g
+		LEFT JOIN
+		logistics_vehicle.vehicle_info a on a.simNo=g.simNo
+		LEFT JOIN
+		logistics_vehicle.specialtype s on s.id=a.specialId
+		WHERE
+		a.cooperationId=#{0}
+		AND
+		a.specialId=#{1}
+	</select>
+
+	<!-- 根据企业id查询全部车辆 -->
+	<select id="queryVehicleByCoopId" resultType="java.lang.String">
+		select
+		lvvi.num
+		from
+		logistics_vehicle.vehicle_info lvvi
+		left join
+		logistics_cooperation.cooperation_info lcci ON
+		lvvi.cooperationId=lcci.id
+		where 1 = 1
+		<if test="coopArr.size() > 0 ">
+			and lvvi.cooperationId in
+			<foreach collection="coopArr" item="coopArr" index="index"
+				open="(" close=")" separator=",">
+				#{coopArr}
+			</foreach>
+		</if>
+	</select>
+
+	<!-- 根据车辆id查询所属企业Id -->
+	<select id="getCooperationidByVehicelId" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		SELECT cooperationId FROM
+		logistics_vehicle.vehicle_info
+		WHERE id= #{vehicleId}
+	</select>
+
+	<!-- 更新车辆外派状态 -->
+	<update id="upisforeignfaction" parameterType="Map">
+		UPDATE
+		logistics_vehicle.vehicle_info t SET t.isforeignfaction =
+		#{state}
+		WHERE t.id =
+		#{vehicleId}
+	</update>
+
+	<!-- 所有可见车辆(普通用户) -->
+	<select id="getVehicleByAdmin" parameterType="cn.guangtong.entity.cms.Admin"
+		resultType="cn.guangtong.model.VehicleMenu">
+		SELECT
+		b.VMColor,b.id,b.num,b.nickname,b.simNo,b.isforeignfaction,d.cName,c.tName,c.id
+		AS teamId,d.id AS cooperationId
+		FROM
+		logistics_cms.admin_vehicle a
+		LEFT
+		JOIN
+		logistics_vehicle.vehicle_info b ON a.vehicleid=b.id
+		LEFT JOIN
+		logistics_vehicle.vehicle_team c ON b.teamId=c.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info d ON c.cooperationId=d.id
+		WHERE
+		a.adminid=#{id}
+	</select>
+
+	<!-- 所有可见车辆(超级管理员) -->
+	<select id="getVehicleSByAdmin" resultType="cn.guangtong.model.VehicleMenu">
+		SELECT
+		a.VMColor,a.id,a.num,a.simNo,a.nickname,a.isforeignfaction,c.cName,b.tName,b.id
+		AS teamId,c.id AS cooperationId
+		FROM
+		logistics_vehicle.vehicle_info a
+		LEFT JOIN logistics_vehicle.vehicle_team b ON a.teamId=b.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info c ON b.cooperationId=c.id
+		UNION All
+		SELECT
+	    null VMColor,ggd.id,ggd.plateNo as num,ggd.simNo,null nickname,null isforeignfaction,'平台互通车辆' cName,'TEAM' tName,null
+		 teamId,null cooperationId 
+		FROM gpsdb.gpsrealdata ggd   
+	</select>
+
+
+	<!-- 所有可见车辆最新状态(普通用户) -->
+	<select id="getVehicleRealDataByAdmin" parameterType="cn.guangtong.entity.cms.Admin"
+		resultType="cn.guangtong.model.VehicleRealData">
+		SELECT
+		e.altitude,e.latitude,e.longitude,e.direction,b.id,b.simNo,b.num,b.nickname,c.tName,d.cName,f.sName,a.isRead
+		FROM
+		logistics_cms.admin_vehicle a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b ON a.vehicleid=b.id
+		LEFT JOIN
+		logistics_vehicle.vehicle_team c ON b.teamId=c.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info d ON c.cooperationId=d.id
+		LEFT
+		JOIN logistics_beidou.gpsrealdata e ON b.simNo=e.simNo
+		LEFT JOIN
+		logistics_vehicle.specialtype f ON
+		b.subordinateBusinessId=f.id
+		WHERE
+		a.adminid=#{id}
+	</select>
+
+	<!-- 所有可见车辆最新状态(超级管理员) -->
+	<select id="getVehicleRealDataSByAdmin" resultType="cn.guangtong.model.VehicleRealData">
+		SELECT
+		e.alarmState,e.velocity,e.online,e.altitude,e.latitude,e.longitude,e.direction,b.simNo,b.num,b.id,b.nickname,c.tName,d.cName,f.sName,b.isRead
+		FROM
+		logistics_vehicle.vehicle_info b
+		LEFT JOIN
+		logistics_vehicle.vehicle_team c ON b.teamId=c.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info d ON c.cooperationId=d.id
+		LEFT
+		JOIN logistics_beidou.gpsrealdata e ON b.simNo=e.simNo
+		LEFT JOIN
+		logistics_vehicle.specialtype f ON b.subordinateBusinessId=f.id
+
+		UNION All
+		SELECT
+		ggd.alarmState,ggd.velocity,ggd.online,ggd.altitude,ggd.latitude,ggd.longitude,ggd.direction,gvi.simNo,ggd.plateNo
+		num,null id,null nickname,'TEAM' tName,'平台互通车辆' cName,'其它' sName,ggd.isRead
+		FROM gpsdb.gpsrealdata ggd LEFT JOIN gpsdb.vehicleregisterinfo gvi ON ggd.plateNo=gvi.plateNo 
+
+	</select>
+
+	<!-- 特别车辆最新状态(普通用户) -->
+	<select id="getVehicleRealDataByAdminAndType" parameterType="string"
+		resultType="cn.guangtong.model.VehicleRealData">
+		SELECT
+		e.alarmState,e.velocity,e.online,e.altitude,e.latitude,e.longitude,e.direction,b.id,b.simNo,b.num,b.nickname,c.tName,d.cName,f.sName,a.isRead
+		FROM
+		logistics_cms.admin_vehicle a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b ON a.vehicleid=b.id
+		LEFT JOIN
+		logistics_vehicle.vehicle_team c ON b.teamId=c.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info d ON c.cooperationId=d.id
+		LEFT
+		JOIN logistics_beidou.gpsrealdata e ON b.simNo=e.simNo
+		LEFT JOIN
+		logistics_vehicle.specialtype f ON
+		b.subordinateBusinessId=f.id
+		WHERE
+		f.id=#{0}
+		AND a.adminid=#{1}
+	</select>
+
+	<!-- 特别运输车辆最新状态(超级管理员) -->
+	<select id="getVehicleRealDataSByAdminAndType" resultType="cn.guangtong.model.VehicleRealData">
+		SELECT
+		e.altitude,e.latitude,e.longitude,e.direction,b.id,b.simNo,b.num,b.nickname,c.tName,d.cName,f.sName,1 isRead
+		FROM
+		logistics_vehicle.vehicle_info b
+		LEFT JOIN
+		logistics_vehicle.vehicle_team c ON b.teamId=c.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info d ON c.cooperationId=d.id
+		LEFT
+		JOIN logistics_beidou.gpsrealdata e ON b.simNo=e.simNo
+		LEFT JOIN
+		logistics_vehicle.specialtype f ON b.subordinateBusinessId=f.id
+		WHERE
+		f.id=1
+		UNION All
+		SELECT
+		ggd.altitude,ggd.latitude,ggd.longitude,ggd.direction,null id,ggd.simNo,ggd.plateNo,null nickname,'TEAM' tName,'平台互通车辆' cName,'其它' sName,1 isRead
+		FROM gpsdb.gpsrealdata ggd LEFT JOIN gpsdb.vehicleregisterinfo gvi ON ggd.plateNo=gvi.plateNo 
+	</select>
+
+
+	<!-- 删除账号下的所有isread -->
+	<update id="upNoIsRead">
+		update logistics_vehicle.vehicle_info
+		set isRead = 0
+	</update>
+
+	<!--将账号指定的某辆车isread设置为1 -->
+	<update id="upIsRead" parameterType="string">
+		update
+		logistics_vehicle.vehicle_info
+		set isRead = 1
+		WHERE num=#{vehicle}
+	</update>
+
+
+	<!-- 车辆外派所有可见车辆(普通用户，排除选中的企业) -->
+	<select id="getForeignfactionVehicle" parameterType="string"
+		resultType="cn.guangtong.model.VehicleMenu">
+		SELECT
+		b.id,b.num,b.nickname,b.simNo,b.isforeignfaction,d.cName,c.tName,c.id
+		AS teamId,d.id AS cooperationId
+		FROM
+		logistics_cms.admin_vehicle a
+		LEFT
+		JOIN
+		logistics_vehicle.vehicle_info b ON a.vehicleid=b.id
+		LEFT JOIN
+		logistics_vehicle.vehicle_team c ON b.teamId=c.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info d ON c.cooperationId=d.id
+		WHERE
+		a.adminid=#{0}
+		AND d.id!=#{1}
+	</select>
+
+	<!--车辆外派所有可见车辆(超级管理员,排除选中企业) -->
+	<select id="getForeignfactionVehicleS" parameterType="string"
+		resultType="cn.guangtong.model.VehicleMenu">
+		SELECT
+		a.id,a.num,a.simNo,a.nickname,a.isforeignfaction,c.cName,b.tName,b.id
+		AS teamId,c.id AS cooperationId
+		FROM
+		logistics_vehicle.vehicle_info a
+		LEFT JOIN logistics_vehicle.vehicle_team b ON a.teamId=b.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info c ON b.cooperationId=c.id
+		WHERE
+		c.id!=#{0}
+	</select>
+	<select id="getVehiclesPie" resultType="map">
+SELECT e.`desc` as 'desc',e.capacity,COUNT(*) as count
+		FROM
+		logistics_vehicle.vehicle_info b
+		LEFT JOIN logistics_vehicle.model_info e ON b.modelId=e.id
+		WHERE 1=1
+GROUP BY `desc`
+	</select>
+</mapper>

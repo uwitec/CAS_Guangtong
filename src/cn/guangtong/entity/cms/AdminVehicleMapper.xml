@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.cms.AdminVehicleDao">
+
+	<insert id="insert" parameterType="cn.guangtong.entity.cms.AdminVehicle">
+		insert into logistics_cms.admin_vehicle
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="adminid != null">
+				adminid,
+			</if>
+			<if test="vehicleid != null">
+				vehicleid,
+			</if>
+			<if test="isRead != null">
+				isRead,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="adminid != null">
+				#{adminid,jdbcType=INTEGER},
+			</if>
+			<if test="vehicleid != null">
+				#{vehicleid,jdbcType=VARCHAR},
+			</if>
+			<if test="isRead != null">
+				#{isRead},
+			</if>
+		</trim>
+	</insert>
+
+
+	<delete id="deleteByAdminId" parameterType="java.lang.Integer">
+		delete from logistics_cms.admin_vehicle
+		where adminid = #{adminId}
+	</delete>
+
+
+	<!-- 根据账户id查询车辆列表 -->
+	<select id="getVehicleMenuByAdminId" parameterType="java.lang.Integer" resultType="cn.guangtong.model.VehicleMenu">
+		SELECT
+		b.id,b.num,b.simNo,c.tName,d.cName,a.isRead
+		FROM
+		logistics_cms.admin_vehicle a
+		LEFT JOIN logistics_vehicle.vehicle_info b ON
+		a.vehicleid=b.id
+		LEFT JOIN logistics_vehicle.vehicle_team c ON b.teamId=c.id
+		LEFT JOIN logistics_cooperation.cooperation_info
+		d ON c.cooperationId=d.id
+		WHERE a.adminid=#{adminId}
+	</select>
+
+
+	<!-- 根据账户id查询车辆列表(权限控制-全部的车辆) -->
+	<select id="getVehicleMenuS" parameterType="string" resultType="cn.guangtong.model.VehicleMenu">
+		SELECT
+		a.id,b.nickname,b.num,b.simNo,c.tName,d.cName,temp.adminId FROM(
+		SELECT b.id FROM logistics_cms.admin_cooperation a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b ON a.cooperationId=b.cooperationId
+		WHERE a.adminId=#{0}
+		UNION
+		SELECT d.vehicleId FROM
+		logistics_cms.admin_cooperation c
+		RIGHT JOIN logistics_vehicle.foreignfaction d ON c.cooperationId=d.receivedCooperationId
+		WHERE c.adminId=#{0}
+		) AS a LEFT JOIN logistics_vehicle.vehicle_info b ON a.id=b.id
+		LEFT JOIN
+		logistics_vehicle.vehicle_team c
+		ON b.teamId=c.id
+		LEFT JOIN logistics_cooperation.cooperation_info d ON c.cooperationId=d.id
+		LEFT JOIN (SELECT
+		vehicleid,adminId FROM logistics_cms.admin_vehicle WHERE adminid=#{0}) AS temp ON
+		a.id=temp.vehicleid
+		WHERE CONCAT(b.num,d.cName,c.tName) LIKE "%"#{1}"%"
+	</select>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="cn.guangtong.entity.cms.AdminVehicle">
+		update logistics_cms.admin_vehicle
+		<set>
+			<if test="adminid != null">
+				adminid = #{adminid,jdbcType=INTEGER},
+			</if>
+			<if test="vehicleid != null">
+				vehicleid = #{vehicleid,jdbcType=VARCHAR},
+			</if>
+			<if test="isRead != null">
+				isRead = #{isRead,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getByadminIdAndVehicelId" parameterType="string" resultType="cn.guangtong.entity.cms.AdminVehicle">
+		SELECT *
+		FROM logistics_cms.admin_vehicle
+		WHERE adminid=#{0} AND vehicleid=#{1}
+	</select>
+
+
+	<select id="getAdminIdByVehicleId" parameterType="string" resultType="string">
+		SELECT adminid FROM
+		logistics_cms.admin_vehicle
+		WHERE vehicleId=#{vehicleId}
+	</select>
+
+	<delete id="deleteByAdminIdAndvehicleId" parameterType="string">
+		delete from logistics_cms.admin_vehicle
+		where adminid = #{0}
+		and vehicleId=#{1}
+	</delete>
+
+
+	<!-- 删除账号下的所有isread -->
+	<update id="upNoIsRead" parameterType="string">
+		update logistics_cms.admin_vehicle
+		set isRead = 0
+		WHERE adminid=#{adminId}
+	</update>
+
+	<!--将账号指定的某辆车isread设置为1 -->
+	<update id="upIsRead" parameterType="string">
+		update logistics_cms.admin_vehicle
+		set isRead = 1
+		WHERE adminid = #{0}
+		and
+		vehicleId=#{1}
+	</update>
+
+</mapper>

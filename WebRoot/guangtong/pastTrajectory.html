@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>历史轨迹</title>
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<link rel="stylesheet" type="text/css" href="css/areaSearch.css">
+<script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+<script type="text/javascript" src="zyl_js/jquery.cookie.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=5c067a6690820557c677d74b580724ac&plugin=AMap.MouseTool,AMap.Autocomplete"></script>
+<script type="text/javascript" src="http://webapi.amap.com/demos/js/liteToolbar.js"></script>
+<link rel="stylesheet" href="css/time_plugin_lv.min.css" />
+<script type="text/javascript" src="js/time_plugin_lv.min.js"></script>
+</head>
+<body>
+	<div class="areaSearch_right">
+		<ul>
+			<li><input type="radio" name="ddddd" checked="checked" value="1" /><label>今天</label><input type="radio" name="ddddd" value="2" /><label>昨天</label><input type="radio" name="ddddd" value="3" /><label>自定义</label></li>	
+			<li><label>起始时间：</label><input class="time_plugin_lv_onclick search startTime" time_plugin_lv_type="2"  placeholder="开始时间" disabled=true /></li>
+			<li><label>结束时间：</label><input class="time_plugin_lv_onclick search endTime" time_plugin_lv_type="2"  placeholder="结束时间" disabled=true /></li>
+			<li><input type="checkbox" checked="checked" name="point[]" value="stop" /><label>显示停车点</label><input type="checkbox" checked="checked" value="alarm" name="point[]" /><label>显示报警点</label></li>
+			<li><label>停车间隔下限（分钟）</label><input type="text" name="parkingTime" value="0" style="width:70px;"/></li>
+			<li><input class="searchPath" type="button" value="查询" /><input type="button"	value="导出" /></li>
+			<li><label style="display:inline-block;width:90px;">总里程（米）</label><input type="text" name="vehiclePolyline" /></li>
+			<li><label style="display:inline-block;width:90px;">总停车时长(秒)</label><input type="text" name="timeCounts" /></li>
+		</ul>
+		<dl>
+			<dt><input type="text" placeholder="输入车牌号并回车" list="checkCars"/></dt>
+			<dd style="padding-top:310px;">
+				<div class="dendrogram_xk" style="height:100%;">
+					<dl>
+						<dt>
+							<i><img src="img/u380.png" /></i><i><img src="img/qb.png" style="height:16px;" /></i>全部车辆
+						</dt>
+						<dd id="carLists">
+						</dd>
+					</dl>
+				</div>
+			</dd>
+		</dl>
+	</div>
+	<div class="areaSearch_bottom" id="mapdefaulttab">
+	<div>
+	<div class="areaSearch_bottom_title"><div class="hideandshow shown" style="left:4px;top:4px;"><img alt="" src="img/hidearrow.png"></div><div style="margin-left:30px;">轨迹点</div></div>
+	<div class="areaSearch_bottom_content">
+	<table border="0" cellspacing="0" cellpadding="0">
+	<thead>
+	<tr style="height:30px;"><th>时间点</th><th>速度与方向</th><th>位置信息</th><th>状态</th><th>报警</th><th>间隔里程（单位：米）</th><th style="width:17px;"></tr>
+	</thead>
+	<tbody>
+	<tr><td colspan="7">
+	<div>
+	<table>
+	<tbody>
+	<tr><td>555555555555555555555555555555555555</td><td></td><td>55555555555555555555555</td><td></td><td></td><td></td></tr>
+	<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+	<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+	<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+	<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+	<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+	<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+	<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+	</tbody>
+	</table>
+	</div>
+	</td></tr>
+	</tbody>
+	</table>
+	</div>
+	</div>
+	</div>
+	<div class="areaSearch_main" id="container"></div>
+	<script type="text/javascript" src="wd_js/pastTrajectory.js"></script>
+</body>
+</html>

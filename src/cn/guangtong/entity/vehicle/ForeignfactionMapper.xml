@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.vehicle.ForeignfactionDao">
+
+
+
+	<delete id="delete" parameterType="string">
+		delete from logistics_vehicle.foreignfaction
+		where vehicleId = #{vehicleId}
+	</delete>
+
+	<insert id="insert" parameterType="cn.guangtong.entity.vehicle.Foreignfaction">
+		insert into logistics_vehicle.foreignfaction
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="takecooperationid != null">
+				takeCooperationId,
+			</if>
+			<if test="receivedcooperationid != null">
+				receivedCooperationId,
+			</if>
+			<if test="vehicleid != null">
+				vehicleId,
+			</if>
+			<if test="starttime != null">
+				startTime,
+			</if>
+			<if test="endtime != null">
+				endTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="takecooperationid != null">
+				#{takecooperationid},
+			</if>
+			<if test="receivedcooperationid != null">
+				#{receivedcooperationid},
+			</if>
+			<if test="vehicleid != null">
+				#{vehicleid},
+			</if>
+			<if test="starttime != null">
+				#{starttime},
+			</if>
+			<if test="endtime != null">
+				#{endtime},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 普通用户 -->
+	<select id="getForeignfactionByPageBean" parameterType="cn.guangtong.utils.ForeignfactionPageBean" resultType="cn.guangtong.model.ForeignfactionModel">
+		SELECT
+		c.id,c.nickname,c.num,d.cName,b.endTime
+		FROM logistics_cms.admin_cooperation a
+		RIGHT JOIN logistics_vehicle.foreignfaction b
+		ON a.cooperationId=b.takeCooperationId
+		LEFT JOIN logistics_vehicle.vehicle_info c ON b.vehicleId=c.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info d ON b.receivedCooperationId=d.id
+		WHERE a.adminid=#{adminId}
+		LIMIT
+		#{begin},#{pageCount}
+	</select>
+
+	<select id="getForeignfactionByPageBeanCount" parameterType="cn.guangtong.utils.ForeignfactionPageBean" resultType="int">
+		SELECT COUNT(*) FROM(SELECT
+		c.id,c.nickname,c.num,d.cName,b.endTime
+		FROM logistics_cms.admin_cooperation a
+		RIGHT JOIN
+		logistics_vehicle.foreignfaction b
+		ON a.cooperationId=b.takeCooperationId
+		LEFT JOIN logistics_vehicle.vehicle_info c ON
+		b.vehicleId=c.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info d ON b.receivedCooperationId=d.id
+		WHERE
+		a.adminid=#{adminId}) temp
+	</select>
+
+
+	<!--超级管理员 -->
+	<select id="getForeignfactionSByPageBean" parameterType="cn.guangtong.utils.ForeignfactionPageBean" resultType="cn.guangtong.model.ForeignfactionModel">
+		SELECT
+		b.id,b.nickname,b.num,c.cName,a.endTime FROM logistics_vehicle.foreignfaction a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b
+		ON a.vehicleId=b.id
+		LEFT JOIN logistics_cooperation.cooperation_info c ON
+		c.id=a.receivedCooperationId
+		LIMIT
+		#{begin},#{pageCount}
+	</select>
+
+	<select id="getForeignfactionSByPageBeanCount" parameterType="cn.guangtong.utils.ForeignfactionPageBean" resultType="int">
+		SELECT COUNT(*) FROM(SELECT
+		b.id,b.nickname,b.num,c.cName,a.endTime FROM logistics_vehicle.foreignfaction a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b ON a.vehicleId=b.id
+		LEFT JOIN logistics_cooperation.cooperation_info c ON
+		c.id=a.receivedCooperationId) temp
+	</select>
+
+
+
+</mapper>

@@ -1,0 +1,256 @@
+<meta charset="utf-8" />
+<script type="text/javascript"
+	src="wd_js/RealtimemonitoringControlpanel_wd.js"></script>
+<script type="text/javascript"
+	src="http://webapi.amap.com/demos/js/liteToolbar.js"></script>
+<div class="listgrp_xk" style="padding: 0;height:100%;">
+	<ul class="map_xk">
+		<li class="map_left_xk">
+			<div class="map_main_xk" id="container" style="margin-right:10px;">
+				<input type='text' class='search' id='positionsearch'
+					placeholder='输入地址' style="display: none;" />
+					<input type='text' class='search' id='startPonit'
+					placeholder='输入起点' style="position: absolute;left: 72px;bottom: 153px;z-index: 168;width:220px;display:none" >
+					<input type='text' class='search' id='endPonit'
+					placeholder='输入终点' style="position: absolute;left: 72px;bottom: 111px;z-index: 168;width:220px;display:none">
+			</div>
+			<div class="map_top_xk">
+				<ul class="mapbtn_xk">
+					<li>特殊区域管理</li>
+					<li>路线管理</li>
+					<li>线路关键点管理</li>
+					<!--<li>点辐射区域管理</li>
+					<li>路段限速管理</li>-->
+					<!-- <li>全路段限速管理</li>  -->
+					<li>道路限速</li>
+				</ul>
+			</div>
+			<div class="map_bottom_xk" id="mapdefaulttab">
+				<div class="map_resizeline_xk"></div>	
+				<div class="tab_main_xk" style="height:182px;">
+					<div class="ctrlgrp" style="height:170px;">
+						<table border="0" cellspacing="0" cellpadding="0" class="on_xk">
+							<thead>
+								<tr>
+									<td>
+										<ul class="ctrlgrptabbtn">
+											<li class="on_xk"><span>全部</span><i>100</i></li>
+											<li><span>运行</span><i>10</i></li>
+											<li><span>停车</span><i>1</i></li>
+											<li><span>报警</span><i>100</i></li>
+											<li><span>离线</span><i>100</i></li>
+										</ul>
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style="padding-top:6px;"><table id="tabcommoninfo"  border="0" cellspacing="0" cellpadding="0" class="bodyscrolltable">
+											<thead>
+												<tr>
+													<td><table border="0" cellspacing="0" cellpadding="0">
+															<tr>
+																<td displayName="1">车牌号</td>
+																<td displayName="2">车载设备ID</td>
+																<td displayName="3">车辆类型</td>
+																<td displayName="4">车辆颜色</td>
+																<td displayName="5">驾驶员</td>
+																<td displayName="6">速度与方向</td>
+																<td displayName="7">位置信息</td>
+																<td displayName="8">发送时间</td>
+																<td displayName="9">状态</td>
+																<td displayName="10">报警信息</td>
+																<td style="border-right:none;" displayName="11">厂商ID</td>
+															</tr>
+														</table></td>
+													<td class="scrollspace"></td>
+											</thead>
+											<tbody>
+												<tr>
+													<td colspan="2">
+														<div class="tablistcontent_xk">
+															<table border="0" cellspacing="0" cellpadding="0">
+																<tr>
+																	<!-- <td title="aaa">aaa</td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td> -->
+																</tr>
+															</table>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table></td>
+								</tr>
+							</tbody>
+						</table>
+						<table id="tabcommandreply" border="0" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td style="padding-top:6px;"><table border="0" cellspacing="0" cellpadding="0" class="bodyscrolltable">
+											<thead>
+												<tr>
+													<td><table border="0" cellspacing="0" cellpadding="0">
+															<tr>
+																<td displayName="12">车牌号</td>
+																<td displayName="13">车辆颜色</td>
+																<td displayName="14">发送时间</td>
+																<td displayName="15">命令ID</td>
+																<td displayName="16">发送命令内容</td>
+																<td displayName="17">发送结果</td>
+																<td displayName="18">流水号</td>
+																<td displayName="19">确认时间</td>
+																<td displayName="20">回复ID</td>
+																<td style="border-right:none;" displayName="21">回复参数</td>
+															</tr>
+														</table></td>
+													<td class="scrollspace"></td>
+											</thead>
+											<tbody>
+												<tr>
+													<td colspan="2">
+														<div class="tablistcontent_xk tablist_z">
+															<table border="0" cellspacing="0" cellpadding="0">
+																
+															</table>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="hideandshow shown"
+						style="left:10px;top:10px;"><img src="img/hidearrow.png"></div>
+					<a class="button positionbtn white on_xk"
+						style="left:10px;top:49px;">一般信息</a> <a
+						class="button positionbtn white" style="left:10px;top:94px;">命令回复</a>
+				</div>
+				<ul class="tabtextmenu" id="tabtextmenu1">
+					<li><span></span><div>导出</div></li>
+					<li><span></span><div class="righttriangle">显示<ul class="tabtextmenu">
+					<li><span></span><div class="on_xk" displayCount='1' name='plateNo'>车牌号</div></li>
+					<li><span></span><div class="on_xk" displayCount='2' name='simNo'>车载设备ID</div></li>
+					<li><span></span><div class="on_xk" displayCount='3' name='type'>车辆类型</div></li>
+					<li><span></span><div class="on_xk" displayCount='4' name='vColor'>车牌颜色</div></li>
+					<li><span></span><div class="on_xk" displayCount='5' name='driver'>驾驶员</div></li>
+					<li><span></span><div class="on_xk" displayCount='6' name='velDir'>速度与方向</div></li>
+					<li><span></span><div class="on_xk" displayCount='7' name='localtion'>位置信息</div></li>
+					<li><span></span><div class="on_xk" displayCount='8' name='sendTime'>发送时间</div></li>
+					<li><span></span><div class="on_xk" displayCount='9' name='status'>状态</div></li>
+					<li><span></span><div class="on_xk" displayCount='10' name='alarm'>报警信息</div></li>
+					<li><span></span><div class="on_xk" displayCount='11' name='coopId'>厂商ID</div></li>
+					</ul></div></li>
+					<li><span></span><div class="righttriangle">接受选择<ul class="tabtextmenu">
+					<li><span></span><div>一般信息</div></li>
+					</ul></div></li>
+					<li><span></span><div>详细信息</div></li>
+					<li><span></span><div>轨迹回放</div></li>
+				</ul>
+				<ul class="tabtextmenu" id="tabtextmenu2">
+					<li><span></span><div>删除</div></li>
+					<li><span></span><div>清空</div></li>
+					<li><span></span><div class="righttriangle">显示<ul class="tabtextmenu">
+					<li><span></span><div class="on_xk" displayCount='12' name='plateNo'>车牌号</div></li>
+					<li><span></span><div class="on_xk" displayCount='13' name='vColor'>车辆颜色</div></li>
+					<li><span></span><div class="on_xk" displayCount='14' name='sendTime'>发送时间</div></li>
+					<li><span></span><div class="on_xk" displayCount='15' name='cmdId'>命令ID</div></li>
+					<li><span></span><div class="on_xk" displayCount='16' name='cmdDate'>发送命令内容</div></li>
+					<li><span></span><div class="on_xk" displayCount='17' name='sendResult'>发送结果</div></li>
+					<li><span></span><div class="on_xk" displayCount='18' name='sn'>流水号</div></li>
+					<li><span></span><div class="on_xk" displayCount='19' name='confirmTime'>确认时间</div></li>
+					<li><span></span><div class="on_xk" displayCount='20' name='restore'>回复ID</div></li>
+					<li><span></span><div class="on_xk" displayCount='21' name='resData'>回复参数</div></li>
+					</ul></div></li>
+				</ul>
+			</div>
+			<div class="map_bottom_xk" id="mapbottomnottab" style="display:none;"></div>
+			<div class="map_bottom_xk" id="mapbottomtab">
+				<ul class="tab_xk">
+					<li class="tab_clicktab_xk">一般信息</li>
+					<li class="tab_clicktab_xk">附加信息</li>
+					<li class="tab_clicktab_xk">终端报警</li>
+					<li class="tab_clicktab_xk">平台报警</li>
+					<li class="tab_clicktab_xk">驾驶员信息</li>
+					<li class="tab_clicktab_xk">电子运单</li>
+					<li class="tab_clicktab_xk">车辆控制</li>
+					<li class="tab_clicktab_xk">历史轨迹</li>
+					<li class="tab_closebtn_xk"><img src="img/gbl.png" /></li>
+					<li class="tab_minimize_xk"><img src="img/zxh.png" /></li>
+				</ul>
+				<div class="tab_main_xk" style="height:160px;position: relative;"></div>
+			</div>
+		</li>
+		<li class="map_right_xk">
+			<div class="map_right_top_xk">
+				<ul>
+					<li><img src="img/sz.png" title="操作设置" /></li>
+					<li><img src="img/bjxx.png" title="报警设置" /></li>
+					<li><img src="img/cmd.png" title="发命令" /></li>
+					<!-- <li><img src="img/sx.png" title="筛选车辆" /></li> -->
+					<li><img src="img/sblj.png" title="连接服务器" /></li>
+					<li><img src="img/dw.png" title="地名定位查找" /></li>
+					<li><img src="img/sscl.png" title="区域搜车" /></li>
+				</ul>
+				<!--<i><img src="img/收缩.png" title="隐藏" /></i>-->
+			</div>
+			<div class="map_right_title_xk">所有车辆</div>
+			<div style="text-align: center;padding-top:6px;">
+				<label for="">找车</label><input type="text" style="width:120px;"
+					placeholder="输入车牌号并回车" list="checkCars" />
+			</div>
+			<div class="dendrogram_xk">
+				<dl>
+					<dt>
+						<i><img src="img/u380.png" /></i><b class="cherked_xk"><img src="img/uncherked.jpg" carListClick /></b><i><img src="img/qb.png"
+							style="height:16px;" /></i>全部车辆
+					</dt>
+					<dd id="carLists"></dd>
+				</dl>
+			</div>
+		</li>
+	</ul>
+</div>
+<script>
+clearInterval(findPanelVehicleTimeOut);
+findPanelVehicle("0");
+findPanelVehicleTimeOut = setInterval("findPanelVehicle('0')", 5000);
+$(".map_xk").on("dblclick","#tabcommoninfo",function(){
+	
+});
+$(".map_xk").on("dblclick","#tabcommandreply .tablist_z tbody tr",function(){
+	$(".popwindow_xk .popup_xk").html(popup("commandInfo.html"));
+	addSendBefore_dblclick(this);
+})
+function addSendBefore_dblclick(this_z){
+	
+	var num="";
+	var vmColor ="";
+	var vmColor = "";
+	var cmdID = "";
+	var savetype = "";
+
+	num = $(this_z).children("td").eq(0).text();
+	vmColor = $(this_z).children("td").eq(1).text();
+	sendTime = $(this_z).children("td").eq(2).text();
+	cmdID = $(this_z).children("td").eq(3).text();
+	savetype = $(this_z).children("td").eq(4).text();
+ 
+	$(".poptable2_xk_zyl ul li:eq(0)  span").text(num);
+	$(".poptable2_xk_zyl ul li:eq(1)  span").text(vmColor);
+	$(".poptable2_xk_zyl ul li:eq(2)  span").text(cmdID);
+	$(".poptable2_xk_zyl ul li:eq(3)  span").text(sendTime);
+	$(".poptable2_xk_zyl ul li:eq(4)  span").text(savetype);
+
+}
+
+</script>

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.guangtong.dao.beidou.LinesegmentDao">
+	<insert id="insertSelective" parameterType="cn.guangtong.entity.beidou.Linesegment">
+		insert into logistics_beidou.linesegment
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="segid != null">
+				segId,
+			</if>
+			<if test="createdate != null">
+				createDate,
+			</if>
+			<if test="deleted != null">
+				deleted,
+			</if>
+			<if test="owner != null">
+				owner,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="tenantid != null">
+				tenantId,
+			</if>
+			<if test="alarmtype != null">
+				alarmType,
+			</if>
+			<if test="bytime != null">
+				byTime,
+			</if>
+			<if test="enclosureid != null">
+				enclosureId,
+			</if>
+			<if test="latitude1 != null">
+				latitude1,
+			</if>
+			<if test="latitude2 != null">
+				latitude2,
+			</if>
+			<if test="limitspeed != null">
+				limitSpeed,
+			</if>
+			<if test="linewidth != null">
+				lineWidth,
+			</if>
+			<if test="longitude1 != null">
+				longitude1,
+			</if>
+			<if test="longitude2 != null">
+				longitude2,
+			</if>
+			<if test="maxspeed != null">
+				maxSpeed,
+			</if>
+			<if test="maxtimelimit != null">
+				maxTimeLimit,
+			</if>
+			<if test="mintimelimit != null">
+				minTimeLimit,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="overspeedtime != null">
+				overSpeedTime,
+			</if>
+			<if test="pointid != null">
+				pointId,
+			</if>
+			<if test="station != null">
+				station,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="segid != null">
+				#{segid,jdbcType=INTEGER},
+			</if>
+			<if test="createdate != null">
+				#{createdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deleted != null">
+				#{deleted,jdbcType=BIT},
+			</if>
+			<if test="owner != null">
+				#{owner,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="tenantid != null">
+				#{tenantid,jdbcType=INTEGER},
+			</if>
+			<if test="alarmtype != null">
+				#{alarmtype,jdbcType=VARCHAR},
+			</if>
+			<if test="bytime != null">
+				#{bytime,jdbcType=BIT},
+			</if>
+			<if test="enclosureid != null">
+				#{enclosureid,jdbcType=INTEGER},
+			</if>
+			<if test="latitude1 != null">
+				#{latitude1,jdbcType=DOUBLE},
+			</if>
+			<if test="latitude2 != null">
+				#{latitude2,jdbcType=DOUBLE},
+			</if>
+			<if test="limitspeed != null">
+				#{limitspeed,jdbcType=BIT},
+			</if>
+			<if test="linewidth != null">
+				#{linewidth,jdbcType=INTEGER},
+			</if>
+			<if test="longitude1 != null">
+				#{longitude1,jdbcType=DOUBLE},
+			</if>
+			<if test="longitude2 != null">
+				#{longitude2,jdbcType=DOUBLE},
+			</if>
+			<if test="maxspeed != null">
+				#{maxspeed,jdbcType=INTEGER},
+			</if>
+			<if test="maxtimelimit != null">
+				#{maxtimelimit,jdbcType=INTEGER},
+			</if>
+			<if test="mintimelimit != null">
+				#{mintimelimit,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="overspeedtime != null">
+				#{overspeedtime,jdbcType=INTEGER},
+			</if>
+			<if test="pointid != null">
+				#{pointid,jdbcType=INTEGER},
+			</if>
+			<if test="station != null">
+				#{station,jdbcType=BIT},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="getLinesegmentByEnclosureId" resultType="cn.guangtong.entity.beidou.Linesegment">
+		SELECT * FROM logistics_beidou.linesegment a
+		WHERE
+		a.enclosureId=#{enclosureId}
+		AND
+		a.deleted!=1
+	</select>
+	<update id="updateLinesegment" parameterType="cn.guangtong.entity.beidou.Linesegment">
+		update logistics_beidou.linesegment
+		<set>
+			<if test="createdate != null">
+				createDate = #{createdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deleted != null">
+				deleted = #{deleted,jdbcType=BIT},
+			</if>
+			<if test="owner != null">
+				owner = #{owner,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="tenantid != null">
+				tenantId = #{tenantid,jdbcType=INTEGER},
+			</if>
+			<if test="alarmtype != null">
+				alarmType = #{alarmtype,jdbcType=VARCHAR},
+			</if>
+			<if test="bytime != null">
+				byTime = #{bytime,jdbcType=BIT},
+			</if>
+			<if test="enclosureid != null">
+				enclosureId = #{enclosureid,jdbcType=INTEGER},
+			</if>
+			<if test="latitude1 != null">
+				latitude1 = #{latitude1,jdbcType=DOUBLE},
+			</if>
+			<if test="latitude2 != null">
+				latitude2 = #{latitude2,jdbcType=DOUBLE},
+			</if>
+			<if test="limitspeed != null">
+				limitSpeed = #{limitspeed,jdbcType=BIT},
+			</if>
+			<if test="linewidth != null">
+				lineWidth = #{linewidth,jdbcType=INTEGER},
+			</if>
+			<if test="longitude1 != null">
+				longitude1 = #{longitude1,jdbcType=DOUBLE},
+			</if>
+			<if test="longitude2 != null">
+				longitude2 = #{longitude2,jdbcType=DOUBLE},
+			</if>
+			<if test="maxspeed != null">
+				maxSpeed = #{maxspeed,jdbcType=INTEGER},
+			</if>
+			<if test="maxtimelimit != null">
+				maxTimeLimit = #{maxtimelimit,jdbcType=INTEGER},
+			</if>
+			<if test="mintimelimit != null">
+				minTimeLimit = #{mintimelimit,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="overspeedtime != null">
+				overSpeedTime = #{overspeedtime,jdbcType=INTEGER},
+			</if>
+			<if test="pointid != null">
+				pointId = #{pointid,jdbcType=INTEGER},
+			</if>
+			<if test="station != null">
+				station = #{station,jdbcType=BIT},
+			</if>
+		</set>
+		where segId = #{segid,jdbcType=INTEGER}
+	</update>
+
+
+	<update id="upLinesegmentByEnclosureId" parameterType="int">
+		UPDATE logistics_beidou.linesegment
+		SET
+		maxTimeLimit = #{maxtimelimit},
+		minTimeLimit = #{mintimelimit}
+		WHERE
+		enclosureid=#{enclosureId}
+	</update>
+
+	<update id="deleteLinesegmentByEnclosureId" parameterType="cn.guangtong.entity.beidou.Linesegment">
+		UPDATE logistics_beidou.linesegment a
+		SET a.deleted=0
+		WHERE
+		a.enclosureId=#{enclosureId}
+	</update>
+</mapper>

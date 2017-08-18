@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.guangtong.dao.order.ExceptionReasonDao">
+	<!-- 查询未完成异常订单订单+分页 sManagementOrderA -->
+	<select id="sExceptionReasonA" parameterType="cn.guangtong.utils.PageBean" resultType="java.util.Map">
+		SELECT a.orderNum,b.num,c.dName,d.reason,exceptionImg,
+		FROM_UNIXTIME(a.updateTime,'%Y-%m-%d %H:%i:%m')updateTime,a.orderStatus 
+		FROM logistics_order.unfinished_order a
+		LEFT JOIN logistics_vehicle.vehicle_info b ON a.vehicleId = b.id
+		LEFT JOIN logistics_driver.driver_info c ON a.driverId = c.id
+		LEFT JOIN logistics_order.order_admin_exception d ON a.exceptionReasonId= d.orderId
+		WHERE a.orderStatus = '5'
+		LIMIT #{begin},#{pageCount}
+	</select>
+	
+	<!-- 取消异常订单  uManagementOrder-->
+	<update id="uManagementOrder" parameterType="java.lang.String">
+ 		UPDATE logistics_order.unfinished_order SET orderStatus = '7' 
+ 		WHERE orderNum = #{orderNum}
+	</update>
+	
+	<!-- 	重建订单   uRebuildOrderOrder-->
+	<update id="uRebuildOrderOrder"  parameterType="cn.guangtong.entity.order.UnfinishedOrder">
+ 		UPDATE logistics_order.unfinished_order
+ 		<set>
+			<if test="sCompany!=null">sCompany = #{sCompany},</if>
+			<if test="deliver!=null">deliver = #{deliver},</if>
+			<if test="deliverTel!=null">deliverTel = #{deliverTel},</if>
+			<if test="deliverAddr!=null">deliverAddr = #{deliverAddr},</if>
+			<if test="rCompany!=null">rCompany = #{rCompany},</if>
+			<if test="receipt!=null">receipt = #{receipt},</if>
+			<if test="receiptTel!=null">receiptTel = #{receiptTel},</if>
+			<if test="receiptAddr!=null">receiptAddr = #{receiptAddr},</if>
+			<if test="description!=null">description = #{description},</if>
+			<if test="length!=null">'length' = #{length},</if>
+			<if test="wide!=null">wide = #{wide},</if>
+			<if test="tall!=null">tall = #{tall},</if>
+			<if test="volume!=null">volume = #{volume},</if>
+			<if test="weight!=null">weight = #{weight},</if>
+			<if test="payMethod!=null">payMethod = #{payMethod},</if>
+			<if test="callTime!=null">callTime = #{callTime},</if>
+		</set>
+		WHERE orderNum = #{orderNum}
+	</update>
+	
+	<!-- 重建订单查询  sManagementOrderOne -->
+	<select id="sManagementOrderOne" parameterType="java.lang.String" resultType="java.util.Map">
+		SELECT  insuranceFee,floorFee,handlingFee,freightFee 
+		FROM logistics_order.unfinished_money 
+		WHERE orderNum = #{orderNum}
+	</select>
+	
+	<!-- 订单总记录数  sManagementOrderCount -->
+	<select id="sManagementOrderCount"  resultType="java.lang.Integer">
+		SELECT COUNT(orderNum) FROM logistics_order.unfinished_order
+		WHERE orderStatus = '5'
+	</select>
+</mapper>

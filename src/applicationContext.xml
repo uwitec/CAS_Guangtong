@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="
+	
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+	<!-- 配置自动扫描的包 -->
+	<context:component-scan base-package="cn.guangtong"></context:component-scan>
+	
+	<!-- 开启RequestMapping注解 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+
+	<!-- 配置数据源连接池 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="username" value="root" />
+		<property name="password" value="123456" />
+	</bean>
+	<bean id="beidouDs" parent="dataSource">
+		<property name="url" value="jdbc:mysql://60.205.151.97:3306/logistics_beidou?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true" />
+	</bean>
+	<bean id="cmsDs" parent="dataSource">
+		<property name="url" value="jdbc:mysql://60.205.151.97:3306/logistics_cms?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true"></property>
+	</bean>
+	<bean id="cooperationDs" parent="dataSource">
+		<property name="url" value="jdbc:mysql://60.205.151.97:3306/logistics_cooperation?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true"></property>
+	</bean>
+	<bean id="customerDs" parent="dataSource">
+		<property name="url" value="jdbc:mysql://60.205.151.97:3306/logistics_customer?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true"></property>
+	</bean>
+	<bean id="driverDs" parent="dataSource">
+		<property name="url" value="jdbc:mysql://60.205.151.97:3306/logistics_driver?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true"></property>
+	</bean>
+	<bean id="orderDs" parent="dataSource">
+		<property name="url" value="jdbc:mysql://60.205.151.97:3306/logistics_order?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true"></property>
+	</bean>
+	<bean id="vehicleDs" parent="dataSource">
+		<property name="url" value="jdbc:mysql://60.205.151.97:3306/logistics_vehicle?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true"></property>
+	</bean>
+
+	<!-- 配置多数据源映射关系 -->
+	<bean id="dynamicDataSource" class="cn.guangtong.utils.DynamicDataSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry value-ref="beidouDs" key="beidouDs"></entry>
+				<entry value-ref="cmsDs" key="cmsDs"></entry>
+				<entry value-ref="cooperationDs" key="cooperationDs"></entry>
+				<entry value-ref="customerDs" key="customerDs"></entry>
+				<entry value-ref="driverDs" key="driverDs"></entry>
+				<entry value-ref="orderDs" key="orderDs"></entry>
+				<entry value-ref="vehicleDs" key="vehicleDs"></entry>
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="beidouDs"></property>
+	</bean>
+	
+	<!-- 配置SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dynamicDataSource" />
+		<!-- 创建容器时,Spring会根据此项配置自动加载Mybatis的映射文件，只要*.xml中有错误，启动tomcat时就会报错 -->
+		<property name="mapperLocations" value="classpath:cn/guangtong/entity/*/*.xml" />
+		<property name="configLocation" value="classpath:SqlMapConfig.xml"></property>
+	</bean>
+	
+	<!-- 配置MyBatis注解 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 扫描路径 创建容器后，MapperScannerConfigurer自动扫描当前指定路径下的接口或者类，动态生成一个实现类 -->
+		<property name="basePackage" value="cn.guangtong.dao" />
+	</bean>
+	
+	<!-- 事务管理 : DataSourceTransactionManager dataSource:引用上面定义的数据源 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dynamicDataSource"></property>
+	</bean>
+	
+	<!-- 启用事务注解  -->
+	<tx:annotation-driven transaction-manager="txManager" />
+
+	<!-- 配置MultipartResolver -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<property name="maxUploadSize" value="5242880"></property>
+	</bean>
+	
+	<!-- 处理静态资源问题 -->
+	<mvc:default-servlet-handler></mvc:default-servlet-handler>
+	
+	<!-- 工具类的静态方法使用注入 -->
+	<beans>
+        <bean id="platLogUtil" class="cn.guangtong.utils.PlatLogUtil" init-method="init"
+              lazy-init="false">
+        </bean>
+    </beans>
+
+</beans>

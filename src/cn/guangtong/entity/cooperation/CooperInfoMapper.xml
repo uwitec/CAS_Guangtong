@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.guangtong.dao.cooperation.CooperationInfoDao">
+
+	<!-- 查询全部企业列表 -->
+	<select id="selectAll" resultType="map">
+		SELECT id,cName
+		FROM logistics_cooperation.cooperation_info
+	</select>
+
+	<!-- 企业总记录数 sCooperationInfoCount -->
+	<select id="sCooperationInfoCount" resultType="java.lang.Integer">
+		SELECT COUNT(id)
+		FROM logistics_cooperation.cooperation_info
+	</select>
+	<select id="sCooperationCount" parameterType="cn.guangtong.controller.cooperation.CooperationPageBean" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM (SELECT b.id,b.cName,b.contact,b.tel,b.cNum,b.createTime,b.available FROM
+		logistics_cms.admin_cooperation a
+		LEFT JOIN logistics_cooperation.cooperation_info b ON a.cooperationId=b.id
+		WHERE
+		a.adminid=#{adminId}
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and b.cName like "%"#{cName}"%"
+		</if>
+		<if test='contact!=null&amp;&amp;!contact.equals("")'>
+			and b.contact like "%"#{contact}"%"
+		</if>
+		<if test='tel!=null&amp;&amp;!tel.equals("")'>
+			and b.tel like "%"#{tel}"%"
+		</if>
+		<if test='cNum!=null&amp;&amp;!cNum.equals("")'>
+			and b.cNum like "%"#{cNum}"%"
+		</if>
+		<if test='createTime!=null&amp;&amp;!createTime.equals("")'>
+			and b.createTime like "%"#{createTime}"%"
+		</if>
+		) as tmp
+	</select>
+
+	<!-- 查询所有加盟企业+分页+排序+模糊查询 sCooperationInfoA -->
+	<select id="sCooperationInfoA" parameterType="cn.guangtong.controller.cooperation.CooperationPageBean" resultType="java.util.Map">
+		SELECT b.id,b.cName,b.contact,b.tel,b.cNum,b.createTime,b.available FROM logistics_cms.admin_cooperation a
+		LEFT JOIN
+		logistics_cooperation.cooperation_info b ON a.cooperationId=b.id
+		WHERE a.adminid=#{adminId}
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and b.cName like "%"#{cName}"%"
+		</if>
+		<if test='contact!=null&amp;&amp;!contact.equals("")'>
+			and b.contact like "%"#{contact}"%"
+		</if>
+		<if test='tel!=null&amp;&amp;!tel.equals("")'>
+			and b.tel like "%"#{tel}"%"
+		</if>
+		<if test='cNum!=null&amp;&amp;!cNum.equals("")'>
+			and b.cNum like "%"#{cNum}"%"
+		</if>
+		<if test='createTime!=null&amp;&amp;!createTime.equals("")'>
+			and b.createTime like "%"#{createTime}"%"
+		</if>
+		LIMIT
+		#{begin},#{pageCount}
+	</select>
+
+
+
+	<select id="sCooperationCountS" parameterType="cn.guangtong.controller.cooperation.CooperationPageBean" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM (SELECT b.id,b.cName,b.contact,b.tel,b.cNum,b.createTime,b.available FROM
+		logistics_cooperation.cooperation_info b
+		where 1 = 1
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and b.cName like "%"#{cName}"%"
+		</if>
+		<if test='contact!=null&amp;&amp;!contact.equals("")'>
+			and b.contact like "%"#{contact}"%"
+		</if>
+		<if test='tel!=null&amp;&amp;!tel.equals("")'>
+			and b.tel like "%"#{tel}"%"
+		</if>
+		<if test='cNum!=null&amp;&amp;!cNum.equals("")'>
+			and b.cNum like "%"#{cNum}"%"
+		</if>
+		<if test='createTime!=null&amp;&amp;!createTime.equals("")'>
+			and b.createTime like "%"#{createTime}"%"
+		</if>
+		) as tmp
+	</select>
+
+	<!-- 查询所有加盟企业+分页+排序+模糊查询 sCooperationInfo 超级管理员 -->
+	<select id="sCooperationInfo" parameterType="cn.guangtong.controller.cooperation.CooperationPageBean" resultType="java.util.Map">
+		SELECT b.id,b.cName,b.contact,b.tel,b.cNum,b.createTime,b.available FROM
+		logistics_cooperation.cooperation_info b
+		where 1 = 1
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and b.cName like "%"#{cName}"%"
+		</if>
+		<if test='contact!=null&amp;&amp;!contact.equals("")'>
+			and b.contact like "%"#{contact}"%"
+		</if>
+		<if test='tel!=null&amp;&amp;!tel.equals("")'>
+			and b.tel like "%"#{tel}"%"
+		</if>
+		<if test='cNum!=null&amp;&amp;!cNum.equals("")'>
+			and b.cNum like "%"#{cNum}"%"
+		</if>
+		<if test='createTime!=null&amp;&amp;!createTime.equals("")'>
+			and b.createTime like "%"#{createTime}"%"
+		</if>
+		LIMIT
+		#{begin},#{pageCount}
+	</select>
+
+	<!-- 冻结+解冻企业 uCooperationInfoFreezing -->
+	<update id="uCooperationInfoFreezing" parameterType="java.lang.String">
+		UPDATE
+		logistics_cooperation.cooperation_info t SET t.available =
+		#{type}
+		WHERE t.id =
+		#{id}
+	</update>
+
+	<!-- 修改加盟企业信息 -->
+	<update id="uCooperationInfo" parameterType="cn.guangtong.entity.cooperation.CooperationInfo">
+		UPDATE logistics_cooperation.cooperation_info
+		<set>
+			<if test="cname!=null">cname = #{cname},</if>
+			<if test="contact!=null">contact = #{contact},</if>
+			<if test="tel!=null">tel = #{tel},</if>
+			<if test="email!=null">email = #{email},</if>
+			<if test="addr!=null">addr = #{addr},</if>
+			<if test="ctype!=null">ctype = #{ctype},</if>
+			<if test="cnum!=null">cnum = #{cnum},</if>
+			<if test="cimg!=null">cimg = #{cimg},</if>
+			<if test="available!=null">available = #{available},</if>
+			<if test="isdel!=''">isdel = #{isdel},</if>
+			<if test="createtime!=null">createtime = #{createtime},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<!-- 根据ID查询加盟企业信息 -->
+	<select id="sCooperationInfoOne" parameterType="cn.guangtong.utils.PageBean" resultType="java.util.Map">
+		SELECT
+		a.id,a.cname,a.contact,a.tel,a.email,a.addr,a.ctype,a.cnum,a.cimg,a.available,
+		a.isdel, a.createtime
+		FROM
+		logistics_cooperation.logistics_cooperation.cooperation_info a
+		WHERE
+		a.id = #{id}
+	</select>
+
+	<!-- 增加一条企业信息 -->
+	<insert id="iCooperationInfo" parameterType="cn.guangtong.entity.cooperation.CooperationInfo" useGeneratedKeys="true"
+		keyProperty="id">
+		INSERT INTO logistics_cooperation.cooperation_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id!=''">id,</if>
+			<if test="cname!=''">cname,</if>
+			<if test="contact!=''">contact,</if>
+			<if test="tel!=''">tel,</if>
+			<if test="email!=''">email,</if>
+			<if test="addr!=''">addr,</if>
+			<if test="ctype!=''">ctype,</if>
+			<if test="cnum!=''">cnum,</if>
+			<if test="cimg!=''">cimg,</if>
+			<if test="available!=''">available,</if>
+			<if test="isdel!=''">isdel,</if>
+			<if test="createtime!=''">createtime,</if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+			<if test="id!=''">#{id},</if>
+			<if test="cname!=''">#{cname},</if>
+			<if test="contact!=''">#{contact},</if>
+			<if test="tel!=''">#{tel},</if>
+			<if test="email!=''">#{email},</if>
+			<if test="addr!=''">#{addr},</if>
+			<if test="ctype!=''">#{ctype},</if>
+			<if test="cnum!=''">#{cnum},</if>
+			<if test="cimg!=''">#{cimg},</if>
+			<if test="available!=''">#{available},</if>
+			<if test="isdel!=''">#{isdel},</if>
+			<if test="createtime!=''">#{createtime},</if>
+		</trim>
+	</insert>
+
+	<select id="findCooperationInfo" resultType="cn.guangtong.entity.cooperation.CooperationInfo">
+		SELECT * FROM
+		logistics_cooperation.cooperation_info
+	</select>
+
+	<select id="findCooperationInfoByAdminId" parameterType="int" resultType="map">
+		SELECT b.id,b.cName FROM
+		logistics_cms.admin_cooperation
+		a,logistics_cooperation.cooperation_info b
+		WHERE a.cooperationId=b.id
+		AND
+		a.adminId=#{adminId}
+	</select>
+
+	<!-- 根据企业id集合查询企业名称 超管-->
+	<select id="getCnameById" resultType="string" parameterType="java.util.List">
+		SELECT cName
+		FROM logistics_cooperation.cooperation_info lcci
+		WHERE 1 = 1	
+		<if test='coopList != null &amp;&amp; coopList.size() > 0'>
+			and lcci.id in
+			<foreach collection="coopList" item="coopList" index="index" open="(" close=")" separator=",">
+				#{coopList}
+			</foreach>
+		</if>
+	</select>
+	
+	<!-- 根据企业id集合查询企业名称 普通-->
+	<select id="getCnameByIdByOther" resultType="string" parameterType="java.util.List">
+		SELECT cName
+		FROM logistics_cooperation.cooperation_info lcci
+		LEFT JOIN logistics_cms.admin_cooperation lcac ON lcac.cooperationId = lcci.id 
+		WHERE 1 = 1	
+		<if test='adminId != null &amp;&amp; !adminId.equals("")'>
+			AND lcac.adminId = #{adminId}
+		</if>
+		<if test='coopList != null &amp;&amp; coopList.size() > 0'>
+			and lcci.id in
+			<foreach collection="coopList" item="coopList" index="index" open="(" close=")" separator=",">
+				#{coopList}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="findCoopIdByAid" parameterType="int" resultType="string">
+		SELECT
+		b.id
+		FROM
+		logistics_cms.admin_cooperation a,
+		logistics_cooperation.cooperation_info b
+		WHERE
+		a.adminId=#{adminId}
+	</select>
+
+	<!-- 根据ID查询企业详细信息 -->
+	<select id="getCooperationInfoById" parameterType="java.lang.String" resultType="cn.guangtong.entity.cooperation.CooperationInfo">
+		SELECT * FROM cooperation_info WHERE
+		id = #{id}
+	</select>
+
+	<!-- 权限控制-查询全部企业与可见企业 -->
+	<select id="getCooperationInfoByAdminId" parameterType="int" resultType="cn.guangtong.model.AdminCooperation">
+		SELECT * FROM
+		logistics_cooperation.cooperation_info a
+		LEFT
+		JOIN (SELECT * FROM logistics_cms.admin_cooperation WHERE
+		adminId=#{adminId})
+		b
+		ON a.id=b.cooperationId
+	</select>
+
+
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.beidou.PanelDao">
+
+
+	<select id="findVehicleByAdminS" parameterType="string"
+		resultType="cn.guangtong.model.PanelVehicle">
+		SELECT
+		b.VMColor,b.id AS
+		vehicleId,b.simNo,b.num,c.tName,d.sName,e.cName,
+		a.direction,a.latitude,a.longitude,a.location,a.online,a.sendTime,a.status,a.alarmState,a.velocity,
+		g.driverName
+		FROM logistics_beidou.gpsrealdata a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b ON a.simNo=b.simNo
+		LEFT JOIN
+		logistics_vehicle.vehicle_team c ON b.teamId=c.id
+		LEFT JOIN
+		logistics_vehicle.specialtype d ON b.specialId =d.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info e ON b.cooperationId=e.id
+		LEFT
+		JOIN logistics_beidou.driverinfo g ON b.id=g.vehicleId
+		UNION ALL
+		SELECT
+		'' VMColor,gvi.vehicleId,gvi.simNo,ggd.plateNo num,'TEAM' tName,'其它'
+		sName,'809' AS cName,
+		ggd.direction,ggd.latitude,ggd.longitude,ggd.location,ggd.online,ggd.sendTime,ggd.status,ggd.alarmState,ggd.velocity,
+		null driverName
+		FROM gpsdb.gpsrealdata ggd LEFT JOIN gpsdb.vehicleregisterinfo gvi ON ggd.plateNo=gvi.plateNo 
+	</select>
+
+	<select id="findVehicleByAdmin" parameterType="string"
+		resultType="cn.guangtong.model.PanelVehicle">
+		SELECT
+		b.VMColor,b.id AS
+		vehicleId,b.simNo,b.num,c.tName,d.sName,e.cName,a.direction,a.latitude,a.longitude,a.location,a.online,a.sendTime,a.status,a.alarmState,a.velocity,g.driverName
+		FROM logistics_beidou.gpsrealdata a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b ON a.simNo=b.simNo
+		LEFT JOIN
+		logistics_vehicle.vehicle_team c ON b.teamId=c.id
+		LEFT JOIN
+		logistics_vehicle.specialtype d ON b.specialId =d.id
+		LEFT JOIN
+		logistics_cooperation.cooperation_info e ON b.cooperationId=e.id
+		LEFT
+		JOIN logistics_beidou.driverinfo g ON b.id=g.vehicleId
+		LEFT JOIN
+		logistics_cms.admin_vehicle f ON f.vehicleid=b.id
+		WHERE f.adminid=#{0}
+	</select>
+
+</mapper>

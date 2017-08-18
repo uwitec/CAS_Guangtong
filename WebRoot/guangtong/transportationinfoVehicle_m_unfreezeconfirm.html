@@ -1,0 +1,41 @@
+<meta charset="utf-8" />
+<div class="pophead_xk red"><span><span><img src="img/u6.png"></span><span>确认解冻？</span></span><i><img src="img/close.png" alt="" /></i></div>
+<div class="popbody_xk  noborder gray1" style="width:300px;">
+	<div class="popcomfirm_xk" style="text-align: center;padding: 0;">
+		<a class="button blue multiple" style="margin:40px 15px;">解冻</a>
+		<a class="button blue" style="margin:40px 15px;">取消</a>
+	</div>
+</div>
+<script type="text/javascript" src="zyl_js/transportationinfoVehicle_zyl.js"></script>
+<script>
+	//批量解冻
+	function uVehicleInfoFreezing() {
+		$(".multiple").click(function() {
+			var this_id = [];
+			$(".list_xk tbody").find("img[src='img/cherked.jpg']").each(function() {
+				this_id.push($(this).parent("td").parent("tr").attr("zyl_id"))
+			});
+			$.ajax(config.url + "vehicle/uVehicleInfoFreezing", {
+				data: {
+					"id": this_id,
+					"type": 1,
+				},
+				dataType: "json",
+				type: "POST",
+				async:false,
+				timeout: 10000,
+				success: function(data) {
+					//console.log(data.success);
+					alert(data.msg);
+					$("popwindow_xk .popup_xk").html("");
+					$(".popwindow_xk").css("visibility", "hidden");
+					sVehicleInfoA();
+					$(".cherked_xk img").attr("src",'img/uncherked.jpg');
+				}
+			});
+			
+		})
+
+	};
+	uVehicleInfoFreezing();
+</script>

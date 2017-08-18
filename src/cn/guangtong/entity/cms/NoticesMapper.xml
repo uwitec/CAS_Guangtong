@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.notices.NoticesDao">
+
+	<insert id="insertNotices" parameterType="cn.guangtong.entity.cms.Notices" useGeneratedKeys="true" keyProperty="id" >
+		insert into logistics_cms.notices
+		(title,content,issueTime) values (#{title},#{content},#{issuetime})
+	</insert>
+
+	<select id="getNoticesbyId" parameterType="java.lang.Long" resultType="cn.guangtong.entity.cms.Notices">
+		select * from logistics_cms.notices where id=#{noticesId}
+	</select>
+
+	<select id="getHistoryNoticesAll" parameterType="cn.guangtong.utils.NoticesPageBean" resultType="cn.guangtong.model.HistoryNoticesModel">
+		SELECT a.noticesId,
+		n.title,n.content,date_format(n.issueTime,'%Y-%c-%d %h:%i:%s') as issueTime,count(a.noticesId) count
+		FROM admin_notices a,notices n
+		WHERE
+		a.noticesId=n.id
+		<if test="selCondition!=null and selCondition!='' ">
+			AND
+			CONCAT(n.title,n.content,n.issueTime) LIKE "%"#{selCondition}"%"
+		</if>
+		AND
+		a.senderId = #{adminId}
+		GROUP BY a.noticesId 
+		ORDER BY a.noticesId DESC
+		LIMIT #{begin},#{end}
+	</select>
+
+	<select id="getHistoryNoticesCounts" parameterType="cn.guangtong.utils.NoticesPageBean" resultType="int">
+		SELECT count(*) FROM(
+		SELECT
+		n.id noticesId,n.title,n.content,n.issueTime,count(*)
+		FROM admin_notices a,notices n
+		WHERE
+		a.noticesId=n.id
+		<if test="selCondition!=null and selCondition!='' ">
+			AND
+			CONCAT(n.title,n.content,n.issueTime) LIKE "%"#{selCondition}"%"
+		</if>
+		AND
+		a.senderId=#{adminId}
+		GROUP BY a.noticesId
+		ORDER BY n.issueTime DESC
+		) temp
+	</select>
+	
+	<select id="getHistoryNoticesAllS" parameterType="cn.guangtong.utils.NoticesPageBean" resultType="cn.guangtong.model.HistoryNoticesModel">
+		SELECT a.noticesId,
+		n.title,n.content,date_format(n.issueTime,'%Y-%c-%d %h:%i:%s') as issueTime,count(a.noticesId) count
+		FROM admin_notices a,notices n
+		WHERE
+		a.noticesId=n.id
+		<if test="selCondition!=null and selCondition!='' ">
+			AND
+			CONCAT(n.title,n.content,n.issueTime) LIKE "%"#{selCondition}"%"
+		</if>
+		GROUP BY a.noticesId 
+		ORDER BY a.noticesId DESC
+		LIMIT #{begin},#{end}
+	</select>
+
+	<select id="getHistoryNoticesCountsS" parameterType="cn.guangtong.utils.NoticesPageBean" resultType="int">
+		SELECT count(*) FROM(
+		SELECT
+		n.id noticesId,n.title,n.content,n.issueTime,count(*)
+		FROM admin_notices a,notices n
+		WHERE
+		a.noticesId=n.id
+		<if test="selCondition!=null and selCondition!='' ">
+			AND
+			CONCAT(n.title,n.content,n.issueTime) LIKE "%"#{selCondition}"%"
+		</if>
+		GROUP BY a.noticesId
+		ORDER BY n.issueTime DESC
+		) temp
+	</select>
+
+</mapper>

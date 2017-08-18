@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.cms.FeedbackDao">
+
+	<select id="getFeedbacks" parameterType="cn.guangtong.utils.FeedbackPageBean" resultType="cn.guangtong.entity.cms.Feedback">
+		select * from logistics_cms.feedback
+		<where>
+			<if test='advice!=null &amp;&amp; !advice.equals("")'>
+				and advice like concat(concat('%',#{advice}),'%')
+			</if>
+			<if test='createTime!=null &amp;&amp; !createTime.equals("")'>
+				and createTime like concat(concat('%',#{createTime}),'%')
+			</if>
+			<if test='userType!=null &amp;&amp; !userType.equals("")'>
+				and userType = #{userType}
+			</if>
+		</where> 
+		order by ${sortInfo} ${sortType} 
+		limit #{begin},#{end} 
+	</select>
+	
+	<select id="getCounts" resultType="int">
+		select count(*) from logistics_cms.feedback
+		<where>
+			<if test='advice!=null &amp;&amp; !advice.equals("")'>
+				and advice like concat(concat('%',#{advice}),'%')
+			</if>
+			<if test='createTime!=null &amp;&amp; !createTime.equals("")'>
+				and createTime like concat(concat('%',#{createTime}),'%')
+			</if>
+			<if test='userType!=null &amp;&amp; !userType.equals("")'>
+				and userType = #{userType}
+			</if>
+		</where> 
+	</select>
+	
+</mapper>

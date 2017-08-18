@@ -1,0 +1,109 @@
+<meta charset="utf-8" />
+<div class="listtitle_xk red"><span><img src="img/u270.png" alt="" /></span><span>管理订单</span>
+	<a class="button blue">+增加</a>
+	<a class="button blue" chartype="pie" charname="OrderPie">订单交易额比例分析</a>
+	<a class="button blue" chartype="column" charname="OrderPic">订单交易额数据统计</a>
+</div>
+<div class="listgrp_xk">
+	<div class="inquirybox_xk">
+		<!-- <div class="inquiry_xk">
+			<select id="orderStatus_zyl" name="" style="float:left;height:34px;">
+				<option value="1">有效订单</option>
+				<option value="0">全部订单</option>
+				<option value="2">无效订单</option>
+			</select>
+		</div> -->
+	</div>
+	<div style="overflow: auto;">
+		<table class="list_xk" cellspacing="0">
+			<thead>
+				<tr class="listheader_xk">
+					<td class="num_xk"></td>
+					<td>
+						<a>订单编号</a><input type="text" class="search" name='ordernum_z' style="height:20px;width:80%;">
+					</td>
+					<td>
+						<a>取货时间</a><input type="text" class="search" name='callTime_z' style="height:20px;width:80%;">
+					</td>
+					<td>
+						<a>取货地址</a><input type="text" class="search" name='deliverAddr_z' style="height:20px;width:80%;">
+					</td>
+					<td>
+						<a>送货地址</a><input type="text" class="search" name='receiptAddr_z' style="height:20px;width:80%;">
+					</td>
+					<td>
+						<a>取货车辆</a><input type="text" class="search" name='vehicleId_z' style="height:20px;width:80%;">
+					</td>
+					<!-- <td>
+						<a>异常信息</a><input type="text" class="search" name='title_z' style="height:20px;width:80%;">
+					</td> -->
+					<td>
+						<a>订单状态</a><!-- <input type="text" class="search" name='orderStatus' style="height:20px;width:80%;"> -->
+						<select name="" class="select status_z" style="height:24px;">
+							<option value="">全部订单</option>
+							<option value="0">待分配</option>
+							<option value="3">待取货</option>
+							<option value="4">待送达</option>
+							<option value="8">待结算</option>
+							<option value="1">已完成</option>
+						</select>
+					</td>
+					<td>
+						<a>具体操作</a>
+					</td>
+					<!---->
+				</tr>
+			</thead>
+			<tbody>
+				<!-- <tr>
+					<td>1</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>待分配</td>
+					<td>
+						<a class="button blue" style="margin:0 10px;padding:0 12px;line-height:24px;">编辑</a>
+						<a class="button blue" style="margin:0 10px;padding:0 12px;line-height:24px;">取消</a>
+						<a class="button blue" style="margin:0 10px;padding:0 12px;line-height:24px;">指派</a>
+					</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>待结算</td>
+					<td>
+						<a class="button blue" style="margin:0 10px;padding:0 12px;line-height:24px;">编辑</a>
+						<a class="button blue" style="margin:0 10px;padding:0 12px;line-height:24px;">扣款</a>
+						<a class="button blue" style="margin:0 10px;padding:0 12px;line-height:24px;">异常</a>
+						<a class="button blue" style="margin:0 10px;padding:0 12px;line-height:24px;">完成</a>
+					</td>
+				</tr> -->
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="9">第2页 共20页</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div class="page_xk"><!-- <span class="page_left_xk">显示<input type="text" class="search"/>页</span> -->
+		<ul class="page_right_xk">
+			<li>首页</li>
+			<li>上一页</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>下一页</li>
+			<li style="border: none !important;">尾页</li>
+		</ul>
+	</div>
+</div>
+<script type="text/javascript" src="zyl_js/ordermanagementManageorders_zyl.js"></script>

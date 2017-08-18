@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.cms.SystemSettingDao">
+
+	<select id="getSystemSettings" parameterType="cn.guangtong.utils.SystemSettingPageBean" resultType="cn.guangtong.entity.cms.SystemSetting">
+		select * from logistics_cms.system_setting
+		<where>
+			<if test='sortId!=0'>
+				and id=#{sortId}
+			</if>
+			<if test='sortSetType!=0'>
+				and settingtype=#{sortSetType}
+			</if>
+			<if test='sortSetkey!=null &amp;&amp; !sortSetkey.equals("")'>
+				and settingkey like concat(concat('%',#{sortSetkey}),'%')
+			</if>
+			<if test='sortSetValue!=null &amp;&amp; !sortSetValue.equals("")'>
+				and settingvalue like concat(concat('%',#{sortSetValue}),'%')
+			</if>
+			<if test='sortSetDesc!=null &amp;&amp; !sortSetDesc.equals("")'>
+				and description like concat(concat('%',#{sortSetDesc}),'%')
+			</if>
+		</where> 
+		order by ${sortInfo} ${sortType} 
+		limit #{begin},#{end} 
+	</select>
+	
+	<select id="getCounts" parameterType="cn.guangtong.utils.SystemSettingPageBean" resultType="int">
+		select count(*) from logistics_cms.system_setting
+		<where>
+			<if test='sortId!=0'>
+				and id=#{sortId}
+			</if>
+			<if test='sortSetType!=0'>
+				and settingtype=#{sortSetType}
+			</if>
+			<if test='sortSetkey!=null &amp;&amp; !sortSetkey.equals("")'>
+				and settingkey like concat(concat('%',#{sortSetkey}),'%')
+			</if>
+			<if test='sortSetValue!=null &amp;&amp; !sortSetValue.equals("")'>
+				and settingvalue like concat(concat('%',#{sortSetValue}),'%')
+			</if>
+			<if test='sortSetDesc!=null &amp;&amp; !sortSetDesc.equals("")'>
+				and description like concat(concat('%',#{sortSetDesc}),'%')
+			</if>
+		</where> 
+	</select>
+	
+	<insert id="addSystemSetting" parameterType="cn.guangtong.entity.cms.SystemSetting" useGeneratedKeys="true" keyProperty="id">
+		insert into logistics_cms.system_setting (id,settingtype,settingkey,settingvalue,description)
+		values
+		(#{id},#{settingtype},#{settingkey},#{settingvalue},#{description})
+	</insert>
+	
+	<delete id="deleteSystemSetting" parameterType="int">
+		delete from logistics_cms.system_setting where id=#{id}
+	</delete>
+	
+	<update id="updateSystemSetting" parameterType="int">
+		update logistics_cms.system_setting
+		<set>
+			<if test="settingtype!=null">settingtype=#{settingtype},</if>
+			<if test="settingkey!=null">settingkey=#{settingkey},</if>
+			<if test="settingvalue!=null">settingvalue=#{settingvalue},</if>
+			<if test="description!=null">description=#{description},</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<select id="getSystemSettingById" parameterType="int" resultType="cn.guangtong.entity.cms.SystemSetting">
+		select * from logistics_cms.system_setting where id=#{id}
+	</select>
+	
+</mapper>

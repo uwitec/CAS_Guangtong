@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.beidou.MediaItemDao">
+	<!-- 分页媒体信息 -->
+	<select id="getMediaItem" parameterType="cn.guangtong.utils.MediaItemPageBean" resultType="cn.guangtong.entity.beidou.MediaItem">
+		SELECT * from logistics_beidou.mediaitem
+		WHERE simNo=#{simNo}
+		AND mediaType=#{mediaType}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND createdate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND createdate &lt;= #{endTime}
+		</if>
+		limit #{begin},#{end}
+	</select>
+	<!-- 统计媒体信息总条数 -->
+	<select id="getMediaItemCount" parameterType="cn.guangtong.utils.MediaItemPageBean" resultType="int">
+		select count(*) FROM (SELECT * from logistics_beidou.mediaitem 
+		WHERE simNo=#{simNo}
+		AND mediaType=#{mediaType}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND createdate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND createdate &lt;= #{endTime}
+		</if>
+		) tmp
+	</select>
+</mapper>

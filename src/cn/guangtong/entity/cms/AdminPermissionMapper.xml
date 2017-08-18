@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.cms.AdminPermissionDao">
+
+	<insert id="addAdminPermission" parameterType="cn.guangtong.entity.cms.AdminPermission" useGeneratedKeys="true" keyProperty="id">
+		insert into logistics_cms.admin_permission (adminId,menuId) values (#{adminId},#{menuId})
+	</insert>
+	
+	<delete id="delAdminPerByAid" parameterType="int">
+		delete from logistics_cms.admin_permission where adminId=#{adminId} 
+	</delete>
+	
+</mapper>

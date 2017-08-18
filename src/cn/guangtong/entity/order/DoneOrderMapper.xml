@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.guangtong.dao.order.DoneOrderDao">
+
+	
+	<!-- 插入一条完成记录  -->
+	<insert id="iDoneOrder" parameterType="cn.guangtong.entity.order.UnfinishedOrder">
+		insert into logistics_order.done_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="ordernum != null">orderNum,</if>
+			<if test="orderstatus != null">orderStatus,</if>
+			<if test="driverid != null">driverId,</if>
+			<if test="vehicleid != null">vehicleId,</if>
+			<if test="customerid != null">customerId,</if>
+			<if test="deliver != null">deliver,</if>
+			<if test="delivertel != null">deliverTel,</if>
+			<if test="scompany != null">sCompany,</if>
+			<if test="sprovance != null">sProvance,</if>
+			<if test="deliveraddr != null">deliverAddr,</if>
+			<if test="receipt != null">receipt,</if>
+			<if test="receipttel != null">receiptTel,</if>
+			<if test="rcompany != null">rCompany,</if>
+			<if test="rprovance != null">rProvance,</if>
+			<if test="receiptaddr != null">receiptAddr,</if>
+			<if test="rounteid != null">rounteId,</if>
+			<if test="volume != null">volume,</if>
+			<if test="weight != null">weight,</if>
+			<if test="length != null">length,</if>
+			<if test="wide != null">wide,</if>
+			<if test="tall != null">tall,</if>
+			<if test="goodsnum != null">goodsNum,</if>
+			<if test="description != null">description,</if>
+			<if test="paymethod != null">payMethod,</if>
+			<if test="createtime != null">createTime,</if>
+			<if test="takerstime != null">takersTime,</if>
+			<if test="calltime != null">callTime,</if>
+			<if test="pickuptime != null">pickupTime,</if>
+			<if test="leadtime != null">leadTime,</if>
+			<if test="exceptionreasonid != null">exceptionReasonId,</if>
+			<if test="exceptionreason != null">exceptionReason,</if>
+			<if test="addrequir != null">addRequir,</if>
+			<if test="callimg != null">callImg,</if>
+			<if test="leadimg != null">leadImg,</if>
+			<if test="exceptionimg != null">exceptionImg,</if>
+			<if test="reassigntime != null">reassignTime,</if>
+			<if test="paytimetype != null">payTimeType,</if>
+			<if test="deliverlocation != null">deliverLocation,</if>
+			<if test="receiptlocation != null">receiptLocation,</if>
+			<if test="orderfrom != null">orderFrom,</if>
+			<if test="ischarter != null">isCharter,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="ordernum != null">#{ordernum},</if>
+			<if test="orderstatus != null">#{orderstatus},</if>
+			<if test="driverid != null">#{driverid},</if>
+			<if test="vehicleid != null">#{vehicleid},</if>
+			<if test="customerid != null">#{customerid},</if>
+			<if test="deliver != null">#{deliver},</if>
+			<if test="delivertel != null">#{delivertel},</if>
+			<if test="scompany != null">#{scompany},</if>
+			<if test="sprovance != null">#{sprovance},</if>
+			<if test="deliveraddr != null">#{deliveraddr},</if>
+			<if test="receipt != null">#{receipt},</if>
+			<if test="receipttel != null">#{receipttel},</if>
+			<if test="rcompany != null">#{rcompany},</if>
+			<if test="rprovance != null">#{rprovance},</if>
+			<if test="receiptaddr != null">#{receiptaddr},</if>
+			<if test="rounteid != null">#{rounteid},</if>
+			<if test="volume != null">#{volume},</if>
+			<if test="weight != null">#{weight},</if>
+			<if test="length != null">#{length},</if>
+			<if test="wide != null">#{wide},</if>
+			<if test="tall != null">#{tall},</if>
+			<if test="goodsnum != null">#{goodsnum},</if>
+			<if test="description != null">#{description},</if>
+			<if test="paymethod != null">#{paymethod},</if>
+			<if test="createtime != null">#{createtime},</if>
+			<if test="takerstime != null">#{takerstime},</if>
+			<if test="calltime != null">#{calltime},</if>
+			<if test="pickuptime != null">#{pickuptime},</if>
+			<if test="leadtime != null">#{leadtime},</if>
+			<if test="exceptionreasonid != null">#{exceptionreasonid},</if>
+			<if test="exceptionreason != null">#{exceptionreason},</if>
+			<if test="addrequir != null">#{addrequir},</if>
+			<if test="callimg != null">#{callimg},</if>
+			<if test="leadimg != null">#{leadimg},</if>
+			<if test="exceptionimg != null">#{exceptionimg},</if>
+			<if test="reassigntime != null">#{reassigntime},</if>
+			<if test="paytimetype != null">#{paytimetype},</if>
+			<if test="deliverlocation != null">#{deliverlocation},</if>
+			<if test="receiptlocation != null">#{receiptlocation},</if>
+			<if test="orderfrom != null">#{orderfrom},</if>
+			<if test="ischarter != null">#{ischarter},</if>
+		</trim>
+	</insert>
+</mapper>

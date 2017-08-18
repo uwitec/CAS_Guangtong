@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.guangtong.dao.order.DriverChargebackDao">
+	<!-- 订单扣款 iOrderDeduction -->
+   <insert id="iDriverChargeback" parameterType="cn.guangtong.entity.order.DriverChargeback" 
+		useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO logistics_order.driver_chargeback
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderId!=null">orderId,</if>
+			<if test="orderNum!=null">orderNum,</if>
+			<if test="driverId!=null">driverId,</if>
+			<if test="money!=null">money,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderId!=null">#{orderId},</if>
+			<if test="orderNum!=null">#{orderNum},</if>
+			<if test="driverId!=null">#{driverId},</if>
+			<if test="money!=null">#{money},</if>
+		</trim>
+	</insert>
+</mapper>

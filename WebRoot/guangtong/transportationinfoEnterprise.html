@@ -1,0 +1,79 @@
+<meta charset="utf-8" />
+<style>.list_xk td{width:120px;max-width:150px;}</style>
+<script>
+	var atype = $.cookie('atype');
+	if(atype == 0){
+		$(".btn_zyl").css("display","none");
+	}else if(atype == 1){
+		$(".btn_zyl").css("display","block");
+	};
+</script>
+<div class="listtitle_xk red"><span><img src="img/u270.png" alt="" /></span><span>加盟企业管理</span>
+	<a class="button blue btn_zyl">+增加</a>
+</div>
+<div class="listgrp_xk">
+	<div class="inquirybox_xk">
+		<div class="inquiry_xk">
+			<a class="button blue">批量冻结</a>
+			<a class="button blue">批量解冻</a>
+		</div>
+	</div>
+	<div style="overflow: auto;">
+		<table class="list_xk" cellspacing="0">
+			<thead>
+				<tr class="listheader_xk">
+					<td class="cherked_xk"><img src="img/uncherked.jpg" alt="" /></td>
+					<td class="num_xk"></td>
+					<td>
+						<a>企业编号</a><!-- <span><img src="img/默认.png" alt="" /></span> --><input type="text" class="search" name='id' style="height:20px;width:80%;"></td>
+					<td>
+						<a>企业名称</a><!-- <span><img src="img/默认.png" alt="" /></span> --><input type="text" class="search" name='cName' style="height:20px;width:80%;"></td>
+					<td>
+						<a>联系人</a><!-- <span><img src="img/默认.png" alt="" /></span> --><input type="text" class="search" name='contact' style="height:20px;width:80%;"></td>
+					<td>
+						<a>联系电话</a><!-- <span><img src="img/默认.png" alt="" /></span> --><input type="text" class="search" name='tel' style="height:20px;width:80%;"></td>
+					<td>
+						<a>营业执照号</a><!-- <span><img src="img/默认.png" alt="" /></span> --><input type="text" class="search" name='cNum' style="height:20px;width:80%;"></td>
+					<td>
+						<a>加入时间</a><!-- <span><img src="img/默认.png" alt="" /></span> --><input type="text" class="time_plugin_lv_onclick search" time_plugin_lv_type="2"  name='createTime' style="height:20px;width:80%;"></td>
+					<td>
+						<a>具体操作</a></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="cherked_xk"><img src="img/uncherked.jpg" alt="" /></td>
+					<td>1</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>
+						<a class="button blue" style="margin:0 10px;padding:0 12px;line-height:24px;">编辑</a>
+						<a class="button blue" style="margin:0 10px;padding:0 12px;line-height:24px;">冻结</a>
+					</td>
+				</tr>
+
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="9">第2页 共20页</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div class="page_xk"><!-- <span class="page_left_xk">显示<input type="text" class="search"/>页</span> -->
+		<ul class="page_right_xk">
+			<li>首页</li>
+			<li>上一页</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>下一页</li>
+			<li style="border: none !important;">尾页</li>
+		</ul>
+	</div>
+</div>
+<script type="text/javascript" src="zyl_js/transportationinfoEnterprise_zyl.js" ></script>

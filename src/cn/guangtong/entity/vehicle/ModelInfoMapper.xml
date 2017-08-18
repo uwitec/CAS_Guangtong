@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.vehicle.ModelInfoDao">
+	<!-- 查询所有车辆类型 -->
+	<select id="selectModelInfoAll" parameterType="cn.guangtong.utils.PageBean" resultType="java.util.Map">
+ 		select id,bulk,concat(length,'*',width,'*',height) as lwh,capacity,`desc` from logistics_vehicle.model_info limit #{begin},#{end}
+ 	</select>
+  	
+  	<!-- 查询总记录数 -->
+  	<select id="getCounts" resultType="java.lang.Integer">
+  		select count(*) from logistics_vehicle.model_info
+  	</select>
+  	
+  	<!-- 根据id查询车辆类型的具体信息 -->
+  	<select id="selectModelInfoById" resultType="java.util.Map">
+  		select id,bulk,concat(length,'*',width,'*',height) as lwh,capacity,`desc` from logistics_vehicle.model_info where id = #{id}
+  	</select>
+  	
+  	<!-- 新增车辆类型 -->
+  	<insert id="insertModelInfo" parameterType="cn.guangtong.entity.vehicle.ModelInfo">
+  		insert into logistics_vehicle.model_info(height,width,length,bulk,capacity,`desc`) values(#{height},#{width},#{length},#{bulk},#{capacity},#{desc})
+  	</insert>
+  	
+  	<!-- 修改车辆类型信息 -->
+  	<update id="updateModelInfo" parameterType="cn.guangtong.entity.vehicle.ModelInfo">
+  		update logistics_vehicle.model_info
+			 <trim prefix="set" suffixOverrides=",">
+			 	<if test="height!=null"> height=#{height},</if>
+			 	<if test="width!=null"> width=#{width},</if>
+			 	<if test="length!=null">length=#{length},</if>
+			 	<if test="bulk!=null">bulk=#{bulk},</if>
+			 	<if test="desc!=null">`desc`=#{desc},</if>
+			 	<if test="volumerate!=null">`volumerate`=#{volumerate},</if>
+			 	<if test="capacity!=null">`capacity`=#{capacity}</if>
+			 </trim>
+		where id=#{id}
+  	</update>
+  	
+  	<delete id="deleteModelInfo" parameterType="java.lang.Integer">
+  		delete from logistics_vehicle.model_info where id=#{id}
+  	</delete>
+  	
+</mapper>

@@ -1,0 +1,80 @@
+<meta charset="utf-8" />
+<div class="pophead_xk skyblue"><span><span><img src="img/u6.png"></span><span>新增车队</span></span><i><img src="img/close.png" alt="" /></i></div>
+<div class="popbody_xk  noborder gray1">
+	<table cellspacing="0" class="poptable2_xk poptable2_xk_zyl">
+		<tbody>
+			<tr>
+				<th>所属企业：</th>
+				<td><!-- <input type="text" class="search" /> -->
+					<select name="" class="select">
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>车队名称：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td class="popcomfirm_xk" colspan="2">
+					<a class="button blue save">保存</a>
+					<a class="button orange">放弃</a>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+<script>
+function getCooperations_zyl() {
+	$.ajax(config.url + "vehicleteam/getCooperations", {
+		dataType: "json",
+		type: "POST",
+		timeout: 10000,
+		success: function(data) {
+			//alert(data.obj.length);
+			for(var i = 0; i < data.obj.length; i++) {
+				if(data.obj[i].cName == undefined){
+					$(".poptable2_xk_zyl tbody tr:eq(0) td select").append('<option value="' + data.obj[i].id + '" zyl_id="' + data.obj[i].id + '"></option>');
+				}else{
+					$(".poptable2_xk_zyl tbody tr:eq(0) td select").append('<option value="' + data.obj[i].id + '" zyl_id="' + data.obj[i].id + '">' + data.obj[i].cName + '</option>');
+				}
+				
+			};
+			insert();
+		}
+	});
+};
+
+function insert() {
+	$(".popcomfirm_xk .save").click(function() {
+		data_json = {
+			"cooperationId": $(".poptable2_xk_zyl tbody tr:eq(0) td select option:selected").val(),
+			"tName": $(".poptable2_xk_zyl tbody tr:eq(1) td input").val(),
+		}
+		switch("") {
+			/*	case data_json["tName"]:
+					alert("车队名称不能为空！");
+					break;*/
+			default: $.ajax(config.url + "vehicleteam/insert", {
+				data: data_json,
+				dataType: "json",
+				type: "POST",
+				timeout: 10000,
+				success: function(data) {
+					//console.log(data.success);
+					alert(data.msg);
+					
+					$("popwindow_xk .popup_xk").html("");
+					$(".popwindow_xk").css("visibility", "hidden");
+					getVehicleTeamByPageBean();
+				}
+			});
+			break;
+		}
+
+	});
+};
+
+getCooperations_zyl();
+</script>

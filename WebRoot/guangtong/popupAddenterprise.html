@@ -1,0 +1,117 @@
+<meta charset="utf-8" />
+<script src="js/ajaxfileupload.js"></script>
+<div class="pophead_xk skyblue">
+	<span><span><img src="img/u6.png"></span><span>新增加盟企业</span></span><i><img
+		src="img/close.png" alt="" /></i>
+</div>
+<div class="popbody_xk  noborder gray1">
+	<table cellspacing="0" class="poptable2_xk poptable2_xk_zyl">
+		<tbody>
+			<tr>
+				<th>企业名称：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>联系人姓名：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>联系电话：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>地址：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>邮箱：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>营业执照号：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>营业执照：</th>
+				<td><img src="img/zxj.png" height="60px" alt="上传照片"
+					style="padding-top: 10px;padding-left: 10px;"> <input
+					type="file" name='file' id="uploadImage1" style="display: none;" />
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td class="popcomfirm_xk" colspan="2"><a
+					class="button blue save">保存</a> <a class="button orange">放弃</a></td>
+			</tr>
+
+		</tfoot>
+	</table>
+</div>
+<script>
+//新增
+//
+	function iCooperationInfo() {
+	$(".popbody_xk").on('click','img[alt="上传照片"]', function() {
+	$('img[alt="上传照片"]').attr("class","");
+	$(this).attr("class","thisname_lv_img");
+		$(this).next("input:file").click();
+	});
+	$(".popbody_xk").on('change','input:file', function() {
+		UploadImg($(this).attr("id"));
+		
+	})
+		$(".popcomfirm_xk .save").click(function() {
+			data_json = {
+				"cname" : $(".poptable2_xk_zyl tbody tr:eq(0) td input").val(),
+				"contact" : $(".poptable2_xk_zyl tbody tr:eq(1) td input").val(),
+				"tel" : $(".poptable2_xk_zyl tbody tr:eq(2) td input").val(),
+				"addr" : $(".poptable2_xk_zyl tbody tr:eq(3) td input").val(),
+				"email" : $(".poptable2_xk_zyl tbody tr:eq(4) td input").val(),
+				"cnum" : $(".poptable2_xk_zyl tbody tr:eq(5) td input").val(),
+				"cimg" : $(".poptable2_xk_zyl tbody tr:eq(6) td img").attr("img_id")
+			};
+			switch("") {
+			case data_json["cname"]:
+				alert("企业名称不能为空！");
+				break;
+			case data_json["contact"]:
+				alert("联系人姓名不能为空！");
+				break;
+			case data_json["tel"]:
+				alert("联系电话不能为空！");
+				break;
+			case data_json["addr"]:
+				alert("地址不能为空！");
+				break;
+			case data_json["email"]:
+				alert("邮箱不能为空！");
+				break;
+			case data_json["cimg"]:
+				alert("营业执照号不能为空！");
+				break;
+			case data_json["cnum"]:
+				alert("营业执照不能为空！");
+				break;
+			default:$.ajax(config.url + "cooperation/iCooperationInfo", {
+				data : data_json,
+				dataType : "json",
+				type : "POST",
+				timeout : 10000,
+				success : function(data) {
+					//console.log(data.success);
+					alert(data.msg);
+					
+					$("popwindow_xk .popup_xk").html("");
+					$(".popwindow_xk").css("visibility", "hidden");
+					sCooperationInfoA();
+				}
+			});
+			
+			}
+			
+		});
+	}
+	iCooperationInfo();
+	//上传图片
+	
+</script>

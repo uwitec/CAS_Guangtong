@@ -1,0 +1,218 @@
+<meta charset="utf-8" />
+<div class="pophead_xk skyblue"><span><span><img style="height:20px;" src="img/cmdwhite.png"></span><span>发命令</span></span><i><img src="img/close.png" alt="" /></i></div>
+<div class="popbody_xk  noborder gray1">
+	<table class="poptable_xk" cellspacing="0">
+		<tbody>
+			<tr>
+				<td style="max-width:240px;padding:0;">
+					<div class="dendrogram_xk" id="Vehiclecommand" style="max-height: 430px;">
+						<dl >
+							<dt>设置终端</dt>
+							<dd>
+								<dl>
+									<dt commandid="0x8103"><i><img src="img/xzl.png"/></i>设置终端参数</dt>
+									<dt commandid="0x8104"><i><img src="img/xzl.png"/></i>查询终端参数</dt>
+									<dt commandid="0x8106"><i><img src="img/xzl.png"/></i>查询指定终端参数</dt>
+									<dt commandid="0x8107"><i><img src="img/xzl.png"/></i>查询终端属性</dt>
+									<dt commandid="0x8105"><i><img src="img/xzl.png"/></i>终端控制</dt>
+								</dl>
+							</dd>
+						</dl>
+						<dl>
+							<dt>位置信息</dt>
+							<dd>
+								<dl>
+									<dt commandid="0x8201"><i><img src="img/xzl.png"/></i>位置信息查询</dt>
+									<dt commandid="0x8202"><i><img src="img/xzl.png"/></i>临时位置跟踪控制</dt>
+								</dl>
+							</dd>
+						</dl>
+						<dl>
+							<dt>信息交互</dt>
+							<dd>
+								<dl>
+									<dt commandid="0x8300"><i><img src="img/xzl.png"/></i>文本信息下发</dt>
+									<dt commandid="0x8301"><i><img src="img/xzl.png"/></i>事件设置</dt>
+									<dt commandid="0x8302"><i><img src="img/xzl.png"/></i>提问下发</dt>
+									<dt commandid="0x8303"><i><img src="img/xzl.png"/></i>信息点播菜单设置</dt>
+									<dt commandid="0x8304"><i><img src="img/xzl.png"/></i>信息服务</dt>
+								</dl>
+							</dd>
+						</dl>
+						<dl>
+							<dt>电话设置</dt>
+							<dd>
+								<dl>
+									<dt commandid="0x8400"><i><img src="img/xzl.png"/></i>电话回拨</dt>
+									<dt commandid="0x8401"><i><img src="img/xzl.png"/></i>设置电话本</dt>
+								</dl>
+							</dd>
+						</dl>
+						<dl>
+							<dt>车辆控制</dt>
+							<dd>
+								<dl>
+									<dt commandid="0x8500"><i><img src="img/xzl.png"/></i>车辆控制</dt>
+								</dl>
+							</dd>
+						</dl>
+						<dl>
+							<dt>多媒体设置</dt>
+							<dd>
+								<dl>
+									<dt commandid="0x8801"><i><img src="img/xzl.png"/></i>摄像头立即拍摄命令</dt>
+									<dt commandid="0x8802"><i><img src="img/xzl.png"/></i>存储多媒体数据检索</dt>
+									<dt commandid="0x8805"><i><img src="img/xzl.png"/></i>单条存储多媒体数据检索上传</dt>
+									<dt commandid="0x8803"><i><img src="img/xzl.png"/></i>存储多媒体数据上传</dt>
+									<dt commandid="0x8804"><i><img src="img/xzl.png"/></i>录音开始命令</dt>
+								</dl>
+							</dd>
+						</dl>
+						<dl>
+							<dt>数据透传</dt>
+							<dd>
+								<dl>
+									<dt commandid="0x8900"><i><img src="img/xzl.png"/></i>数据透传</dt>
+								</dl>
+							</dd>
+						</dl>
+						<dl>
+							<dt>区域设置</dt>
+							<dd>
+								<dl>
+									<dt commandid="0x8600"><i><img src="img/xzl.png"/></i>设置圆形区域</dt>
+									<dt commandid="0x8601"><i><img src="img/xzl.png"/></i>删除圆形区域</dt>
+									<dt commandid="0x8602"><i><img src="img/xzl.png"/></i>设置矩形区域</dt>
+									<dt commandid="0x8603"><i><img src="img/xzl.png"/></i>删除矩形区域</dt>
+									<dt commandid="0x8604"><i><img src="img/xzl.png"/></i>设置多边形区域</dt>
+									<dt commandid="0x8605"><i><img src="img/xzl.png"/></i>删除多边形区域</dt>
+									<dt commandid="0x8606"><i><img src="img/xzl.png"/></i>设置路线</dt>
+									<dt commandid="0x8607"><i><img src="img/xzl.png"/></i>删除路线</dt>
+								</dl>
+							</dd>
+						</dl>
+						<dl>
+							<dt>驾驶员信息采集</dt>
+							<dd>
+								<dl>
+									<dt commandid="0x8702"><i><img src="img/xzl.png"/></i>驾驶员信息采集</dt>
+								</dl>
+							</dd>
+						</dl>
+						<dl>
+							<dt>行驶记录仪采集</dt>
+							<dd>
+								<dl>
+									<dt commandid="0x8700"><i><img src="img/xzl.png"/></i>驾采集指定位置信息记录</dt>
+								</dl>
+							</dd>
+						</dl>
+					</div>
+				</td>
+				<td style="max-width:200px;padding:10px 0 0;">
+					<div style="white-space: nowrap;"><label style="line-height: 30px;margin-left:8px;" for="">查找车辆</label> <input type="text" style="width:80px;" class="search" placeholder="搜索车辆" list='checkCar' /></div>
+					<div class="dendrogram_xk" style="max-height: 400px;">
+						<dl>
+							<dt><i><img src="img/u380.png"/></i><b><img src="img/uncherked.jpg"/></b><i><img src="img/qb.png" style="height:16px;"/></i>全部车辆</dt>
+							<dd id="carList">
+								<!--<dl>
+									<dt><i><img src="img/u380.png"/></i><i><img src="img/团队.png" /></i>联华运输<span>（15辆）</span></dt>
+									<dd>
+										<dl>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+										</dl>
+									</dd>
+								</dl>
+								<dl>
+									<dt><i><img src="img/u380.png"/></i><i><img src="img/团队.png" /></i>联华运输常压<span>（10辆）</span></dt>
+									<dd>
+										<dl>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+										</dl>
+									</dd>
+								</dl>
+								<dl>
+									<dt><i><img src="img/u380.png"/></i><i><img src="img/团队.png" /></i>联华运输待报废<span>（15辆）</span></dt>
+									<dd>
+										<dl>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+										</dl>
+									</dd>
+								</dl>
+								<dl>
+									<dt><i><img src="img/u380.png"/></i><i><img src="img/团队.png" /></i>联华运输化销<span>（15辆）</span></dt>
+									<dd>
+										<dl>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+										</dl>
+									</dd>
+								</dl>
+								<dl>
+									<dt><i><img src="img/u380.png"/></i><i><img src="img/团队.png" /></i>联华运输待压力<span>（15辆）</span></dt>
+									<dd>
+										<dl>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+											<dt><i><img src="img/线路车辆 (1).png"/></i>津K5761<span>（15辆）</span></dt>
+										</dl>
+									</dd>
+								</dl>-->
+							</dd>
+						</dl>
+					</div>
+				</td>
+				<td id="Vehiclecontrol" >
+				</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="3">
+					<div class="popcomfirm_xk">
+						<a class="button blue">保存</a>
+						<a class="button orange">放弃</a>
+					</div>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+<script type="text/javascript" src="js/commandSend.js"></script>

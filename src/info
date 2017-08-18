@@ -1,0 +1,18 @@
+SELECT tmp.alarmState,tmp.velocity,tmp.online,tmp.altitude,tmp.latitude,tmp.longitude,tmp.direction,tmp.simNo,tmp.num,tmp.id,tmp.nickname,tmp.tName,tmp.cName,tmp.sName,tmp.isRead from 
+	(SELECT
+			e.alarmState,e.velocity,e.online,e.altitude,e.latitude,e.longitude,e.direction,b.simNo,b.num,b.id,b.nickname,c.tName,d.cName,f.sName,b.isRead
+	FROM
+			logistics_vehicle.vehicle_info b
+	LEFT JOIN
+			logistics_vehicle.vehicle_team c ON b.teamId=c.id
+	LEFT JOIN
+			logistics_cooperation.cooperation_info d ON c.cooperationId=d.id
+	LEFT JOIN logistics_beidou.gpsrealdata e ON b.simNo=e.simNo
+	LEFT JOIN logistics_vehicle.specialtype f ON b.subordinateBusinessId=f.id
+
+	UNION All
+	SELECT
+			ggd.alarmState,ggd.velocity,ggd.online,ggd.altitude,ggd.latitude,ggd.longitude,ggd.direction,ggd.simNo,ggd.plateNo
+			num,null id,null nickname,'TEAM' tName,'809' cName,'其它' sName,1 isRead
+	FROM gpsdb.gpsrealdata ggd) 
+as tmp

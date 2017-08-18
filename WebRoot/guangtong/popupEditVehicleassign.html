@@ -1,0 +1,161 @@
+<meta charset="utf-8" />
+<div class="pophead_xk skyblue">
+	<span><span><img src="img/u6.png"></span><span>车辆指派</span></span><i><img
+		src="img/close.png" alt="" /></i>
+</div>
+<div class="popbody_xk  noborder gray1">
+	<table class="poptable_xk poptable2_xk_zyl" cellspacing="0">
+		<thead>
+			<tr>
+				<th>可指派企业</th>
+				<th>可指派车辆</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				
+				<td>
+					<div class="dendrogram_xk" id="cooperation"
+						style="height: 400px;width:260px;text-align:center;">
+						<div style="margin-bottom:50px;">
+							<span>企业名称:</span>
+							<select name="" class="select cooperationid_zyl">
+								<option>请选择企业</option>
+							</select>
+						</div>
+						<div>
+						<lable>到期时间:</lable>
+						<input type="text" class="search time_plugin_lv_onclick endTime" time_plugin_lv_type="2" />
+						</div>
+					</div>
+				</td>
+				<td>
+					<div class="dendrogram_xk" id="vehicle"
+						style="height: 400px;width: 300px;"></div>
+				</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="2">
+					<div class="popcomfirm_xk">
+						<a class="button blue save">保存</a> <a class="button orange">放弃</a>
+					</div>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+<script>
+/* $(".Vehicleassign_zyl").unbind('click').bind('click', function() {
+	selectForeignfactionParameters();
+}) */
+
+//车辆指派
+function selectForeignfactionGetCooperation() {
+	$.ajax(config.url + "foreignfaction/getCooperation", {
+		dataType: "json",
+		type: "POST",
+		timeout: 10000,
+		success: function(data) {
+			if(data.success) {
+				if(data.t != null && data.t != undefined && data.t != "") {
+					data.obj = data.t
+				}
+				// 企业
+				for(var i = 0; i < data.obj.length; i++) {
+					//console.log(data.obj.cooperation[i].cName);
+					$(".poptable2_xk_zyl tbody tr:eq(0) td:eq(0) select").append(
+						'<option value="' + data.obj[i].id + '" zyl_id="' + data.obj[i].id + '">' +
+						data.obj[i].cName + '</option>');
+				}
+				getVehicle();
+			}
+		}
+	});
+
+};
+
+function getVehicle() {
+	$(".poptable2_xk_zyl tbody tr:eq(0) td:eq(0) select").unbind('change').bind('change', function() {
+		$.ajax(config.url + "foreignfaction/getVehicle", {
+			dataType: "json",
+			type: "POST",
+			data: {
+				"cooperationid": $(this).children("option:selected").val(),
+			},
+			timeout: 10000,
+			success: function(data) {
+				//console.log(data);
+				if(data.success) {
+					data.obj = data.t;
+					html = "";
+					html += "<dl>";
+					html += '<dt><i><img src="img/u380.png"></i><b class="cherked_xk"><img src="img/uncherked.jpg"/></b>全部车辆</dt>';
+					html += "<dd>";
+					for(one in data.obj) {
+						//console.log(one);
+						html += "<dl>";
+						html += '<dt ><i><img src="img/u380.png"></i><b class="cherked_xk"><img src="img/uncherked.jpg"/></b>' + one + '</dt>';
+						html += "<dd>";
+						for(two in data.obj[one]) {
+							html += "<dl>";
+							html += '<dt><i><img src="img/u380.png"></i><b class="cherked_xk"><img src="img/uncherked.jpg"/></b>' + two + '</dt>';
+							html += "<dd>";
+							for(three in data.obj[one][two]) {
+								html += "<dl>";
+								if(data.obj[one][two][three].isforeignfaction == 0) {
+									html += '<dt zyl_id="' + data.obj[one][two][three].id + '" ><b class="cherked_xk"><img src="img/uncherked.jpg"/></b>' + data.obj[one][two][three].num + '</dt>';
+								}
+								/* else{
+									html +='<dt zyl_id="' + data.obj.vehicle[one][two][three].id + '" ><b class="cherked_xk"><img src="img/uncherked.jpg"/></b>' + data.obj.vehicle[one][two][three].num + '</dt>';
+								} */
+								html += "</dl>";
+							}
+							html += "</dd>";
+							html += "</dl>";
+						}
+						html += "</dd>";
+						html += "</dl>";
+					}
+					html += "</dd>";
+					html += "</dl>";
+					$("#vehicle").html(html);
+				}
+			}
+		})
+	})
+	popupresize();
+	insertForeignfaction();
+}
+
+function insertForeignfaction() {
+	$(".save").click(function() {
+		var cooperationid = $(".cooperationid_zyl option:selected").attr("zyl_id");
+		var this_cooperationArr_zyl = [];
+		$("#vehicle").find("img[src='img/cherked.jpg']").each(function() {
+			if($(this).parents("dt").siblings("dd").length == 0) {
+				this_cooperationArr_zyl.push($(this).parent("b").parent("dt").attr("zyl_id"));
+			}
+		});
+		$.ajax(config.url + "foreignfaction/insertForeignfaction", {
+			data: {
+				"vehArr[]": this_cooperationArr_zyl,
+				"receivedcooperationid": cooperationid,
+				"endtime": $(".endTime").val(),
+			},
+			dataType: "json",
+			type: "POST",
+			timeout: 10000,
+			success: function(data) {
+			//	console.log(data.success);
+				alert(data.msg);
+				$("popwindow_xk .popup_xk").html("");
+				$(".popwindow_xk").css("visibility", "hidden");
+				getForeignfactionByPageBean();
+			}
+		});
+	})
+};
+selectForeignfactionGetCooperation();
+</script>

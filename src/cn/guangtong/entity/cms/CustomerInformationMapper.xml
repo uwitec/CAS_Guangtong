@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.cms.CustomerInformationDao">
+ 
+
+  <delete id="delete" parameterType="int">
+    delete from logistics_cms.customer_information
+    where id = #{id}
+  </delete>
+  
+  <insert id="insert" parameterType="cn.guangtong.entity.cms.CustomerInformation">
+    insert into logistics_cms.customer_information
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="smallimg != null">
+        smallImg,
+      </if>
+      <if test="bigimg != null">
+        bigImg,
+      </if>
+      <if test="detailsfigure != null">
+        detailsFigure,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="title != null">
+        #{title},
+      </if>
+      <if test="createtime != null">
+        #{createtime},
+      </if>
+      <if test="smallimg != null">
+        #{smallimg},
+      </if>
+      <if test="bigimg != null">
+        #{bigimg},
+      </if>
+      <if test="detailsfigure != null">
+        #{detailsfigure},
+      </if>
+      <if test="content != null">
+        #{content},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="cn.guangtong.entity.cms.CustomerInformation">
+    update logistics_cms.customer_information
+    <set>
+      <if test="title != null">
+        title = #{title},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime},
+      </if>
+      <if test="smallimg != null">
+        smallImg = #{smallimg},
+      </if>
+      <if test="bigimg != null">
+        bigImg = #{bigimg},
+      </if>
+      <if test="detailsfigure != null">
+        detailsFigure = #{detailsfigure},
+      </if>
+      <if test="content != null">
+        content = #{content},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+ 
+ 
+ 
+ 	<select id="getInformations" parameterType="cn.guangtong.utils.CustomerInformationPageBean" resultType="cn.guangtong.entity.cms.CustomerInformation">
+		select * from logistics_cms.customer_information
+		<where>
+			<if test='title!=null &amp;&amp; !title.equals("")'>
+				and title like concat(concat('%',#{title}),'%')
+			</if>
+			<if test='createtime!=null &amp;&amp; !createtime.equals("")'>
+				and createtime like concat(concat('%',#{createtime}),'%')
+			</if>
+			<if test='smallimg!=null &amp;&amp; !smallimg.equals("")'>
+				and smallimg like concat(concat('%',#{smallimg}),'%')
+			</if>
+			<if test='bigimg!=null &amp;&amp; !bigimg.equals("")'>
+				and bigimg like concat(concat('%',#{bigimg}),'%')
+			</if>
+		</where> 
+		limit #{begin},#{end} 
+	</select>
+	
+	
+	<select id="getCounts" parameterType="cn.guangtong.utils.CustomerInformationPageBean" resultType="int">
+		select count(*) from logistics_cms.customer_information
+		<where>
+			<if test='title!=null &amp;&amp; !title.equals("")'>
+				and title like concat(concat('%',#{title}),'%')
+			</if>
+			<if test='createtime!=null &amp;&amp; !createtime.equals("")'>
+				and createtime like concat(concat('%',#{createtime}),'%')
+			</if>
+			<if test='smallimg!=null &amp;&amp; !smallimg.equals("")'>
+				and smallimg like concat(concat('%',#{smallimg}),'%')
+			</if>
+			<if test='bigimg!=null &amp;&amp; !bigimg.equals("")'>
+				and bigimg like concat(concat('%',#{bigimg}),'%')
+			</if>
+		</where> 
+	</select>
+	
+		<select id="getInformationById" parameterType="int" resultType="cn.guangtong.entity.cms.CustomerInformation">
+		select * from logistics_cms.customer_information
+		where id = #{id}
+	</select>
+	
+</mapper>

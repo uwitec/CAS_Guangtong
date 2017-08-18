@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.beidou.RoadSpeedLimitDao">
+	<insert id="insertRoad" parameterType="cn.guangtong.entity.beidou.RoadSpeedLimit"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into logistics_beidou.roadspeedlimit
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="roadName != null">
+				roadName,
+			</if>
+			<if test="speedLimit != null">
+				speedLimit,
+			</if>
+			<if test="roadGrade != null">
+				roadGrade,
+			</if>
+			<if test="startTime != null">
+				startTime,
+			</if>
+			<if test="endTime != null">
+				endTime
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="roadName != null">
+				#{roadName,jdbcType=VARCHAR},
+			</if>
+			<if test="speedLimit != null">
+				#{speedLimit,jdbcType=DOUBLE},
+			</if>
+			<if test="roadGrade != null">
+				#{roadGrade,jdbcType=VARCHAR},
+			</if>
+			<if test="startTime != null">
+				#{startTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endTime != null">
+				#{endTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<insert id="insertRoadVehicle" parameterType="cn.guangtong.entity.beidou.RoadVehicle">
+		insert into logistics_beidou.roadvehicle
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="roadId != null">
+				roadId,
+			</if>
+			<if test="simNo != null">
+				simNo
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="roadId != null">
+				#{roadId,jdbcType=INTEGER},
+			</if>
+			<if test="simNo != null">
+				#{simNo,jdbcType=VARCHAR},
+			</if>
+
+		</trim>
+	</insert>
+	<select id="getAllRoad" resultType="cn.guangtong.entity.beidou.RoadSpeedLimit">
+		SELECT * from
+		logistics_beidou.roadspeedlimit
+	</select>
+	<select id="getSimNoById" parameterType="int" resultType="java.lang.String">
+		SELECT simNo from logistics_beidou.roadvehicle WHERE roadId=#{roadId}
+	</select>
+	<update id="updateAllRoad" parameterType="cn.guangtong.entity.beidou.RoadSpeedLimit">
+		update logistics_beidou.roadspeedlimit
+		<set>
+			<if test="id != null">
+				id=#{id,jdbcType=INTEGER},
+			</if>
+			<if test="roadName != null">
+				roadName = #{roadName,jdbcType=VARCHAR},
+			</if>
+			<if test="speedLimit != null">
+				speedLimit=#{speedLimit,jdbcType=DOUBLE},
+			</if>
+			<if test="roadGrade != null">
+				roadGrade=#{roadGrade,jdbcType=VARCHAR},
+			</if>
+			<if test="startTime != null">
+				startTime= #{startTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endTime != null">
+				endTime=#{endTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<delete id="deleteRoadById" parameterType="int">
+		delete from
+		logistics_beidou.roadspeedlimit
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteRoadVehicleById" parameterType="int">
+		delete from
+		logistics_beidou.roadvehicle
+		where roadId = #{roadId,jdbcType=INTEGER}
+	</delete>
+</mapper>

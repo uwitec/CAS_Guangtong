@@ -1,0 +1,94 @@
+.time_plugin_background_lv {
+	width: 100%;
+	opacity: 0;
+	position: fixed;
+	left: 0;
+	top: 0;
+	display: none;
+	z-index: 200;
+}
+
+.time_plugin_lv {
+	width: 212px;
+	border: 1px solid #e3e3e3;
+	background: #fff;
+	padding: 5px;
+	font-size: 14px;
+	font-family: "微软雅黑";
+	display: none;
+	position: absolute;
+	z-index: 304;
+}
+
+.time_plugin_lv ul {
+	display: block;
+	margin: 0;
+	padding: 0;
+	border: 1px solid #E3E3E3;
+}
+
+.time_plugin_lv ul li {
+	display: inline-block;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	width: 30px;
+	line-height: 30px;
+	text-align: center;
+}
+
+.time_plugin_lv .time_plugin_top_lv {
+	border: 1px solid #E3E3E3;
+	padding: 5px;
+}
+
+.time_plugin_lv .time_plugin_top_lv div {
+	display: inline-block;
+}
+
+.time_plugin_lv .time_plugin_top_lv div span {
+	margin: 0 10px;
+}
+
+.time_plugin_lv .time_plugin_top_lv div i {
+	cursor: pointer;
+}
+
+.time_plugin_lv .time_plugin_top_lv .time_plugin_top_right_lv {
+	float: right;
+}
+
+.time_plugin_lv .time_plugin_week_lv {
+	margin: 5px 0;
+}
+
+.time_plugin_lv .time_plugin_bottom_lv {
+	text-align: right;
+	border: 1px solid #E3E3E3;
+	margin-top: 5px;
+}
+
+.time_plugin_lv .time_plugin_bottom_lv a {
+	display: inline-block;
+	padding: 0 10px;
+	line-height: 24px;
+	cursor: pointer;
+}
+
+.time_plugin_lv .time_plugin_bottom_lv a select {
+	height: 20px;
+}
+
+.time_plugin_day_lv li {
+	color: #999;
+	border-radius: 40px;
+}
+
+.time_plugin_lv_click:hover {
+	cursor: pointer;
+	background: #e3e3e3;
+}
+
+.time_plugin_lv_click {
+	color: #666 !important;
+}

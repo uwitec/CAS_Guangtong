@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.cms.PlatLogDao">
+	<!-- 操作日志报表 超管-->
+	<select id="getPlatLogs" parameterType="cn.guangtong.utils.PlatLogPageBean" resultType="cn.guangtong.entity.cms.PlatLog">
+		select id,username,module,context,date_format(issueTime,'%Y-%c-%d
+		%h:%i:%s')
+		as issueTime,ip from logistics_cms.platlog
+		<where>
+			<if test='username!=null &amp;&amp; !username.equals("")'>
+				and username like concat(concat('%',#{username}),'%')
+			</if>
+			<if test='module!=null &amp;&amp; !module.equals("")'>
+				and module like concat(concat('%',#{module}),'%')
+			</if>
+			<if test='ip!=null &amp;&amp; !ip.equals("")'>
+				and ip like concat(concat('%',#{ip}),'%')
+			</if>
+			<if test='context!=null &amp;&amp; !context.equals("")'>
+				and context like concat(concat('%',#{context}),'%')
+			</if>
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and issueTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and issueTime &lt;= #{endTime}
+			</if>
+		</where>
+		order by issueTime desc
+		limit #{begin},#{end} 
+	</select>
+	<!-- 操作日志报表导出 超管-->
+	<select id="getPlatLogsExcel" parameterType="cn.guangtong.utils.PlatLogPageBean" resultType="cn.guangtong.entity.cms.PlatLog">
+		select id,username,module,context,date_format(issueTime,'%Y-%c-%d
+		%h:%i:%s')
+		as issueTime,ip from logistics_cms.platlog
+		<where>
+			<if test='username!=null &amp;&amp; !username.equals("")'>
+				and username like concat(concat('%',#{username}),'%')
+			</if>
+			<if test='module!=null &amp;&amp; !module.equals("")'>
+				and module like concat(concat('%',#{module}),'%')
+			</if>
+			<if test='ip!=null &amp;&amp; !ip.equals("")'>
+				and ip like concat(concat('%',#{ip}),'%')
+			</if>
+			<if test='context!=null &amp;&amp; !context.equals("")'>
+				and context like concat(concat('%',#{context}),'%')
+			</if>
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and issueTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and issueTime &lt;= #{endTime}
+			</if>
+		</where>
+		order by ${sortInfo} ${sortType} 
+	</select>
+	
+	<!-- 操作日志报表记录数 超管-->
+	<select id="countOfPlatLogs" parameterType="cn.guangtong.utils.PlatLogPageBean" resultType="int">
+		select count(*) from platlog
+		<where>
+			<if test='username!=null &amp;&amp; !username.equals("")'>
+				and username like concat(concat('%',#{username}),'%')
+			</if>
+			<if test='module!=null &amp;&amp; !module.equals("")'>
+				and module like concat(concat('%',#{module}),'%')
+			</if>
+			<if test='context!=null &amp;&amp; !context.equals("")'>
+				and context like concat(concat('%',#{context}),'%')
+			</if>
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and issueTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and issueTime &lt;= #{endTime}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 操作日志报表 普通-->
+	<select id="getPlatLogsByOther" parameterType="cn.guangtong.utils.PlatLogPageBean" resultType="cn.guangtong.entity.cms.PlatLog">
+		SELECT lcp.id,lcp.username,lcp.module,lcp.context,DATE_FORMAT(lcp.issueTime,'%Y-%c-%d %h:%i:%s')	AS issueTime,lcp.ip 
+		FROM logistics_cms.platlog lcp
+		LEFT JOIN 
+		logistics_cms.admin a
+		ON lcp.username = a.username
+		<where>
+			<if test='username!=null &amp;&amp; !username.equals("")'>
+				and username like concat(concat('%',#{username}),'%')
+			</if>
+			<if test='module!=null &amp;&amp; !module.equals("")'>
+				and module like concat(concat('%',#{module}),'%')
+			</if>
+			<if test='ip!=null &amp;&amp; !ip.equals("")'>
+				and ip like concat(concat('%',#{ip}),'%')
+			</if>
+			<if test='context!=null &amp;&amp; !context.equals("")'>
+				and context like concat(concat('%',#{context}),'%')
+			</if>
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and issueTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and issueTime &lt;= #{endTime}
+			</if>
+			and (
+				a.id = #{adminId}
+				OR
+				a.pid = #{adminId}
+			)
+		</where>
+		order by issueTime desc
+		limit #{begin},#{end} 
+	</select>
+	
+	<!-- 操作日志报表导出 普通-->
+	<select id="getPlatLogsExcelByOther" parameterType="cn.guangtong.utils.PlatLogPageBean" resultType="cn.guangtong.entity.cms.PlatLog">
+		SELECT lcp.id,lcp.username,lcp.module,lcp.context,DATE_FORMAT(lcp.issueTime,'%Y-%c-%d %h:%i:%s')	AS issueTime,lcp.ip 
+		FROM logistics_cms.platlog lcp
+		LEFT JOIN 
+		logistics_cms.admin a
+		ON lcp.username = a.username
+		<where>
+			<if test='username!=null &amp;&amp; !username.equals("")'>
+				and username like concat(concat('%',#{username}),'%')
+			</if>
+			<if test='module!=null &amp;&amp; !module.equals("")'>
+				and module like concat(concat('%',#{module}),'%')
+			</if>
+			<if test='ip!=null &amp;&amp; !ip.equals("")'>
+				and ip like concat(concat('%',#{ip}),'%')
+			</if>
+			<if test='context!=null &amp;&amp; !context.equals("")'>
+				and context like concat(concat('%',#{context}),'%')
+			</if>
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and issueTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and issueTime &lt;= #{endTime}
+			</if>
+			and (
+				a.id = #{adminId}
+				OR
+				a.pid = #{adminId}
+			)
+		</where>
+		order by ${sortInfo} ${sortType} 
+	</select>
+	
+	<!-- 操作日志报表记录数 普通-->
+	<select id="countOfPlatLogsByOther" parameterType="cn.guangtong.utils.PlatLogPageBean" resultType="int">
+		SELECT count(*) 
+		FROM logistics_cms.platlog lcp
+		LEFT JOIN 
+		logistics_cms.admin a
+		ON lcp.username = a.username
+		<where>
+			<if test='username!=null &amp;&amp; !username.equals("")'>
+				and username like concat(concat('%',#{username}),'%')
+			</if>
+			<if test='module!=null &amp;&amp; !module.equals("")'>
+				and module like concat(concat('%',#{module}),'%')
+			</if>
+			<if test='context!=null &amp;&amp; !context.equals("")'>
+				and context like concat(concat('%',#{context}),'%')
+			</if>
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and issueTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and issueTime &lt;= #{endTime}
+			</if>
+			and (
+				a.id = #{adminId}
+				OR
+				a.pid = #{adminId}
+			)
+		</where>
+	</select>
+	
+	<select id="getCounts" parameterType="cn.guangtong.utils.PlatLogPageBean" resultType="int">
+		select count(*) from logistics_cms.platlog
+		<where>
+			<if test='username!=null &amp;&amp; !username.equals("")'>
+				and username like concat(concat('%',#{username}),'%')
+			</if>
+			<if test='module!=null &amp;&amp; !module.equals("")'>
+				and module like concat(concat('%',#{module}),'%')
+			</if>
+			<if test='context!=null &amp;&amp; !context.equals("")'>
+				and context like concat(concat('%',#{context}),'%')
+			</if>
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and issueTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and issueTime &lt;= #{endTime}
+			</if>
+		</where>
+	</select>
+	<insert id="addPlatLog" parameterType="cn.guangtong.entity.cms.PlatLog" useGeneratedKeys="true" keyProperty="id">
+		insert into logistics_cms.platlog (id,ip,username,module,context,issueTime)
+		values
+		(#{id},#{ip},#{username},#{module},#{context},#{issueTime})
+	</insert>
+	
+	<select id="getAllPlatLogs" parameterType="cn.guangtong.utils.PlatLogPageBean"  resultType="cn.guangtong.entity.cms.PlatLog">
+		select * from logistics_cms.platlog
+		<where>
+			<if test='username!=null &amp;&amp; !username.equals("")'>
+				and username like concat(concat('%',#{username}),'%')
+			</if>
+			<if test='module!=null &amp;&amp; !module.equals("")'>
+				and module like concat(concat('%',#{module}),'%')
+			</if>
+			<if test='ip!=null &amp;&amp; !ip.equals("")'>
+				and ip like concat(concat('%',#{ip}),'%')
+			</if>
+			<if test='context!=null &amp;&amp; !context.equals("")'>
+				and context like concat(concat('%',#{context}),'%')
+			</if>
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and issueTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and issueTime &lt;= #{endTime}
+			</if>
+		</where>
+	</select>
+	
+</mapper>

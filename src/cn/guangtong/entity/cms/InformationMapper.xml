@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.cms.InformationDao">
+
+	<select id="getInformations" parameterType="cn.guangtong.utils.InformationPageBean" resultType="cn.guangtong.entity.cms.Information">
+		select * from logistics_cms.information 
+		<where>
+			<if test='title!=null &amp;&amp; !title.equals("")'>
+				and title like concat(concat('%',#{title}),'%')
+			</if>
+			<if test='createtime!=null &amp;&amp; !createtime.equals("")'>
+				and createtime like concat(concat('%',#{createtime}),'%')
+			</if>
+			<if test='smallimg!=null &amp;&amp; !smallimg.equals("")'>
+				and smallimg like concat(concat('%',#{smallimg}),'%')
+			</if>
+			<if test='bigimg!=null &amp;&amp; !bigimg.equals("")'>
+				and bigimg like concat(concat('%',#{bigimg}),'%')
+			</if>
+		</where> 
+		order by ${sortInfo} ${sortType} 
+		limit #{begin},#{end} 
+	</select>
+	
+	<select id="getCounts" resultType="int">
+		select count(*) from logistics_cms.information
+		<where>
+			<if test='title!=null &amp;&amp; !title.equals("")'>
+				and title like concat(concat('%',#{title}),'%')
+				
+			</if>
+			<if test='createtime!=null &amp;&amp; !createtime.equals("")'>
+				and createtime like concat(concat('%',#{createtime}),'%')
+			</if>
+			<if test='smallimg!=null &amp;&amp; !smallimg.equals("")'>
+				and smallimg like concat(concat('%',#{smallimg}),'%')
+			</if>
+			<if test='bigimg!=null &amp;&amp; !bigimg.equals("")'>
+				and bigimg like concat(concat('%',#{bigimg}),'%')
+			</if>
+		</where>  
+	</select>
+	
+	<insert id="addInformation" parameterType="cn.guangtong.entity.cms.Information" useGeneratedKeys="true" keyProperty="id">
+		insert into logistics_cms.information  (id,title,createtime,smallimg,bigimg,detailsfigure,content)
+		values
+		(#{id},#{title},#{createtime},#{smallimg},#{bigimg},#{detailsfigure},#{content})
+	</insert>
+	
+	<delete id="deleteInformation" parameterType="int" >
+		delete from logistics_cms.information where id=#{id}
+	</delete>
+	
+	<update id="updateInformation" parameterType="int">
+		update logistics_cms.information 
+		<set>
+			<if test="title!=null">title=#{title},</if>
+			<if test="content!=null">content=#{content},</if>
+			<if test="smallimg!=null">smallimg=#{smallimg},</if>
+			<if test="bigimg!=null">bigimg=#{bigimg},</if>
+			<if test="detailsfigure!=null">detailsfigure=#{detailsfigure},</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<select id="getInformationById" parameterType="int" resultType="cn.guangtong.entity.cms.Information">
+		select * from logistics_cms.information where id=#{id}
+	</select>
+	
+</mapper>

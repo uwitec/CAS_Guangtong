@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.notices.AdminNoticesDao">
+
+	<insert id="insertAdminNotices" parameterType="cn.guangtong.entity.cms.AdminNotices"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		logistics_cms.admin_notices (senderId,receiverId,noticesId) values
+		(#{senderid},#{receiverid},#{noticesid})
+	</insert>
+
+
+	<select id="getNoReadNoticesNum" parameterType="int" resultType="int">
+		select count(*) from logistics_cms.admin_notices a
+		where
+		receiverId=#{adminId} and isRead=0
+	</select>
+
+	<!-- 查询未读公告 -->
+	<select id="getNoReadNoticesById" parameterType="int"
+		resultType="cn.guangtong.model.NoticesModel">
+		SELECT
+		a.id,a.isRead,b.title,b.content,b.issueTime,c.username
+		senderAdminName
+		FROM
+		logistics_cms.admin_notices a
+		LEFT JOIN
+		logistics_cms.notices b ON
+		a.noticesId=b.id
+		LEFT JOIN
+		logistics_cms.admin c ON
+		a.senderId=c.id
+		WHERE
+		a.receiverId=#{1}
+		AND
+		a.id&lt;#{0}
+		ORDER BY b.issueTime DESC
+		LIMIT 0,5
+	</select>
+
+	<!-- 查询未读公告 -->
+	<select id="getNoReadNotices" parameterType="int"
+		resultType="cn.guangtong.model.NoticesModel">
+		SELECT
+		a.id,a.isRead,b.title,b.content,b.issueTime,c.username
+		senderAdminName
+		FROM
+		logistics_cms.admin_notices a
+		LEFT JOIN
+		logistics_cms.notices b ON
+		a.noticesId=b.id
+		LEFT JOIN
+		logistics_cms.admin c ON
+		a.senderId=c.id
+		WHERE
+		a.receiverId=#{0}
+		ORDER BY
+		b.issueTime DESC
+		LIMIT 0,5
+	</select>
+
+	<update id="isRead" parameterType="int">
+		update
+		logistics_cms.admin_notices a
+		set a.isRead=1
+		where
+		a.id =#{id}
+	</update>
+
+	<select id="getNoticesModelById" parameterType="int"
+		resultType="cn.guangtong.model.NoticesModel">
+		SELECT a.id,b.title,b.content,b.issueTime,c.id
+		senderId,c.username senderAdminName
+		FROM logistics_cms.admin_notices a
+		LEFT JOIN logistics_cms.notices b ON a.noticesId=b.id
+		LEFT JOIN
+		logistics_cms.admin c ON a.senderId=c.id
+		WHERE a.id=#{id}
+	</select>
+
+	<delete id="deleteAdminNotices" parameterType="int">
+		delete from
+		logistics_cms.admin_notices where id=#{id}
+	</delete>
+
+	<!-- 查询公告信息 -->
+	<select id="getNoticesAll" parameterType="cn.guangtong.utils.NoReadNoticesPageBean"
+		resultType="cn.guangtong.model.NoticesModel">
+		SELECT
+		a.id,a.isRead,b.title,b.content,date_format(b.issueTime,'%Y-%c-%d %h:%i:%s') as issueTime,c.username
+		senderAdminName
+		FROM
+		logistics_cms.admin_notices a
+		LEFT JOIN
+		logistics_cms.notices b ON
+		a.noticesId=b.id
+		LEFT JOIN
+		logistics_cms.admin c ON
+		a.senderId=c.id
+		WHERE
+		a.receiverId=#{adminId}
+		<if test="selCondition!=null and selCondition!='' ">
+			AND
+			CONCAT(b.title,b.content,b.issueTime) LIKE "%"#{selCondition}"%"
+		</if>
+		ORDER BY
+		b.issueTime DESC
+		LIMIT #{begin},#{end}
+	</select>
+
+	<select id="getNoticesAllCounts" parameterType="cn.guangtong.utils.NoReadNoticesPageBean"
+		resultType="int">
+		SELECT count(*) FROM(SELECT
+		a.id,a.isRead,b.title,b.content,b.issueTime,c.username
+		senderAdminName
+		FROM
+		logistics_cms.admin_notices a
+		LEFT JOIN
+		logistics_cms.notices b ON
+		a.noticesId=b.id
+		LEFT JOIN
+		logistics_cms.admin c ON
+		a.senderId=c.id
+		WHERE
+		a.receiverId=#{adminId}
+		<if test="selCondition!=null and selCondition!='' ">
+			AND
+			CONCAT(b.title,b.content,b.issueTime) LIKE "%"#{selCondition}"%"
+		</if>
+		ORDER BY
+		b.issueTime DESC) temp
+	</select>
+
+</mapper>

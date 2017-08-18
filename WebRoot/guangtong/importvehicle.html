@@ -1,0 +1,24 @@
+<meta charset="utf-8" />
+<script type="text/javascript" src="zyl_js/ajaxfileupload.js"></script>
+<div class="pophead_xk blue">
+	<span><span><img src="img/u6.png"></span><span>导入数据</span></span><i><img src="img/close.png" alt="" /></i>
+</div>
+<div class="popbody_xk  noborder gray1" style="width:450px;">
+	<div class="popcomfirm_xk" style="text-align: center;padding: 0;">
+		<div>
+			<input type="file" name='file' id="fileToUploadxy" class="search" style="width:300px;margin:30px 10px;" /> <a class="button white" style="color:#333333;border: 1px solid #333333;padding: 3px;">上传文件</a>
+		</div>
+	</div>
+
+	<div class="popcomfirm_xk" style="text-align: center;padding: 0;">
+		<a class="button blue import" style="margin:40px 15px;">导入</a>
+	</div>
+</div>
+
+
+<script>
+//导入
+$(".import").click(function() {
+	VehicelsExcelImport("fileToUploadxy");
+})
+</script>

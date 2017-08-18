@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.customer.CustomerDao">
+	
+	<update id="updateCommonReceipt" parameterType="map">
+		UPDATE 
+			common_receipt 
+		<set>
+			<if test="rName!=null">rName=#{rName},</if>
+			<if test="provance!=null">provance=#{provance},</if>
+			<if test="addr!=null">addr=#{addr},</if>
+			<if test="tel!=null">tel=#{tel},</if>
+			<if test="location!=null">location=#{location},</if>
+		</set>
+       	WHERE 
+       		company = #{company} 
+       	AND  
+       		customerId=#{customerId} 
+	</update>
+	
+	<insert id="addCommonReceipt" parameterType="cn.guangtong.entity.customer.CommonReceipt">
+		INSERT INTO 
+			common_receipt (company,customerId,rName,provance,addr,tel,location) 
+        VALUES (#{company},#{customerid},#{rname},#{provance},#{addr},#{tel},#{location})
+	</insert>
+	
+	<update id="updateCommonDeliver" parameterType="map">
+		UPDATE 
+			common_deliver 
+		<set>
+			<if test="dName!=null">dName=#{dName},</if>
+			<if test="provance!=null">provance=#{provance},</if>
+			<if test="addr!=null">addr=#{addr},</if>
+			<if test="tel!=null">tel=#{tel},</if>
+			<if test="location!=null">location=#{location},</if>
+		</set>
+       	WHERE 
+       		company = #{company} 
+       	and 
+       		customerId=#{customerId}
+	</update>
+	
+	<insert id="addCommonDeliver" parameterType="cn.guangtong.entity.customer.CommonReceipt">
+		INSERT INTO 
+			common_deliver (company,customerId,dName,provance,addr,tel,location)
+        VALUES (#{company},#{customerid},#{dname},#{provance},#{addr},#{tel},#{location} )
+	</insert>
+	
+	<select id="getCommonReceiptByCondition" parameterType="string" resultType="cn.guangtong.entity.customer.CommonReceipt">
+		SELECT * FROM common_receipt WHERE company = #{0} and customerId = #{1}
+	</select>
+	
+	<select id="getCommonDeliverByCondition" parameterType="string" resultType="cn.guangtong.entity.customer.CommonDeliver">
+		SELECT * FROM common_deliver WHERE company = #{0} and customerId = #{1}
+	</select>
+	
+	<select id="getCustomers" parameterType="cn.guangtong.utils.CustomerInfoPageBean"
+		resultType="cn.guangtong.entity.customer.CustomerInfo">
+		SELECT * from(
+		SELECT *,(CASE cType
+		WHEN 1 THEN '后台添加' WHEN 2 THEN
+		'用户端注册'
+		END) as cTypeName
+		FROM logistics_customer.customer_info
+		where
+		isDel = 1
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and id like "%"#{id}"%"
+		</if>
+		<if test='cname!=null&amp;&amp;!cname.equals("")'>
+			and cname like "%"#{cname}"%"
+		</if>
+		<if test='contactname!=null&amp;&amp;!contactname.equals("")'>
+			and contactname like "%"#{contactname}"%"
+		</if>
+		<if test='tel!=null&amp;&amp;!tel.equals("")'>
+			and tel like "%"#{tel}"%"
+		</if>
+		<if test='addr!=null&amp;&amp;!addr.equals("")'>
+			and addr like "%"#{addr}"%"
+		</if>
+		)as tmp where 1=1
+		<if test='ctypename!=null&amp;&amp;!ctypename.equals("")'>
+			and tmp.ctypename like "%"#{ctypename}"%"
+		</if>
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+	
+	<select id="getCounts" resultType="int">
+		select count(*) FROM
+		logistics_customer.customer_info where isDel = 1
+	</select>
+	<select id="getCustomersPie" resultType="map">
+SELECT addr,count(*) as count
+		FROM
+		logistics_customer.customer_info
+		where isDel = 1
+GROUP BY addr
+	</select>
+	<select id="getCustomersExcel" parameterType="cn.guangtong.utils.CustomerInfoPageBean"
+		resultType="cn.guangtong.excel.Customer">
+		SELECT
+		id,cname,contactname,tel,addr,(CASE cType WHEN 1 THEN
+		'后台添加' WHEN 2 THEN '用户端注册' END) as cTypeName
+		FROM
+		logistics_customer.customer_info
+		where isDel = 1
+	</select>
+	<!-- 增加一个客戶信息 -->
+	<insert id="iCustomerInfo" parameterType="cn.guangtong.entity.customer.CustomerInfo"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO logistics_customer.customer_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="cname != null">cname,</if>
+			<if test="tel != null">tel,</if>
+			<if test="contactname != null">contactname,</if>
+			<if test="password != null">password,</if>
+			<if test="face != null">face,</if>
+			<if test="addr != null">addr,</if>
+			<if test="email != null">email,</if>
+			<if test="wechataccount != null">wechataccount,</if>
+			<if test="qqaccount != null">qqaccount,</if>
+			<if test="isdel != null">isdel,</if>
+			<if test="androidcid != null">androidcid,</if>
+			<if test="ioscid != null">ioscid,</if>
+			<if test="gender != null">gender,</if>
+			<if test="createtime != null">createtime,</if>
+			<if test="ctype != null">ctype,</if>
+			<if test="balance != null">balance,</if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="cname != null">#{cname},</if>
+			<if test="tel != null">#{tel},</if>
+			<if test="contactname != null">#{contactname},</if>
+			<if test="password != null">#{password},</if>
+			<if test="face != null">#{face},</if>
+			<if test="addr != null">#{addr},</if>
+			<if test="email != null">#{email},</if>
+			<if test="wechataccount != null">#{wechataccount},</if>
+			<if test="qqaccount != null">#{qqaccount},</if>
+			<if test="isdel != null">#{isdel},</if>
+			<if test="androidcid != null">#{androidcid},</if>
+			<if test="ioscid != null">#{ioscid},</if>
+			<if test="gender != null">#{gender},</if>
+			<if test="createtime != null">#{createtime},</if>
+			<if test="ctype != null">#{ctype},</if>
+			<if test="balance != null">#{balance},</if>
+		</trim>
+	</insert>
+
+	<!-- 根据Id查询指定客户信息 -->
+	<select id="sCustomerInfoById" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT
+		lcci.id,lcci.cName,lcci.tel,lcci.contactName,lcci.addr,lcci.email,lcci.qqAccount,lcci.wechatAccount,lcci.createTime,(CASE
+		cType WHEN 1 THEN '后台添加' WHEN 2 THEN '用户端注册' END) as cTypeName
+		FROM
+		logistics_customer.customer_info lcci
+		WHERE lcci.isDel =
+		1 and
+		lcci.id=#{id}
+	</select>
+
+	<!-- 根据id修改指定客户信息 -->
+	<update id="uCustomerInfo" parameterType="cn.guangtong.entity.customer.CustomerInfo">
+		UPDATE logistics_customer.customer_info
+		<set>
+			<if test="cname != null">cname = #{cname},</if>
+			<if test="contactname != null">contactname = #{contactname},</if>
+			<if test="tel != null">tel = #{tel},</if>
+			<if test="email != null">email = #{email},</if>
+			<if test="addr != null">addr = #{addr},</if>
+			<if test="qqaccount != null">qqaccount = #{qqaccount},</if>
+			<if test="wechataccount != null">wechataccount = #{wechataccount},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<!-- 根据id删除指定客户信息 -->
+	<update id="dCustomerInfo" parameterType="java.lang.String">
+		UPDATE
+		logistics_customer.customer_info lcci
+		SET lcci.isDel =
+		#{isDel}
+		WHERE
+		lcci.id =
+		#{id}
+	</update>
+	
+	
+	<select id="getCustomerLikeCname" parameterType="java.lang.String"
+		resultType="cn.guangtong.entity.customer.CustomerInfo">
+		SELECT * FROM logistics_customer.customer_info lci WHERE lci.cName LIKE "%"#{cName}"%"
+	</select>
+	
+</mapper>

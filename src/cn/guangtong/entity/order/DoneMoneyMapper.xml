@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.guangtong.dao.order.DoneMoneyDao">
+	<!-- 插入一条完成记录 insertDoneMoney  -->
+	<insert id="insertDoneMoney" parameterType="cn.guangtong.entity.order.DoneMoney">
+		INSERT INTO logistics_order.done_money
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="ordernum != null">orderNum,</if>
+			<if test="driverid != null">driverId,</if>
+			<if test="insurancefee != null">insuranceFee,</if>
+			<if test="floorfee != null">floorFee,</if>
+			<if test="handlingfee != null">handlingFee,</if>
+			<if test="freightfee != null">freightFee,</if>
+			<if test="drivermoney != null">driverMoney,</if>
+			<if test="totalmoney != null">totalMoney,</if>
+			<if test="settle != null">settle,</if>
+			<if test="settleamount != null">settleAmount,</if>
+			<if test="driversettle != null">driverSettle,</if>
+			<if test="paytime != null">payTime,</if>
+			<if test="dgrade != null">dGrade,</if>
+			<if test="hasgrade != null">hasGrade,</if>
+			<if test="assessment != null">assessment,</if>
+			<if test="assesstime != null">assessTime,</if>
+			<if test="payment != null">payment,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="ordernum != null">#{ordernum},</if>
+			<if test="driverid != null">#{driverid},</if>
+			<if test="insurancefee != null">#{insurancefee},</if>
+			<if test="floorfee != null">#{floorfee},</if>
+			<if test="handlingfee != null">#{handlingfee},</if>
+			<if test="freightfee != null">#{freightfee},</if>
+			<if test="drivermoney != null">#{drivermoney},</if>
+			<if test="totalmoney != null">#{totalmoney},</if>
+			<if test="settle != null">#{settle},</if>
+			<if test="settleamount != null">#{settleamount},</if>
+			<if test="driversettle != null">#{driversettle},</if>
+			<if test="paytime != null">#{paytime},</if>
+			<if test="dgrade != null">#{dgrade},</if>
+			<if test="hasgrade != null">#{hasgrade},</if>
+			<if test="assessment != null">#{assessment},</if>
+			<if test="assesstime != null">#{assesstime},</if>
+			<if test="payment != null">#{payment},</if>
+		</trim>
+	</insert>
+	
+</mapper>

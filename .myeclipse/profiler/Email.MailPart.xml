@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<entry key="app_preset_prof_preset_name">Email.MailPart Launch Configuration</entry>
+<entry key="profiler.settings.sampling.interval">10</entry>
+<entry key="app_preset_prof_preset_filter_s"/>
+<entry key="app_preset_prof_preset_filter_p">cn.guangtong.controller.beidou.*,&#13;
+cn.guangtong.controller.cms.*,&#13;
+cn.guangtong.controller.common.*,&#13;
+cn.guangtong.controller.cooperation.*,&#13;
+cn.guangtong.controller.customer.*,&#13;
+cn.guangtong.controller.driver.*,&#13;
+cn.guangtong.controller.notices.*,&#13;
+cn.guangtong.controller.order.*,&#13;
+cn.guangtong.controller.total.*,&#13;
+cn.guangtong.controller.utils.*,&#13;
+cn.guangtong.controller.vehicle.*,&#13;
+cn.guangtong.dao.beidou.*,&#13;
+cn.guangtong.dao.cms.*,&#13;
+cn.guangtong.dao.cooperation.*,&#13;
+cn.guangtong.dao.customer.*,&#13;
+cn.guangtong.dao.driver.*,&#13;
+cn.guangtong.dao.notices.*,&#13;
+cn.guangtong.dao.order.*,&#13;
+cn.guangtong.dao.total.*,&#13;
+cn.guangtong.dao.vehicle.*,&#13;
+cn.guangtong.entity.beidou.*,&#13;
+cn.guangtong.entity.cms.*,&#13;
+cn.guangtong.entity.cooperation.*,&#13;
+cn.guangtong.entity.customer.*,&#13;
+cn.guangtong.entity.driver.*,&#13;
+cn.guangtong.entity.order.*,&#13;
+cn.guangtong.entity.total.*,&#13;
+cn.guangtong.entity.vehicle.*,&#13;
+cn.guangtong.excel.*,&#13;
+cn.guangtong.model.*,&#13;
+cn.guangtong.service.beidou.*,&#13;
+cn.guangtong.service.cms.*,&#13;
+cn.guangtong.service.coopertation.*,&#13;
+cn.guangtong.service.customer.*,&#13;
+cn.guangtong.service.driver.*,&#13;
+cn.guangtong.service.notices.*,&#13;
+cn.guangtong.service.order.*,&#13;
+cn.guangtong.service.total.*,&#13;
+cn.guangtong.service.vehicle.*,&#13;
+cn.guangtong.test.*,&#13;
+cn.guangtong.utils.*,&#13;
+org.apache.shiro.realm.jdbc.*,&#13;
+org.apache.shiro.session.mgt.quartz.*,&#13;
+org.apache.shiro.web.filter.authz.*</entry>
+<entry key="profiler.settings.n.profiled.threads.limit">32</entry>
+<entry key="app_preset_prof_preset_alloc_p">10</entry>
+<entry key="profiler.settings.instrument.method.invoke">true</entry>
+<entry key="app_preset_"/>
+<entry key="profiler.settings.obj.alloc.stack.sampling.depth">0</entry>
+<entry key="app_preset_prof_preset_samplingRefreshRate_s">1000</entry>
+<entry key="app_preset_prof_preset_stacks_p">false</entry>
+<entry key="app_preset_prof_preset_roots_p">cn.guangtong.controller.beidou.**
+cn.guangtong.controller.cms.**
+cn.guangtong.controller.common.**
+cn.guangtong.controller.cooperation.**
+cn.guangtong.controller.customer.**
+cn.guangtong.controller.driver.**
+cn.guangtong.controller.notices.**
+cn.guangtong.controller.order.**
+cn.guangtong.controller.total.**
+cn.guangtong.controller.utils.**
+cn.guangtong.controller.vehicle.**
+cn.guangtong.dao.beidou.**
+cn.guangtong.dao.cms.**
+cn.guangtong.dao.cooperation.**
+cn.guangtong.dao.customer.**
+cn.guangtong.dao.driver.**
+cn.guangtong.dao.notices.**
+cn.guangtong.dao.order.**
+cn.guangtong.dao.total.**
+cn.guangtong.dao.vehicle.**
+cn.guangtong.entity.beidou.**
+cn.guangtong.entity.cms.**
+cn.guangtong.entity.cooperation.**
+cn.guangtong.entity.customer.**
+cn.guangtong.entity.driver.**
+cn.guangtong.entity.order.**
+cn.guangtong.entity.total.**
+cn.guangtong.entity.vehicle.**
+cn.guangtong.excel.**
+cn.guangtong.model.**
+cn.guangtong.service.beidou.**
+cn.guangtong.service.cms.**
+cn.guangtong.service.coopertation.**
+cn.guangtong.service.customer.**
+cn.guangtong.service.driver.**
+cn.guangtong.service.notices.**
+cn.guangtong.service.order.**
+cn.guangtong.service.total.**
+cn.guangtong.service.vehicle.**
+cn.guangtong.test.**
+cn.guangtong.utils.**
+org.apache.shiro.realm.jdbc.**
+org.apache.shiro.session.mgt.quartz.**
+org.apache.shiro.web.filter.authz.**
+</entry>
+<entry key="profiler.settings.instrument.empty.methods">false</entry>
+<entry key="myeclipse.profiling.mode">0</entry>
+<entry key="profiler.settings.istrument.getter.setter.methods">false</entry>
+<entry key="app_preset_prof_preset_samplingRate_s">100</entry>
+<entry key="profiler.settings.instr.scheme">1</entry>
+<entry key="profiler.settings.cpu.profiling.type">0</entry>
+<entry key="app_preset_prof_preset_selector"/>
+<entry key="app_preset_prof_preset_filterMode_s">true</entry>
+<entry key="app_preset_prof_preset_runnables_p">true</entry>
+<entry key="app_preset_prof_preset_refreshRate_s">1000</entry>
+<entry key="app_preset_prof_preset_filterMode_p">false</entry>
+<entry key="app_preset_prof_preset_memoryMode_p">true</entry>
+</properties>

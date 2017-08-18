@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.total.PlafromAlarmDao">
+
+	<!-- 分页查询平台报警报表 普通 -->
+	<select id="getPlatForms" parameterType="cn.guangtong.utils.PlatFormPageBean"
+		resultType="cn.guangtong.entity.total.PlafromAlarm">
+		SELECT
+		a.id,
+		b.num AS plateNo,
+		a.simNo,
+		a.driverName,
+		b.VMColor AS plateColor,
+		a.longitude,
+		a.latitude,
+		a.location,
+		a.velocity,
+		a.solution,
+		a.type,
+		a.adminId,
+		a.dealWay,
+		date_format(
+		a.dealTime,
+		'%Y-%c-%d %h:%i:%s'
+		) AS dealTime,
+		a.quantity
+		FROM
+		logistics_beidou.platformalarm a
+		LEFT JOIN logistics_vehicle.vehicle_info b ON a.simNo = b.simNo
+		RIGHT JOIN logistics_cms.admin_vehicle c ON b.id= c.vehicleid
+		WHERE 1=1
+		AND c.adminid=#{adminId} AND b.num!=''
+	
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and a.dealTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and a.dealTime &lt;= #{endTime}
+			</if>
+			<if test='type!=null &amp;&amp; !type.equals("")'>
+				and a.type = #{type}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and a.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+		
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+
+	<!-- 平台报警报表导出 普通 -->
+	<select id="getPlatFormsExcel" parameterType="cn.guangtong.utils.PlatFormPageBean"
+		resultType="cn.guangtong.entity.total.PlafromAlarm">
+		SELECT
+		a.id,
+		b.num AS plateNo,
+		a.simNo,
+		a.driverName,
+		b.VMColor AS plateColor,
+		a.longitude,
+		a.latitude,
+		a.location,
+		a.velocity,
+		a.solution,
+		a.type,
+		a.adminId,
+		a.dealWay,
+		date_format(
+		a.dealTime,
+		'%Y-%c-%d %h:%i:%s'
+		) AS dealTime,
+		a.quantity
+		FROM
+		logistics_beidou.platformalarm a
+		LEFT JOIN logistics_vehicle.vehicle_info b ON a.simNo = b.simNo
+		RIGHT JOIN logistics_cms.admin_vehicle c ON b.id= c.vehicleid
+		WHERE 1=1
+		AND c.adminid=#{adminId} AND b.num!=''
+		
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and a.dealTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and a.dealTime &lt;= #{endTime}
+			</if>
+			<if test='type!=null &amp;&amp; !type.equals("")'>
+				and a.type = #{type}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and a.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+		
+	</select>
+	<!-- 统计平台报警总数 普通 -->
+	<select id="getCounts" parameterType="cn.guangtong.utils.PlatFormPageBean"
+		resultType="int">
+		select count(*) FROM
+		logistics_beidou.platformalarm a
+		LEFT JOIN logistics_vehicle.vehicle_info b ON a.simNo = b.simNo
+		RIGHT JOIN logistics_cms.admin_vehicle c ON b.id= c.vehicleid
+		WHERE 1=1
+		AND c.adminid=#{adminId} AND b.num!=''
+		
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and dealTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and dealTime &lt;= #{endTime}
+			</if>
+			<if test='type!=null &amp;&amp; !type.equals("")'>
+				and type = #{type}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+		
+	</select>
+
+<!-- 分页查询平台报警报表 超管 -->
+	<select id="getPlatFormsSuperTube" parameterType="cn.guangtong.utils.PlatFormPageBean"
+		resultType="cn.guangtong.entity.total.PlafromAlarm">
+		SELECT
+		a.id,
+		b.num AS plateNo,
+		a.simNo,
+		a.driverName,
+		b.VMColor AS plateColor,
+		a.longitude,
+		a.latitude,
+		a.location,
+		a.velocity,
+		a.solution,
+		a.type,
+		a.adminId,
+		a.dealWay,
+		date_format(
+		a.dealTime,
+		'%Y-%c-%d %h:%i:%s'
+		) AS dealTime,
+		a.quantity
+		FROM
+		logistics_beidou.platformalarm a
+		LEFT JOIN logistics_vehicle.vehicle_info b ON a.simNo = b.simNo
+		where 1=1
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and a.dealTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and a.dealTime &lt;= #{endTime}
+			</if>
+			<if test='type!=null &amp;&amp; !type.equals("")'>
+				and a.type = #{type}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and a.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+		
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+
+	<!-- 平台报警报表导出 超管 -->
+	<select id="getPlatFormsExcelSuperTube" parameterType="cn.guangtong.utils.PlatFormPageBean"
+		resultType="cn.guangtong.entity.total.PlafromAlarm">
+		SELECT
+		a.id,
+		b.num AS plateNo,
+		a.simNo,
+		a.driverName,
+		b.VMColor AS plateColor,
+		a.longitude,
+		a.latitude,
+		a.location,
+		a.velocity,
+		a.solution,
+		a.type,
+		a.adminId,
+		a.dealWay,
+		date_format(
+		a.dealTime,
+		'%Y-%c-%d %h:%i:%s'
+		) AS dealTime,
+		a.quantity
+		FROM
+		logistics_beidou.platformalarm a
+		LEFT JOIN logistics_vehicle.vehicle_info b ON a.simNo = b.simNo
+		where 1=1
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and a.dealTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and a.dealTime &lt;= #{endTime}
+			</if>
+			<if test='type!=null &amp;&amp; !type.equals("")'>
+				and a.type = #{type}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and a.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+	</select>
+	<!-- 统计平台报警总数 超管 -->
+	<select id="getCountsSuperTube" parameterType="cn.guangtong.utils.PlatFormPageBean"
+		resultType="int">
+		select count(*)  FROM
+		logistics_beidou.platformalarm a
+		LEFT JOIN logistics_vehicle.vehicle_info b ON a.simNo = b.simNo
+		where 1=1
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and a.dealTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and a.dealTime &lt;= #{endTime}
+			</if>
+			<if test='type!=null &amp;&amp; !type.equals("")'>
+				and a.type = #{type}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and a.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+	</select>
+	<!-- 平台报警统计总数 普通 -->
+	<select id="getTongjiCounts" parameterType="cn.guangtong.utils.PlatFormPageBean"
+		resultType="int">
+		SELECT
+		count(*)
+		FROM
+		logistics_beidou.platformalarm a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b
+		ON a.simNo=b.simNo
+		LEFT JOIN logistics_cms.admin_vehicle c
+		ON b.id=c.vehicleid
+		WHERE c.adminid=#{adminId}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and a.dealTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and a.dealTime &lt;= #{endTime}
+		</if>
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			and a.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+	</select>
+	<!-- 平台报警统计分页 普通 -->
+	<select id="getTongjiPlatformPage" parameterType="cn.guangtong.utils.PlatFormPageBean"
+		resultType="cn.guangtong.entity.total.PlafromAlarm">
+		SELECT a.id,
+		b.num as plateNo,b.VMColor as
+		plateColor,a.simNo,a.type,count(a.simNo) as
+		quantity
+		FROM
+		logistics_beidou.platformalarm a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b
+		ON a.simNo=b.simNo
+		LEFT JOIN logistics_cms.admin_vehicle c
+		ON b.id=c.vehicleid
+		WHERE c.adminid=#{adminId}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and a.dealTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and a.dealTime &lt;= #{endTime}
+		</if>
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			and a.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		GROUP BY a.simNo
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+	<!-- 平台报警统计下载 普通 -->
+	<select id="getTongjiPlatform" parameterType="cn.guangtong.utils.PlatFormPageBean"
+		resultType="cn.guangtong.entity.total.PlafromAlarm">
+		SELECT a.id,
+		b.num as plateNo,b.VMColor as
+		plateColor,a.simNo,a.type,count(a.simNo) as
+		quantity
+		FROM
+		logistics_beidou.platformalarm a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b
+		ON a.simNo=b.simNo
+		LEFT JOIN logistics_cms.admin_vehicle c
+		ON b.id=c.vehicleid
+		WHERE c.adminid=#{adminId}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and a.dealTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and a.dealTime &lt;= #{endTime}
+		</if>
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			and a.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		GROUP BY a.simNo
+	</select>
+
+    <!-- 平台报警统计总数 超管-->
+	<select id="getTongjiCountsSuperTube" parameterType="cn.guangtong.utils.PlatFormPageBean"
+		resultType="int">
+		SELECT
+		count(*) FROM
+		logistics_beidou.platformalarm a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b
+		ON a.simNo=b.simNo
+		where 1=1 
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and a.dealTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and a.dealTime &lt;= #{endTime}
+		</if>
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			and a.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+	</select>
+	<!-- 平台报警统计分页 超管 -->
+	<select id="getTongjiPlatformPageSuperTube" parameterType="cn.guangtong.utils.PlatFormPageBean"
+		resultType="cn.guangtong.entity.total.PlafromAlarm">
+		SELECT a.id,
+		b.num as plateNo,b.VMColor as
+		plateColor,a.simNo,a.type,count(a.simNo) as
+		quantity
+		FROM
+		logistics_beidou.platformalarm a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b
+		ON a.simNo=b.simNo
+		where 1=1 
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and a.dealTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and a.dealTime &lt;= #{endTime}
+		</if>
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			and a.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		GROUP BY a.simNo
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+	<!--平台报警统计下载 超管 -->
+	<select id="getTongjiPlatformSuperTube" parameterType="cn.guangtong.utils.PlatFormPageBean"
+		resultType="cn.guangtong.entity.total.PlafromAlarm">
+		SELECT a.id,
+		b.num as plateNo,b.VMColor as
+		plateColor,a.simNo,a.type,count(a.simNo) as
+		quantity
+		FROM
+		logistics_beidou.platformalarm a
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b
+		ON a.simNo=b.simNo
+		where 1=1 
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and a.dealTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and a.dealTime &lt;= #{endTime}
+		</if>
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			and a.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		GROUP BY a.simNo
+	</select>
+
+	<select id="getPlatFormBySimNo" parameterType="string"
+		resultType="map">
+		SELECT
+		type,count(type) as quantity
+		FROM
+		logistics_beidou.platformalarm
+		<where>
+			<if test='simNo!=null &amp;&amp; !simNo.equals("")'>
+				and simNo = #{simNo}
+			</if>
+		</where>
+		group by type
+	</select>
+</mapper>

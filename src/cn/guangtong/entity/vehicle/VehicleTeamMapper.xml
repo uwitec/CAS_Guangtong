@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.vehicle.VehicleTeamDao">
+
+
+	<insert id="insert" parameterType="cn.guangtong.entity.vehicle.VehicleTeam">
+		insert into logistics_vehicle.vehicle_team
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="tName != null">
+				tName,
+			</if>
+			<if test="cooperationId != null">
+				cooperationId,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="tName != null">
+				#{tName,jdbcType=VARCHAR},
+			</if>
+			<if test="cooperationId != null">
+				#{cooperationId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="update" parameterType="cn.guangtong.entity.vehicle.VehicleTeam">
+		update logistics_vehicle.vehicle_team
+		<set>
+			<if test="tName != null">
+				tName = #{tName,jdbcType=VARCHAR},
+			</if>
+			<if test="cooperationId != null">
+				cooperationId = #{cooperationId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<select id="getById" parameterType="java.lang.String"
+	resultType="cn.guangtong.entity.vehicle.VehicleTeam">
+	select a.id,a.cooperationId,a.tName,b.cName FROM
+	logistics_vehicle.vehicle_team a
+	LEFT JOIN logistics_cooperation.cooperation_info b ON a.cooperationId=b.id
+	WHERE
+	a.id=#{id}
+    </select>
+    <!-- 查询车队 -->
+	<select id="getTeamId" parameterType="java.lang.String"
+		resultType="cn.guangtong.entity.vehicle.VehicleTeam">
+		SELECT * FROM logistics_vehicle.vehicle_team
+		WHERE cooperationId=#{cooperationId}
+		AND tName like '%TEAM'
+	</select>
+	<select id="getByCooperationId" parameterType="java.lang.String"
+		resultType="cn.guangtong.entity.vehicle.VehicleTeam">
+		select * FROM
+		logistics_vehicle.vehicle_team
+		WHERE
+		cooperationId=#{cooperationId}
+		AND tName NOT like "%TEAM" 
+	</select>
+
+	<select id="getVehicleTeamByPageBean" parameterType="cn.guangtong.entity.vehicle.VehicleTeam" resultType="cn.guangtong.entity.vehicle.VehicleTeam">
+		SELECT a.adminId,b.id,b.tName,c.cName FROM
+		logistics_cms.admin_cooperation a
+		LEFT JOIN
+		logistics_vehicle.vehicle_team b ON
+		b.cooperationId=a.cooperationId
+		LEFT JOIN
+		logistics_cooperation.cooperation_info c ON a.cooperationId=c.id
+		where
+		a.adminId=#{adminId}
+		AND b.tName NOT like "%TEAM" 
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and c.cName like "%"#{cName}"%"
+		</if>
+		<if test='tName!=null&amp;&amp;!tName.equals("")'>
+			and b.tName like "%"#{tName}"%"
+		</if>
+		LIMIT #{begin},#{end}
+	</select>
+
+	<select id="getVehicleTeamByPageBeanCount" parameterType="cn.guangtong.entity.vehicle.VehicleTeam" resultType="int">
+		SELECT
+		count(*) FROM
+		logistics_cms.admin_cooperation a
+		LEFT JOIN
+		logistics_vehicle.vehicle_team b ON
+		b.cooperationId=a.cooperationId
+		LEFT JOIN
+		logistics_cooperation.cooperation_info c ON a.cooperationId=c.id
+		where
+		a.adminId=#{adminId}
+		AND b.tName NOT like "%TEAM" 
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and c.cName like "%"#{cName}"%"
+		</if>
+		<if test='tName!=null&amp;&amp;!tName.equals("")'>
+			and b.tName like "%"#{tName}"%"
+		</if>
+	</select>
+
+	<select id="getAllVehicleTeamByPageBean" parameterType="cn.guangtong.entity.vehicle.VehicleTeam" resultType="cn.guangtong.entity.vehicle.VehicleTeam">
+		SELECT
+		b.id,b.tName,c.cName
+		FROM
+		logistics_vehicle.vehicle_team b
+		LEFT JOIN
+		logistics_cooperation.cooperation_info c ON
+		b.cooperationId=c.id
+		WHERE 1=1
+		AND b.tName NOT like "%TEAM" 
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and c.cName like "%"#{cName}"%"
+		</if>
+		<if test='tName!=null&amp;&amp;!tName.equals("")'>
+			and b.tName like "%"#{tName}"%"
+		</if>
+		LIMIT #{begin},#{end}
+	</select>
+
+	<select id="getAllVehicleTeamByPageBeanCount" parameterType="cn.guangtong.entity.vehicle.VehicleTeam" resultType="int">
+		SELECT
+		count(*)
+		FROM
+		logistics_vehicle.vehicle_team b
+		LEFT JOIN
+		logistics_cooperation.cooperation_info c ON b.cooperationId=c.id
+		WHERE 1=1
+		AND b.tName NOT like "%TEAM" 
+		<if test='id!=null&amp;&amp;!id.equals("")'>
+			and b.id like "%"#{id}"%"
+		</if>
+		<if test='cName!=null&amp;&amp;!cName.equals("")'>
+			and c.cName like "%"#{cName}"%"
+		</if>
+		<if test='tName!=null&amp;&amp;!tName.equals("")'>
+			and b.tName like "%"#{tName}"%"
+		</if>
+	</select>
+
+
+</mapper>

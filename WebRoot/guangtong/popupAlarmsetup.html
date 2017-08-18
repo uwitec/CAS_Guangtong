@@ -1,0 +1,61 @@
+<meta charset="utf-8" />
+<script type="text/javascript" src="wd_js/popupAlarmsetup_wd.js"></script>
+<div class="pophead_xk skyblue"><span><span><img style="height:20px;" src="img/pmjk.png"></span><span>报警规则设置</span></span><i><img src="img/close.png" alt="" /></i></div>
+<div class="popbody_xk  noborder gray1">
+	<table class="poptable_xk" cellspacing="0" style="font-size: 12px;">
+		<tbody>
+			<tr>
+				<td style="white-space: nowrap;">
+					<div><input type="checkbox" value="0" name="emergencyalarm" /><label for="">紧急报警，触动报警开关后触发</label></div>
+					<div><input type="checkbox" value="0" name="overspeedalarm" /><label for="">超速报警</label></div>
+					<div><input type="checkbox" value="0" name="fatiguedriving" /><label for="">疲劳驾驶</label></div>
+					<div><input type="checkbox" value="0" name="earlywarning" /><label for="">危险预警</label></div>
+					<div><input type="checkbox" value="0" name="gnssfailure" /><label for="">GNSS模块发生故障</label></div>
+					<div><input type="checkbox" value="0" name="antennafailure" /><label for="">GNSS天线未接或被剪断</label></div>
+					<div><input type="checkbox" value="0" name="antennashort" /><label for="">GNSS天线短路</label></div>
+					<div><input type="checkbox" value="0" name="undervoltage" /><label for="">终端主电压欠压</label></div>
+					<div><input type="checkbox" value="0" name="poweroff" /><label for="">终端主电压掉电</label></div>
+					<div><input type="checkbox" value="0" name="monitorfailure" /><label for="">终端LCD或显示器故障</label></div>
+					<div><input type="checkbox" value="0" name="modulefault" /><label for="">TTS模块故障</label></div>
+					<div><input type="checkbox" value="0" name="meterfault" /><label for="">计价器故障</label></div>
+					<div><input type="checkbox" value="0" name="camerafault" /><label for="">摄像头故障</label></div>
+<!--					<div><input type="checkbox" value="" /><label for="">摄像头故障</label></div>-->
+					<!--<div><input type="checkbox" value="" /><label for="">道路运行证IC卡模块故障</label></div>
+					<div><input type="checkbox" value="" /><label for="">超速预警</label></div>
+					<div><input type="checkbox" value="" /><label for="">疲劳驾驶预警</label></div>
+					<div><input type="checkbox" value="" /><label for="">转弯超速预警</label></div>-->
+				</td>
+				<td style="white-space: nowrap;">
+					
+<!--					<div><input type="checkbox" value="" /><label for="">急加/减速报警</label></div>-->
+					<div><input type="checkbox" value="0" name="drivetimeout" /><label for="">当天累计驾驶超时</label></div>
+					<div><input type="checkbox" value="0" name="overtimepark" /><label for="">超时停车</label></div>
+					<div><input type="checkbox" value="0" name="exitarea" /><label for="">进出区域</label></div>
+					<div><input type="checkbox" value="0" name="exitroute" /><label for="">进出路线</label></div>
+					<div><input type="checkbox" value="0" name="traveltime" /><label for="">路段行驶时间不足/过长</label></div>
+					<div><input type="checkbox" value="0" name="routedevalarm" /><label for="">路线偏离报警</label></div>
+					<div><input type="checkbox" value="0" name="vvssalarm" /><label for="">车辆VSS故障</label></div>
+					<div><input type="checkbox" value="0" name="vabnormaloil" /><label for="">车辆油量异常</label></div>
+					<div><input type="checkbox" value="0" name="vtheft" /><label for="">车辆被盗（通过车辆防盗器）</label></div>
+					<div><input type="checkbox" value="0" name="vignition" /><label for="">车辆非法点火</label></div>
+					<div><input type="checkbox" value="0" name="vdisplacement" /><label for="">车辆非法位移</label></div>
+					<!--<div><input type="checkbox" value="" /><label for="">碰撞预警</label></div>
+					<div><input type="checkbox" value="" /><label for="">侧翻预警</label></div>
+					<div><input type="checkbox" value="" /><label for="">非法开门报警（终端未设置区域时，不判断非法开门）</label></div>-->
+					<input type="hidden" name="id">
+					<input type="hidden" name="userId">
+				</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="2">
+					<div class="popcomfirm_xk">
+						<a class="button blue">确定</a>
+						<a class="button orange">放弃</a>
+					</div>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+</div>

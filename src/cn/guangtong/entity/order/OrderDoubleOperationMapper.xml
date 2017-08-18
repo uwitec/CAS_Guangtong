@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.guangtong.dao.order.OrderDoubleOperationDao">
+	<!--  查询订单+分页 orderQueryAll -->
+	<select id="orderQueryAll" parameterType="cn.guangtong.utils.PageBean" resultType="java.util.Map">
+		SELECT orderNum,DATE_FORMAT(callTime,'%Y-%m-%d %H:%i:%m')callTime,
+		deliverAddr,receiptAddr,vehicleId,exceptionReason,
+		CAST(orderStatus AS UNSIGNED INTEGER)orderStatus,orderFrom 
+		FROM logistics_order.unfinished_order
+		UNION ALL
+		SELECT orderNum,DATE_FORMAT(callTime,'%Y-%m-%d %H:%i:%m')callTime,
+		deliverAddr,receiptAddr,vehicleId,exceptionReason,
+		CAST(orderStatus AS UNSIGNED INTEGER)orderStatus,orderFrom 
+		FROM logistics_order.done_order
+		LIMIT #{begin},#{pageCount}
+	</select>
+	
+	<!-- 查询所有订单总数 orderQueryCount -->
+	<select id="orderQueryCount" resultType="java.lang.Integer">
+		SELECT COUNT(*)+b.bAll FROM logistics_order.unfinished_order a,
+		(SELECT COUNT(*)bAll FROM logistics_order.done_order)b
+	</select>
+</mapper>

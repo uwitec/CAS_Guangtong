@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.beidou.GpsRealDataDao">
+
+	<!-- 分页查询最新状态报表 普通 -->
+	<select id="findGpsRealData" parameterType="cn.guangtong.utils.ThelateststatePageBean" resultType="cn.guangtong.excel.LatestStatus">
+		SELECT
+		b.num as plateNo,b.VMColor as
+		plateColor,a.longitude,a.latitude,a.location,a.velocity,date_format(a.sendTime,'%Y-%c-%d %h:%i:%s')
+		as
+		sendTime,a.`online`,a.direction,a.alarmState,a.status
+		FROM
+		logistics_beidou.gpsrealdata a,logistics_vehicle.vehicle_info
+		b,logistics_cms.admin_vehicle c
+		WHERE
+		a.simNo=b.simNo AND
+		b.id=c.vehicleid
+		AND c.adminid=#{adminId}
+
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			AND a.simNo in
+			<foreach collection="simNos" item="simNos" index="index" open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		LIMIT #{begin},#{end}
+	</select>
+
+	<!-- 最新状态报表导出 普通 -->
+	<select id="findGpsRealDataExcel" parameterType="cn.guangtong.utils.ThelateststatePageBean" resultType="cn.guangtong.excel.LatestStatus">
+		SELECT
+		b.num as plateNo,b.VMColor as
+		plateColor,a.longitude,a.latitude,a.location,a.velocity,date_format(a.sendTime,'%Y-%c-%d %h:%i:%s')
+		as
+		sendTime,a.`online`,a.direction,a.alarmState,a.status
+		FROM
+		logistics_beidou.gpsrealdata a,logistics_vehicle.vehicle_info
+		b,logistics_cms.admin_vehicle c
+		WHERE
+		a.simNo=b.simNo AND
+		b.id=c.vehicleid
+		AND c.adminid=#{adminId}
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			AND a.simNo in
+			<foreach collection="simNos" item="simNos" index="index" open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+	</select>
+
+	<!-- 最新状态报表 总数 普通 -->
+	<select id="findGpsRealDataCounts" parameterType="cn.guangtong.utils.ThelateststatePageBean" resultType="int">
+		SELECT count(*) FROM(
+		SELECT
+		b.num as plateNo,b.VMColor as
+		plateColor,a.longitude,a.latitude,a.location,a.velocity,date_format(a.sendTime,'%Y-%c-%d %h:%i:%s')
+		as
+		sendTime,a.`online`,a.direction,a.alarmState,a.status
+		FROM
+		logistics_beidou.gpsrealdata a,logistics_vehicle.vehicle_info
+		b,logistics_cms.admin_vehicle c
+		WHERE
+		a.simNo=b.simNo AND
+		b.id=c.vehicleid
+		AND c.adminid=#{adminId}
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			AND a.simNo in
+			<foreach collection="simNos" item="simNos" index="index" open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		) temp
+	</select>
+
+
+	<!-- 分页查询最新状态报表 超管 -->
+	<select id="findGpsRealDataSuperTube" parameterType="cn.guangtong.utils.ThelateststatePageBean" resultType="cn.guangtong.excel.LatestStatus">
+		SELECT
+		b.num as plateNo,b.VMColor as
+		plateColor,a.longitude,a.latitude,a.location,a.velocity,date_format(a.sendTime,'%Y-%c-%d %h:%i:%s')
+		as
+		sendTime,a.`online`,a.direction,a.alarmState,a.status
+		FROM
+		logistics_beidou.gpsrealdata a,logistics_vehicle.vehicle_info
+		b
+		WHERE
+		a.simNo=b.simNo
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			AND a.simNo in
+			<foreach collection="simNos" item="simNos" index="index" open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		LIMIT #{begin},#{end}
+	</select>
+
+	<!-- 最新状态报表导出 超管 -->
+	<select id="findGpsRealDataExcelSuperTube" parameterType="cn.guangtong.utils.ThelateststatePageBean" resultType="cn.guangtong.excel.LatestStatus">
+		SELECT
+		b.num as plateNo,b.VMColor as
+		plateColor,a.longitude,a.latitude,a.location,a.velocity,date_format(a.sendTime,'%Y-%c-%d %h:%i:%s')
+		as
+		sendTime,a.`online`,a.direction,a.alarmState,a.status
+		FROM
+		logistics_beidou.gpsrealdata a,logistics_vehicle.vehicle_info
+		b
+		WHERE
+		a.simNo=b.simNo
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			AND a.simNo in
+			<foreach collection="simNos" item="simNos" index="index" open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+	</select>
+
+	<!-- 最新状态报表 总数 超管 -->
+	<select id="findGpsRealDataCountsSuperTube" parameterType="cn.guangtong.utils.ThelateststatePageBean" resultType="int">
+		SELECT count(*) FROM(
+		SELECT
+		b.num as plateNo,b.VMColor as
+		plateColor,a.longitude,a.latitude,a.location,a.velocity,date_format(a.sendTime,'%Y-%c-%d %h:%i:%s')
+		as
+		sendTime,a.`online`,a.direction,a.alarmState,a.status
+		FROM
+		logistics_beidou.gpsrealdata a,logistics_vehicle.vehicle_info
+		b
+		WHERE
+		a.simNo=b.simNo
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			AND a.simNo in
+			<foreach collection="simNos" item="simNos" index="index" open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		) temp
+	</select>
+
+	<!-- 获取所有在线的车辆状态 -->
+	<select id="getRealDatasByOnline" resultType="cn.guangtong.entity.beidou.GpsRealData">
+		SELECT
+		g.direction,g.latitude,g.longitude,g.simNo,g.location,g.vehicleid,g.velocity,v.driver
+		FROM
+		gpsrealdata g left join vehicle v
+		on g.simNo=v.simNo
+		WHERE
+		g.online=1
+	</select>
+	
+	<!-- 根据车牌号查询车辆信息 -->
+	<select id="getRealDatasByPlateNo" parameterType="string" resultType="cn.guangtong.entity.beidou.GpsRealData">
+		SELECT
+		g.direction,g.latitude,g.longitude,g.simNo,g.location,g.vehicleid,g.velocity,v.driver,v.plateNo
+		FROM
+		gpsrealdata g left join
+		vehicle v
+		on g.simNo=v.simNo
+		WHERE
+		v.plateNo=#{plateNo}
+	</select>
+	
+	<!-- 根据SimNo精准查询车辆信息 -->
+	<select id="getRealDatasBySimNo" parameterType="string" resultType="cn.guangtong.model.VehicleDetails">
+		SELECT
+		a.simNo,
+		a.gas,
+		a.longitude,
+		a.latitude,
+		a.location,
+		a.direction,
+		a.altitude,
+		a.mileage,
+		a.velocity,
+		a.alarmState,
+		a.`status`,
+		u.tName,
+		b.driverLicence,
+		b.telephone,
+		b.licenseAgency,
+		b.driverName,
+		b.invalidDate,
+		c.VMColor,
+		c.num AS plateNo,
+		d.sName,
+		e.cName,
+		c.VIN,
+		MAX(f.createDate),
+		f.gas / f.`hour` fuleStatistics,
+		g.professionNum,
+		h.createDate trackingDate,
+		h.eContent trackingContent,
+		k.`desc` AS VehicleType,
+		MAX(h.createDate),
+		date_format(
+		MAX(p.sendTime),
+		'%Y-%c-%d %h:%i:%s'
+		) AS sendTime,
+		date_format(
+		MAX(p.createDate),
+		'%Y-%c-%d %h:%i:%s'
+		) AS updateDate
+		FROM
+		logistics_beidou.gpsrealdata a
+		LEFT JOIN logistics_beidou.driverinfo b ON a.vehicleId = b.vehicleId
+		LEFT JOIN logistics_vehicle.vehicle_info c ON a.simNo = c.simNo
+		LEFT JOIN logistics_vehicle.specialtype d ON c.specialId = d.id
+		LEFT JOIN logistics_cooperation.cooperation_info e ON c.cooperationId = e.id
+		LEFT JOIN logistics_beidou.fuelconsumption f ON a.plateNo = f.plateNo
+		LEFT JOIN logistics_driver.driver_info g ON b.identityCard = g.idCardNum
+		LEFT JOIN logistics_beidou.ewaybill h ON c.id = h.vehicleId
+		LEFT JOIN logistics_vehicle.model_info k ON c.modelId = k.id
+		LEFT JOIN logistics_beidou.gpsinfo p ON a.simNo = p.simNo
+		LEFT JOIN logistics_vehicle.vehicle_team u ON c.teamId=u.id
+		WHERE
+		a.simNo=#{simNo}
+	</select>
+
+	<!-- 根据simNo模糊查询 -->
+	<select id="getRealDatasByObsSimNo" parameterType="string" resultType="map">
+		SELECT
+		g.direction,g.latitude,g.longitude,g.simNo,g.location,g.vehicleid,g.velocity,v.driver,v.plateNo
+		FROM
+		gpsrealdata g left join
+		vehicle v
+		on g.simNo=v.simNo
+		WHERE
+		v.simNo
+		like concat(concat('%',#{simNo}),'%')
+	</select>
+
+	<!-- 报警信息监控 -->
+	<select id="onlineAlarmInformation" resultType="map">
+		SELECT
+		g.direction,g.plateNo,g.latitude,g.longitude,g.simNo,d.alarmState,g.online
+		FROM logistics_beidou.gpsrealdata g
+		left join
+		logistics_beidou.vehicle v
+		on g.simNo=v.simNo
+		LEFT JOIN logistics_beidou.gpsrealdata d on
+		d.simNo=g.simNo
+	</select>
+</mapper>

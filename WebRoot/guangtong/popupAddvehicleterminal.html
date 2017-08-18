@@ -1,0 +1,87 @@
+<meta charset="utf-8" />
+<div class="pophead_xk skyblue"><span><span><img src="img/u6.png"></span><span>新增车载终端</span></span><i><img src="img/close.png" alt="" /></i></div>
+<div class="popbody_xk  noborder gray1">
+	<table cellspacing="0" class="poptable2_xk poptable2_xk_zyl">
+		<tbody>
+			<tr>
+				<th>车载名称：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>车载型号：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>适用车型：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>尺寸（米）：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>引进时间：</th>
+				<td><input type="text" class="search time_plugin_lv_onclick" time_plugin_lv_type=" 2 " /></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td class="popcomfirm_xk" colspan="2">
+					<a class="button blue save">保存</a>
+					<a class="button orange">放弃</a>
+				</td>
+			</tr>
+
+		</tfoot>
+	</table>
+</div>
+<!-- <script type="text/javascript" src="zyl_js/transportationinfoVehicleterminal_zyl.js"></script> -->
+<script>
+	function insertTerminal() {
+		$(".popcomfirm_xk .save").click(function() {
+			data_json = {
+				"termNo": $(".poptable2_xk_zyl tbody tr:eq(0) td input").val(),
+				"devNo": $(".poptable2_xk_zyl tbody tr:eq(1) td input").val(),
+				"termType": $(".poptable2_xk_zyl tbody tr:eq(2) td input").val(),
+				"instAlladdress": $(".poptable2_xk_zyl tbody tr:eq(3) td input").val(),
+				"updateTime": $(".poptable2_xk_zyl tbody tr:eq(4) td input").val(),
+			};
+			switch("") {
+				case data_json["termNo"]:
+					alert("车载名称不能为空！");
+					break;
+				case data_json["devNo"]:
+					alert("车载型号不能为空！");
+					break;
+				case data_json["termType"]:
+					alert("适用车型不能为空！");
+					break;
+				case data_json["instAlladdress"]:
+					alert("尺寸(米)不能为空！");
+					break;
+				case data_json["updateTime"]:
+					alert("引进时间不能为空！");
+					break;
+				default:
+					$.ajax(config.url + "terminal/insertTerminal", {
+						data: data_json,
+						dataType: "json",
+						type: "POST",
+						timeout: 10000,
+						success: function(data) {
+							//console.log(data.success);
+							alert(data.msg);
+							
+							$("popwindow_xk .popup_xk").html("");
+							$(".popwindow_xk").css("visibility", "hidden");
+							getTerminalAll();
+						}
+					});
+					
+					break;
+			}
+
+		});
+	}
+	insertTerminal();
+</script>

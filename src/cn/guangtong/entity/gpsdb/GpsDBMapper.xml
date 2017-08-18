@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.gpsdb.GpsDBDao">
+
+	<!-- 根据plateNo精准查询车辆信息 -->
+	<select id="getRealDatasByplateNo" parameterType="string" resultType="cn.guangtong.model.VehicleDetails">
+	SELECT 
+		ggd.simNo,ggd.gas,ggd.longitude,ggd.latitude,ggd.location,ggd.direction,ggd.altitude,ggd.mileage,ggd.velocity,ggd.alarmState,ggd.`status`,
+		'TEAM' tName,
+		'' driverLicence,
+		'' telephone,
+		'' licenseAgency,
+		'' driverName,
+		'' invalidDate,
+		'' VMColor,
+		ggd.plateNo AS plateNo,
+		'其它' sName,
+		'809' cName,
+		'' VIN,
+		'' createDate,
+		'' fuleStatistics,
+		'' professionNum,
+		'' trackingDate,
+		''  trackingContent,
+		'' VehicleType,
+		'' createDate,
+		'' sendTime,
+		'' updateDate
+		FROM gpsdb.gpsrealdata ggd
+		WHERE ggd.plateNo=#{plateNo}
+	</select>
+	
+		<!--将账号指定的某辆车isread设置为1 -->
+	<update id="upIsRead" parameterType="string">
+		UPDATE gpsdb.gpsrealdata ggd 
+		set ggd.isRead = 1
+		WHERE ggd.plateNo=#{vehicle}
+	</update>
+	
+	<update id="upNoIsRead">
+		UPDATE gpsdb.gpsrealdata ggd 
+		set ggd.isRead = 0
+	</update>
+	
+</mapper>

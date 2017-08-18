@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.order.OrderDao">
+   
+   <select id="getOrders" parameterType="cn.guangtong.utils.OrderPageBean" resultType="map">
+   		 SELECT e.*,f.`title` FROM
+		 (SELECT  a.`id`,a.`orderNum`,a.`orderStatus`,a.`addRequir`,a.`callImg`,
+		 date_format(a.`callTime`,'%Y-%c-%d %h:%i:%s') as callTime,
+		 date_format(a.`createTime`,'%Y-%c-%d %h:%i:%s') as createTime,
+		 a.`customerId`,
+	 			d.num,b.dName,
+            	a.`deliver`,a.`deliverAddr`,a.`deliverLocation`,a.`deliverTel`,a.`description`,a.`driverId`,a.`exceptionImg`,
+            	a.`exceptionReason`,a.`exceptionReasonId`,a.`goodsNum`,a.`leadImg`,a.`length`,a.`leadTime`,a.`orderFrom`,
+            	a.`payMethod`,a.`payTimeType`,
+            	date_format(a.`pickupTime`,'%Y-%c-%d %h:%i:%s') as pickupTime,
+            	a.`rCompany`,a.`reassignTime`,a.`receipt`,a.`receiptAddr`,
+            	a.`receiptLocation`,a.`receiptTel`,a.`rounteId`,a.`rProvance`,a.`sCompany`,a.`sProvance`,a.`takersTime`,
+            	a.`tall`,a.`updateTime`,a.`vehicleId`,a.`volume`,a.`weight`,a.`wide`,
+            	b.`floorFee`,b.`freightFee`,b.`handlingFee`,b.`insuranceFee`,b.`payment`,b.`payTime`,b.`settle`,b.`settleAmount`,
+            	b.`totalMoney`,@assessment:='' AS assessment,@assessTime:='' AS assessTime,@dGrade:='' AS dGrade,@hasGrade:='' AS hasGrade,
+            	@origin:='unfinished' AS origin
+            FROM unfinished_order AS a LEFT JOIN unfinished_money AS b ON a.`orderNum` =b.`orderNum` AND a.`driverId`=b.`driverId`
+            LEFT JOIN logistics_driver.driver_info b ON a.driverId=b.id 
+            LEFT JOIN logistics_vehicle.vehicle_info d ON a.vehicleId=d.id
+            UNION ALL
+            SELECT  c.`id`,c.`orderNum`,CASE c.`orderStatus` WHEN 0 THEN 8 ELSE `orderStatus` END AS orderStatus,c.`addRequir`,c.`callImg`,
+            date_format(c.`callTime`,'%Y-%c-%d %h:%i:%s') as callTime,
+            date_format(c.`createTime`,'%Y-%c-%d %h:%i:%s') as createTime,
+            c.`customerId`,
+           		d.num,b.dName,
+            	c.`deliver`,c.`deliverAddr`,c.`deliverLocation`,c.`deliverTel`,c.`description`,c.`driverId`,c.`exceptionImg`,
+            	c.`exceptionReason`,c.`exceptionReasonId`,c.`goodsNum`,c.`leadImg`,c.`length`,c.`leadTime`,c.`orderFrom`,
+            	c.`payMethod`,c.`payTimeType`,
+            	date_format(c.`pickupTime`,'%Y-%c-%d %h:%i:%s') as pickupTime,
+            	c.`rCompany`,c.`reassignTime`,c.`receipt`,c.`receiptAddr`,
+            	c.`receiptLocation`,c.`receiptTel`,c.`rounteId`,c.`rProvance`,c.`sCompany`,c.`sProvance`,c.`takersTime`,
+            	c.`tall`,c.`updateTime`,c.`vehicleId`,c.`volume`,c.`weight`,c.`wide`,
+            	d.`floorFee`,d.`freightFee`,d.`handlingFee`,d.`insuranceFee`,d.`payment`,d.`payTime`,d.`settle`,d.`settleAmount`,
+            	d.`totalMoney`,d.`assessment`,d.`assessTime`,d.`dGrade`,d.`hasGrade`,@origin:='done' AS origin
+            FROM done_order	AS c LEFT JOIN done_money AS d ON c.`orderNum`=d.`orderNum` AND c.`driverId`=d.`driverId`
+            LEFT JOIN logistics_driver.driver_info b ON c.driverId=b.id
+            LEFT JOIN logistics_vehicle.vehicle_info d ON c.vehicleId=d.id
+            ) 
+            AS e 
+			LEFT JOIN exception_reason AS f ON e.exceptionReasonId = f.reasonId
+			<where>
+				<if test='ordernum!=null &amp;&amp; !ordernum.equals("")'>
+					and e.ordernum like concat(concat('%',#{ordernum}),'%')
+				</if>
+				<if test='callTime!=null &amp;&amp; !callTime.equals("")'>
+					and e.callTime like concat(concat('%',#{callTime}),'%')
+				</if>
+				<if test='deliverAddr!=null &amp;&amp; !deliverAddr.equals("")'>
+					and e.deliverAddr like concat(concat('%',#{deliverAddr}),'%')
+				</if>
+				<if test='receiptAddr!=null &amp;&amp; !receiptAddr.equals("")'>
+					and e.receiptAddr like concat(concat('%',#{receiptAddr}),'%')
+				</if>
+				<if test='vehicleId!=null &amp;&amp; !vehicleId.equals("")'>
+					and e.vehicleId like concat(concat('%',#{vehicleId}),'%')
+				</if>
+				<if test='title!=null &amp;&amp; !title.equals("")'>
+					and f.title like concat(concat('%',#{title}),'%')
+				</if>
+				<if test='orderStatus!=null &amp;&amp; !orderStatus.equals("")'>
+					and e.orderStatus like concat(concat('%',#{orderStatus}),'%')
+				</if>
+				<if test='orderFrom!=null &amp;&amp; !orderFrom.equals("")'>
+					and e.orderFrom like concat(concat('%',#{orderFrom}),'%')
+				</if>
+			</where>
+			ORDER BY createTime DESC
+			limit #{begin},#{end}
+   </select>
+   
+   <select id="getCounts" parameterType="cn.guangtong.utils.OrderPageBean" resultType="int">
+   		SELECT count(*) FROM
+		 (SELECT  a.`id`,a.`orderNum`,a.`orderStatus`,a.`addRequir`,a.`callImg`,a.`callTime`,a.`createTime`,a.`customerId`,
+            	a.`deliver`,a.`deliverAddr`,a.`deliverLocation`,a.`deliverTel`,a.`description`,a.`driverId`,a.`exceptionImg`,
+            	a.`exceptionReason`,a.`exceptionReasonId`,a.`goodsNum`,a.`leadImg`,a.`length`,a.`leadTime`,a.`orderFrom`,
+            	a.`payMethod`,a.`payTimeType`,a.`pickupTime`,a.`rCompany`,a.`reassignTime`,a.`receipt`,a.`receiptAddr`,
+            	a.`receiptLocation`,a.`receiptTel`,a.`rounteId`,a.`rProvance`,a.`sCompany`,a.`sProvance`,a.`takersTime`,
+            	a.`tall`,a.`updateTime`,a.`vehicleId`,a.`volume`,a.`weight`,a.`wide`,
+            	b.`floorFee`,b.`freightFee`,b.`handlingFee`,b.`insuranceFee`,b.`payment`,b.`payTime`,b.`settle`,b.`settleAmount`,
+            	b.`totalMoney`,@assessment:='' AS assessment,@assessTime:='' AS assessTime,@dGrade:='' AS dGrade,@hasGrade:='' AS hasGrade,
+            	@origin:='unfinished' AS origin
+            FROM unfinished_order AS a LEFT JOIN unfinished_money AS b ON a.`orderNum` =b.`orderNum` AND a.`driverId`=b.`driverId`
+            UNION ALL
+            SELECT  c.`id`,c.`orderNum`,CASE c.`orderStatus` WHEN 0 THEN 8 ELSE `orderStatus` END AS orderStatus,c.`addRequir`,c.`callImg`,c.`callTime`,c.`createTime`,c.`customerId`,
+            	c.`deliver`,c.`deliverAddr`,c.`deliverLocation`,c.`deliverTel`,c.`description`,c.`driverId`,c.`exceptionImg`,
+            	c.`exceptionReason`,c.`exceptionReasonId`,c.`goodsNum`,c.`leadImg`,c.`length`,c.`leadTime`,c.`orderFrom`,
+            	c.`payMethod`,c.`payTimeType`,c.`pickupTime`,c.`rCompany`,c.`reassignTime`,c.`receipt`,c.`receiptAddr`,
+            	c.`receiptLocation`,c.`receiptTel`,c.`rounteId`,c.`rProvance`,c.`sCompany`,c.`sProvance`,c.`takersTime`,
+            	c.`tall`,c.`updateTime`,c.`vehicleId`,c.`volume`,c.`weight`,c.`wide`,
+            	d.`floorFee`,d.`freightFee`,d.`handlingFee`,d.`insuranceFee`,d.`payment`,d.`payTime`,d.`settle`,d.`settleAmount`,
+            	d.`totalMoney`,d.`assessment`,d.`assessTime`,d.`dGrade`,d.`hasGrade`,@origin:='done' AS origin
+            FROM done_order	AS c LEFT JOIN done_money AS d ON c.`orderNum`=d.`orderNum` AND c.`driverId`=d.`driverId`) 
+            AS e 
+			LEFT JOIN exception_reason AS f ON e.exceptionReasonId = f.reasonId
+			<where>
+				<if test='ordernum!=null &amp;&amp; !ordernum.equals("")'>
+					and e.ordernum like concat(concat('%',#{ordernum}),'%')
+				</if>
+				<if test='callTime!=null &amp;&amp; !callTime.equals("")'>
+					and e.callTime like concat(concat('%',#{callTime}),'%')
+				</if>
+				<if test='deliverAddr!=null &amp;&amp; !deliverAddr.equals("")'>
+					and e.deliverAddr like concat(concat('%',#{deliverAddr}),'%')
+				</if>
+				<if test='receiptAddr!=null &amp;&amp; !receiptAddr.equals("")'>
+					and e.receiptAddr like concat(concat('%',#{receiptAddr}),'%')
+				</if>
+				<if test='vehicleId!=null &amp;&amp; !vehicleId.equals("")'>
+					and e.vehicleId like concat(concat('%',#{vehicleId}),'%')
+				</if>
+				<if test='title!=null &amp;&amp; !title.equals("")'>
+					and f.title like concat(concat('%',#{title}),'%')
+				</if>
+				<if test='orderStatus!=null &amp;&amp; !orderStatus.equals("")'>
+					and e.orderStatus like concat(concat('%',#{orderStatus}),'%')
+				</if>
+				<if test='orderFrom!=null &amp;&amp; !orderFrom.equals("")'>
+					and e.orderFrom like concat(concat('%',#{orderFrom}),'%')
+				</if>
+			</where>
+			ORDER BY createTime DESC
+   </select>
+   
+   <select id="getReassignOrders" parameterType="cn.guangtong.utils.ReassignOrderPageBean" resultType="map">
+   		SELECT 
+   			a.*,b.*,c.*,d.num,date_format(a.reassignTime,'%Y-%c-%d %h:%i:%s') as reassignTimeFrom
+   		FROM 
+   			logistics_order.unfinished_order AS a 
+   		LEFT JOIN 
+   			logistics_order.exception_reason AS b ON a.exceptionReasonId=b.reasonId 
+   		LEFT JOIN 
+   			logistics_order.unfinished_money AS c ON a.orderNum=c.orderNum 
+   		LEFT JOIN
+				logistics_vehicle.vehicle_info AS d ON a.vehicleId=d.id
+   		WHERE 
+   			a.orderStatus = 2
+   			<if test='ordernum!=null &amp;&amp; !ordernum.equals("")'>
+				and a.ordernum like concat(concat('%',#{ordernum}),'%')
+			</if>
+			<if test='title!=null &amp;&amp; !title.equals("")'>
+				and b.title like concat(concat('%',#{title}),'%')
+			</if>
+			<if test='totalMoney!=null &amp;&amp; !totalMoney.equals("")'>
+				and a.totalMoney like concat(concat('%',#{totalMoney}),'%')
+			</if>
+			<if test='vehicleId!=null &amp;&amp; !vehicleId.equals("")'>
+				and a.vehicleId like concat(concat('%',#{vehicleId}),'%')
+			</if>
+			<if test='deliverAddr!=null &amp;&amp; !deliverAddr.equals("")'>
+				and a.deliverAddr like concat(concat('%',#{deliverAddr}),'%')
+			</if>
+			<if test='receiptAddr!=null &amp;&amp; !receiptAddr.equals("")'>
+				and a.receiptAddr like concat(concat('%',#{receiptAddr}),'%')
+			</if>
+			<if test='reassignTime!=null &amp;&amp; !reassignTime.equals("")'>
+				and a.reassignTime like concat(concat('%',#{reassignTime}),'%')
+			</if>
+			<if test='num!=null &amp;&amp; !num.equals("")'>
+				and d.num like concat(concat('%',#{num}),'%')
+			</if>
+			<if test='orderFrom!=null &amp;&amp; !orderFrom.equals("")'>
+				and a.orderFrom like concat(concat('%',#{orderFrom}),'%')
+			</if>
+   		ORDER BY 
+   			a.`updateTime` DESC 
+   		limit #{begin},#{end}
+   </select>
+   
+   <select id="getReassignOrderCounts" parameterType="cn.guangtong.utils.ReassignOrderPageBean" resultType="int">
+   		SELECT 
+   			count(*) 
+   		FROM 
+   			unfinished_order AS a 
+   		LEFT JOIN 
+   			exception_reason AS b ON a.exceptionReasonId=b.reasonId 
+   		LEFT JOIN 
+   			unfinished_money AS c ON a.orderNum=c.orderNum 
+   		AND 
+   			a.driverId=c.driverId  
+   		
+   		WHERE 
+   			a.orderStatus = 2
+   			<if test='ordernum!=null &amp;&amp; !ordernum.equals("")'>
+				and a.ordernum like concat(concat('%',#{ordernum}),'%')
+			</if>
+			<if test='title!=null &amp;&amp; !title.equals("")'>
+				and b.title like concat(concat('%',#{title}),'%')
+			</if>
+			<if test='totalMoney!=null &amp;&amp; !totalMoney.equals("")'>
+				and a.totalMoney like concat(concat('%',#{totalMoney}),'%')
+			</if>
+			<if test='vehicleId!=null &amp;&amp; !vehicleId.equals("")'>
+				and a.vehicleId like concat(concat('%',#{vehicleId}),'%')
+			</if>
+			<if test='deliverAddr!=null &amp;&amp; !deliverAddr.equals("")'>
+				and a.deliverAddr like concat(concat('%',#{deliverAddr}),'%')
+			</if>
+			<if test='receiptAddr!=null &amp;&amp; !receiptAddr.equals("")'>
+				and e.receiptAddr like concat(concat('%',#{receiptAddr}),'%')
+			</if>
+			<if test='reassignTime!=null &amp;&amp; !reassignTime.equals("")'>
+				and a.reassignTime like concat(concat('%',#{reassignTime}),'%')
+			</if>
+			<if test='orderFrom!=null &amp;&amp; !orderFrom.equals("")'>
+				and a.orderFrom like concat(concat('%',#{orderFrom}),'%')
+			</if>
+   </select>
+   
+   <select id="getExceptionsOrders" parameterType="cn.guangtong.utils.ExceptionsOrderPageBean" resultType="map">
+   		SELECT a.`id`,a.`orderNum`,a.`orderStatus`,a.`addRequir`,a.`callImg`,
+   		 date_format(a.`callTime`,'%Y-%c-%d %h:%i:%s') as callTime,
+		 date_format(a.`createTime`,'%Y-%c-%d %h:%i:%s') as createTime,
+   		a.`customerId`,
+		    d.`num`,c.`dName`,b.`title`,a.`vehicleId`,
+	       	a.`deliver`,a.`deliverAddr`,a.`deliverLocation`,a.`deliverTel`,a.`description`,a.`driverId`,
+	       	a.`exceptionImg`,a.`exceptionReason`,a.`exceptionReasonId`,a.`goodsNum`,a.`leadImg`,a.`length`,a.`leadTime`,a.`orderFrom`,
+	       	a.`payMethod`,a.`payTimeType`,
+	       	date_format(a.`pickupTime`,'%Y-%c-%d %h:%i:%s') as pickupTime,
+	       	a.`rCompany`,a.`reassignTime`,a.`receipt`,a.`receiptAddr`,
+	       	a.`receiptLocation`,a.`receiptTel`,a.`rounteId`,a.`rProvance`,a.`sCompany`,a.`sProvance`,
+	       	date_format(a.`takersTime`,'%Y-%c-%d %h:%i:%s') as takersTime,
+	       	a.`tall`,date_format(a.`updateTime`,'%Y-%c-%d %h:%i:%s') as updateTime,a.`vehicleId`,a.`volume`,a.`weight`,a.`wide`
+   		FROM unfinished_order a 
+   	 	LEFT JOIN exception_reason b ON a.exceptionReasonId=b.reasonId 
+      	LEFT JOIN logistics_driver.driver_info c ON a.driverId=c.id 
+      	LEFT JOIN logistics_vehicle.vehicle_info d ON a.vehicleId=d.id 
+   		WHERE
+   			1=1
+			<if test='title!=null &amp;&amp; !title.equals("")'>
+				and b.reasonId =#{title}
+			</if>
+			<if test='takersTime!=null &amp;&amp; !takersTime.equals("")'>
+				and a.takersTime like "%"#{takersTime}"%"
+			</if>
+			<if test='driverId!=null &amp;&amp; !driverId.equals("")'>
+				and a.driverId =#{driverId}
+			</if>
+			<if test='ordernum!=null &amp;&amp; !ordernum.equals("")'>
+				and a.orderNum like "%"#{ordernum}"%"
+			</if>
+			<if test='orderFrom!=null &amp;&amp; !orderFrom.equals("")'>
+				and a.orderFrom like "%"#{orderFrom}"%"
+			</if>
+			<if test='num!=null &amp;&amp; !num.equals("")'>
+				and d.num like "%"#{num}"%"
+			</if>
+			<if test='dName!=null &amp;&amp; !dName.equals("")'>
+				and c.dName like "%"#{dName}"%"
+			</if>
+			<if test='orderStatus!=null &amp;&amp; !orderStatus.equals("")'>
+				and a.orderStatus = #{orderStatus}
+			</if>
+   		AND
+   			a.exceptionReasonId IN (1,2,5) 
+   		AND 
+   			a.`orderStatus` NOT IN (6,7)
+   		limit #{begin},#{end}
+   </select>
+   
+   <select id="getExceptionsOrderCounts" parameterType="cn.guangtong.utils.ExceptionsOrderPageBean" resultType="int">
+  	 SELECT  count(*)
+   		FROM unfinished_order a 
+   	 	LEFT JOIN exception_reason b ON a.exceptionReasonId=b.reasonId 
+      	LEFT JOIN logistics_driver.driver_info c ON a.driverId=c.id 
+      	LEFT JOIN logistics_vehicle.vehicle_info d ON a.vehicleId=d.id 
+   		WHERE
+   			1=1
+   			
+			<if test='title!=null &amp;&amp; !title.equals("")'>
+				and b.reasonId =#{title}
+			</if>
+			<if test='takersTime!=null &amp;&amp; !takersTime.equals("")'>
+				and a.takersTime like "%"#{takersTime}"%"
+			</if>
+			<if test='driverId!=null &amp;&amp; !driverId.equals("")'>
+				and a.driverId =#{driverId}
+			</if>
+			<if test='ordernum!=null &amp;&amp; !ordernum.equals("")'>
+				and a.orderNum like "%"#{ordernum}"%"
+			</if>
+			<if test='orderFrom!=null &amp;&amp; !orderFrom.equals("")'>
+				and a.orderFrom like "%"#{orderFrom}"%"
+			</if>
+			<if test='num!=null &amp;&amp; !num.equals("")'>
+				and d.num like "%"#{num}"%"
+			</if>
+			<if test='dName!=null &amp;&amp; !dName.equals("")'>
+				and c.dName like "%"#{dName}"%"
+			</if>
+			<if test='orderStatus!=null &amp;&amp; !orderStatus.equals("")'>
+				and a.orderStatus = #{orderStatus}
+			</if>
+			
+   		AND
+   			a.exceptionReasonId IN (1,2,5) 
+   		AND 
+   			a.`orderStatus` NOT IN (6,7)
+   </select>
+   
+   <insert id="insertOrder" parameterType="cn.guangtong.entity.order.UnfinishedOrder" useGeneratedKeys="true" keyProperty="id">
+   		INSERT INTO 
+   			unfinished_order (orderNum,customerId,deliverAddr,receiptAddr,volume,weight,length,wide,tall,description,payMethod,createTime,callTime,deliverTel,receiptTel,deliver,receipt,sCompany,rCompany,updateTime,deliverLocation,receiptLocation,orderFrom) 
+        VALUES
+        	(#{ordernum},#{customerid},#{deliveraddr},#{receiptaddr},#{volume},#{weight},#{length},#{wide},#{tall},#{description},#{paymethod},#{createtime},#{calltime},#{delivertel},#{receipttel},#{deliver},#{receipt},#{scompany},#{rcompany},#{updatetime},#{deliverlocation},#{receiptlocation},2)
+   </insert>
+   
+   <insert id="addAdminOrder" parameterType="cn.guangtong.entity.order.OrderAdmin" useGeneratedKeys="true" keyProperty="id">
+   		INSERT INTO 
+   			order_admin (orderId,adminId,adminName) 
+   		VALUES 
+   			(#{orderid},#{adminid},#{adminname})
+   </insert>
+   
+   <select id="getUnfinishedOrderByNum" parameterType="string" resultType="cn.guangtong.entity.order.UnfinishedOrder">
+   		SELECT * FROM logistics_order.unfinished_order WHERE orderNum=#{orderNum}
+   </select>
+
+   <select id="getWeightByOrderNum" parameterType="java.lang.String" resultType="cn.guangtong.entity.order.UnfinishedOrder">
+		SELECT weight FROM logistics_order.unfinished_order WHERE orderNum=#{orderNum}
+   </select>
+	<!-- 查询司机信息 -->
+	<select id="getDriverInfo" parameterType="cn.guangtong.utils.PageBean" resultType="map">
+	SELECT
+		a.id as driverId,b.id as vehicleId ,a.dName,b.num,d.remainBulk,e.latitude,e.longitude,f.`desc`,f.capacity
+		FROM
+		logistics_driver.driver_info a
+		LEFT JOIN logistics_vehicle.vehicle_info b ON a.defaultVehicleNum=b.num
+		LEFT JOIN logistics_beidou.gpsinfo e ON b.simNo=e.simNo
+		LEFT JOIN logistics_vehicle.`vehicle_status(cache)` d ON
+		b.id=d.vehicleId
+        LEFT JOIN logistics_vehicle.model_info f ON b.modelId=f.id
+         GROUP BY a.id
+		limit #{begin},#{end}
+	</select>
+
+	<!-- 统计司机总数 -->
+	<select id="getDriverInfoCount" resultType="int">
+		SELECT COUNT(*) FROM (SELECT
+		a.id as driverId,b.id as vehicleId ,a.dName,b.num,d.remainBulk,e.latitude,e.longitude,f.`desc`,f.capacity
+		FROM
+		logistics_driver.driver_info a
+		LEFT JOIN logistics_vehicle.vehicle_info b ON a.defaultVehicleNum=b.num
+		LEFT JOIN logistics_beidou.gpsinfo e ON b.simNo=e.simNo
+		LEFT JOIN logistics_vehicle.`vehicle_status(cache)` d ON
+		b.id=d.vehicleId
+        LEFT JOIN logistics_vehicle.model_info f ON b.modelId=f.id
+         GROUP BY a.id) as tmp
+	</select>
+	
+	<!-- 给司机指派订单 -->
+	<update id="appointOrderById" parameterType="map">
+      UPDATE unfinished_order
+   		set driverId=#{driverId},
+   		vehicleId=#{vehicleId},
+	   	takersTime=#{takersTime},
+	   	orderStatus='3'
+   		where id=#{id}
+	</update>
+	
+	<!--  根据id查询改派订单 -->
+	<select id="getReassignOrderById" parameterType="int" resultType="map">
+		SELECT 
+			* 
+		FROM  
+			unfinished_order AS a 
+		LEFT JOIN exception_reason AS b ON a.exceptionReasonId=b.reasonId 
+		LEFT JOIN unfinished_money AS c ON a.orderNum=c.orderNum 
+		AND a.driverId=c.driverId  
+		where 
+			a.orderStatus='2' AND a.id=#{id} 
+	</select>
+
+	<!-- 根据id查询订单 -->
+	<select id="getOrderById" parameterType="int"
+		resultType="map">
+		SELECT * FROM
+		(SELECT a.`id`,a.`orderNum`,
+		date_format(a.`callTime`,'%Y-%c-%d %h:%i:%s') as callTime,
+		a.vehicleId,d.num as
+		num,a.driverId,b.dName as
+		dName,a.exceptionReason,a.exceptionImg,a.leadTime,a.orderStatus,
+		date_format(a.`createTime`,'%Y-%c-%d %h:%i:%s') as createTime,
+		a.`customerId`,a.`deliver`,a.`deliverAddr`,a.`deliverLocation`,
+		a.`deliverTel`,a.`description`,a.`orderFrom`,a.`payMethod`,a.`rCompany`,a.`receipt`,a.`receiptAddr`,
+		a.`receiptLocation`,a.`receiptTel`,a.`rProvance`,a.`sCompany`,a.`sProvance`,a.`updateTime`,a.`volume`,a.`weight`,a.`length`,a.`wide`,a.`tall`,
+		e.insuranceFee,e.floorFee,e.handlingFee,e.freightFee,e.driverMoney,e.totalMoney,e.payTime,e.settle,e.settleAmount,e.payment
+		FROM unfinished_order AS a LEFT JOIN logistics_driver.driver_info b ON
+		a.driverId=b.id
+		LEFT JOIN logistics_vehicle.vehicle_info d ON a.vehicleId=d.id
+		LEFT JOIN logistics_order.unfinished_money e ON a.orderNum=e.orderNum AND
+		a.driverId=e.driverId
+		UNION ALL
+		SELECT
+		c.`id`,c.`orderNum`,
+		date_format(c.`callTime`,'%Y-%c-%d %h:%i:%s') as callTime,
+		c.vehicleId,d.num,c.driverId,b.dName,c.exceptionReason,c.exceptionImg,c.leadTime,c.orderStatus,
+		date_format(c.`createTime`,'%Y-%c-%d %h:%i:%s') as createTime,
+		c.`customerId`,c.`deliver`,c.`deliverAddr`,c.`deliverLocation`,
+		c.`deliverTel`,c.`description`,c.`orderFrom`,c.`payMethod`,c.`rCompany`,c.`receipt`,c.`receiptAddr`,
+		c.`receiptLocation`,c.`receiptTel`,c.`rProvance`,c.`sCompany`,c.`sProvance`,c.`updateTime`,c.`volume`,c.`weight`,c.`length`,c.`wide`,c.`tall`,
+		e.insuranceFee,e.floorFee,e.handlingFee,e.freightFee,e.driverMoney,e.totalMoney,e.payTime,e.settle,e.settleAmount,e.payment
+		FROM done_order AS c LEFT JOIN logistics_driver.driver_info b ON
+		c.driverId=b.id
+		LEFT JOIN logistics_vehicle.vehicle_info d ON c.vehicleId=d.id
+		LEFT JOIN logistics_order.unfinished_money e ON c.orderNum=e.orderNum AND
+		c.driverId=e.driverId
+		) AS tmp
+		where id=#{id}
+	</select>
+   
+	<!--编辑订单 -->
+	<update id="updateOrder" parameterType="cn.guangtong.entity.order.UnfinishedOrder" >
+   		update logistics_order.unfinished_order
+   		<set>
+	   		<if test="customerid!=null and customerid!=''">customerId=#{customerid},</if>
+	   		<if test="deliveraddr!=null and deliveraddr!=''">deliverAddr=#{deliveraddr},</if>
+	   		<if test="receiptaddr!=null and receiptaddr!=''">receiptAddr=#{receiptaddr},</if>
+	   		<if test="volume!=null and volume!=''">volume=#{volume},</if>
+	   		<if test="weight!=null and weight!=''">weight=#{weight},</if>
+	   		<if test="length!=null and length!=''">length=#{length},</if>
+	   		<if test="wide!=null and wide!=''">wide=#{wide},</if>
+	   		<if test="tall!=null and tall!=''">tall=#{tall},</if>
+	   		<if test="description!=null and description!=''">description=#{description},</if>
+	   		<if test="paymethod!=null and paymethod!=''">payMethod=#{paymethod},</if>
+	   		<if test="createtime!=null and createtime!=''">createTime=#{createtime},</if>
+	   		<if test="calltime!=null and calltime!=''">callTime=#{calltime},</if>
+	   		<if test="delivertel!=null and delivertel!=''">deliverTel=#{delivertel},</if>
+	   		<if test="receipttel!=null and receipttel!=''">receiptTel=#{receipttel},</if>
+	   		<if test="deliver!=null and deliver!=''">deliver=#{deliver},</if>
+	   		<if test="receipt!=null and receipt!=''">receipt=#{receipt},</if>
+	   		<if test="scompany!=null and scompany!=''">sCompany=#{scompany},</if>
+	   		<if test="rcompany!=null and rcompany!=''">rCompany=#{rcompany},</if>
+	   		<if test="sprovance!=null and sprovance!=''">sProvance=#{sprovance},</if>
+	   		<if test="rprovance!=null and rprovance!=''">rProvance=#{rprovance},</if>
+	   		<if test="updatetime!=null and updatetime!=''">updateTime=#{updatetime},</if>
+	   		<if test="deliverlocation!=null and deliverlocation!=''">deliverLocation=#{deliverlocation},</if>
+	   		<if test="receiptlocation!=null and receiptlocation!=''">receiptLocation=#{receiptlocation},</if>
+	   		<if test="orderfrom!=null and orderfrom!=''">orderFrom=#{orderfrom}</if>
+   		</set>
+   		where orderNum=#{ordernum}
+   </update>
+   	
+   <!-- 取消订单-->
+   <update id="cancelOrder" parameterType="int">
+   		update 
+   			logistics_order.unfinished_order
+   	    set 
+   	    	orderstatus='7'	
+   		where 
+   			id=#{id}
+   </update>
+  
+   <!-- 查询订单列表 -->
+   <select id="orderlb" parameterType="int" resultType="java.util.Map">
+        select id,orderNum,orderStatus,driverId,vehicleId,customerId,deliver,
+        deliverTel,sCompany,sProvance,deliverAddr,receipt,receiptTel,rCompany,
+        rProvance,receiptAddr,rounteId,
+        date_format(createTime,'%Y-%c-%d %h:%i:%s'),
+        date_format(takersTime,'%Y-%c-%d %h:%i:%s'),
+        date_format(callTime,'%Y-%c-%d %h:%i:%s'),
+        date_format(pickupTime,'%Y-%c-%d %h:%i:%s'),
+        date_format(leadTime,'%Y-%c-%d %h:%i:%s') from logistics_order.unfinished_order
+        limit #{begin},#{pageCount}
+   </select>
+
+   <!-- 订单总数 -->
+   <select id="ordercount" parameterType="int" resultType="java.lang.Integer">
+        select count(1) from logistics_order.unfinished_order
+   </select>
+   
+   <!-- 指派 -->
+   <update id="assigndriver" parameterType="int">
+      update logistics_order.unfinished_order set driverId=#{driverId} where id=#{id}
+   </update>
+   
+ 
+   <!-- 查询未完成改派订单信息 -->
+   <select id="listChangeOrderInfo" parameterType="cn.guangtong.utils.PageBean" resultType="java.util.Map">
+  	 SELECT  
+  	 a.orderNum,
+  	 d.title,
+  	 c.totalMoney,
+  	 b.num,
+  	 a.deliverAddr,
+  	 a.receiptAddr,
+  	 DATE_FORMAT(a.reassignTime,'%Y-%c-%d %h:%i:%s') AS reassignTime FROM logistics_order.unfinished_order a LEFT JOIN logistics_vehicle.vehicle_info b ON a.vehicleId=b.id LEFT JOIN logistics_order.unfinished_money c ON a.orderNum = c.orderNum LEFT JOIN logistics_order.exception_reason d ON a.exceptionReasonId=d.reasonId WHERE a.orderStatus = 2 limit #{begin},#{end}
+   </select>
+   
+	<!-- 改派未完成订单信息记录总数 -->
+	<select id="getChangeOrderCount" resultType="java.lang.Integer">
+		select count(*) from logistics_order.unfinished_order WHERE orderStatus = 2
+	</select>
+	
+	<!-- 查询已完成改派订单信息 -->
+	<select id="listChangeOrderInfoFinshed" parameterType="cn.guangtong.utils.PageBean" resultType="java.util.Map">
+	 SELECT  
+  	 a.orderNum,
+  	 d.title,
+  	 c.totalMoney,
+  	 b.num,
+  	 a.deliverAddr,
+  	 a.receiptAddr,
+  	 DATE_FORMAT(a.reassignTime,'%Y-%c-%d %h:%i:%s') AS reassignTime FROM logistics_order.done_order a LEFT JOIN logistics_vehicle.vehicle_info b ON a.vehicleId=b.id LEFT JOIN logistics_order.done_money c ON a.orderNum = c.orderNum LEFT JOIN logistics_order.exception_reason d ON a.exceptionReasonId=d.reasonId WHERE a.orderStatus = 2 limit #{begin},#{end}
+	</select>
+	
+	<!-- 查询已完成改派订单信息总数 -->
+	<select id="getChangeOrderCountFinshed" resultType="java.lang.Integer">
+	select count(*) from logistics_order.done_order WHERE orderStatus = 2
+	</select>
+   
+   <!-- 司机提现申请处理 -->
+  	<select id="listDriverWithdraw" parameterType="java.util.Map" resultType="cn.guangtong.entity.order.DriverWithdraw">
+		select 
+		id,
+		driverId,
+		driverName,
+		bankName,
+		bankNum,
+		branch,
+		money,
+		DATE_FORMAT(createTime,'%Y-%c-%d %h:%i:%s') AS createTime,
+		DATE_FORMAT(payTime,'%Y-%c-%d %h:%i:%s') AS payTime
+		from driver_withdraw where isPay = #{ispay}<if test="begintime!=null">and createTime &gt;= #{begintime}</if><if test="endtime!=null">and createTime &lt;= #{endtime} </if> <if test="end!=0">limit #{begin},#{end}</if>
+	</select>
+	
+   <!-- 司机提现申请处理 记录总数 -->
+   <select id="getDriverWithdrawCount" parameterType="cn.guangtong.entity.order.DriverWithdraw" resultType="java.lang.Integer">
+   		select count(*) from driver_withdraw where isPay = #{ispay}<if test="begintime!=null">and createTime &gt;= #{begintime}</if><if test="endtime!=null">and createTime &lt;= #{endtime} </if>
+   </select>
+   
+   <!-- 处理司机提现请求-->
+   <select id="updateIsPay" parameterType="cn.guangtong.entity.order.DriverWithdraw">
+		update driver_withdraw set isPay = #{ispay} where id = #{id}  
+   </select>
+   
+   <select id="getArroundCar" parameterType="java.util.Map" resultType="java.util.Map">
+   		SELECT plateNo,longitude,latitude from logistics_beidou.gpsrealdata WHERE longitude BETWEEN #{minLng} AND #{maxLng} AND latitude BETWEEN #{minLat} AND #{maxLat}
+   </select>
+   
+   <!-- 模糊查询顾客名称 -->
+   <select id="customerNameFuzzy" parameterType="java.lang.String" resultType="java.util.HashMap">
+   		SELECT id,cName from logistics_customer.customer_info WHERE cName LIKE concat(concat('%',#{name}),'%')
+   </select>
+   
+   <!-- 最近一次发货记录 -->
+   <select id="lastTransaction" parameterType="java.lang.String" resultType="java.util.HashMap">
+   		SELECT deliver,deliverTel,deliverAddr,sCompany,receipt,receiptTel,receiptAddr,rCompany FROM logistics_order.done_order WHERE customerId=#{id} order by createTime desc LIMIT 1
+   </select>
+
+  <!-- 根据id查询订单对象 -->
+   <select id="getUnfinishedOrderById" parameterType="long" resultType="cn.guangtong.entity.order.UnfinishedOrder">
+   		SELECT * FROM logistics_order.unfinished_order a WHERE a.id=#{id}
+   </select>
+   
+   <delete id="deleteById" parameterType="long">
+   DELETE FROM logistics_order.unfinished_order 
+    where id = #{id}
+  </delete>
+   
+</mapper>

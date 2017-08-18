@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.beidou.TerminalDao">
+
+	<insert id="insert" parameterType="cn.guangtong.entity.beidou.Terminal">
+		insert into logistics_beidou.terminal
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="termId != null">
+				termId,
+			</if>
+			<if test="createDate != null">
+				createDate,
+			</if>
+			<if test="deleted != null">
+				deleted,
+			</if>
+			<if test="owner != null">
+				owner,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="tenantId != null">
+				tenantId,
+			</if>
+			<if test="bind != null">
+				bind,
+			</if>
+			<if test="devNo != null">
+				devNo,
+			</if>
+			<if test="instAlladdress != null">
+				installAddress,
+			</if>
+			<if test="installTime != null">
+				installTime,
+			</if>
+			<if test="makeFactory != null">
+				makeFactory,
+			</if>
+			<if test="makeNo != null">
+				makeNo,
+			</if>
+			<if test="makeTime != null">
+				makeTime,
+			</if>
+			<if test="seqNo != null">
+				seqNo,
+			</if>
+			<if test="simNo != null">
+				simNo,
+			</if>
+			<if test="state != null">
+				state,
+			</if>
+			<if test="termNo != null">
+				termNo,
+			</if>
+			<if test="termType != null">
+				termType,
+			</if>
+			<if test="updateTime != null">
+				updateTime,
+			</if>
+			<if test="verHardware != null">
+				verHardware,
+			</if>
+			<if test="verProtocol != null">
+				verProtocol,
+			</if>
+			<if test="verSoftware != null">
+				verSoftware,
+			</if>
+			<if test="waitor != null">
+				waitor,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="termId != null">
+				#{termId,jdbcType=INTEGER},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="deleted != null">
+				#{deleted,jdbcType=BIT},
+			</if>
+			<if test="owner != null">
+				#{owner,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="tenantId != null">
+				#{tenantId,jdbcType=INTEGER},
+			</if>
+			<if test="bind != null">
+				#{bind,jdbcType=BIT},
+			</if>
+			<if test="devNo != null">
+				#{devNo,jdbcType=VARCHAR},
+			</if>
+			<if test="instAlladdress != null">
+				#{instAlladdress,jdbcType=VARCHAR},
+			</if>
+			<if test="installTime != null">
+				#{installTime},
+			</if>
+			<if test="makeFactory != null">
+				#{makeFactory,jdbcType=VARCHAR},
+			</if>
+			<if test="makeNo != null">
+				#{makeNo,jdbcType=VARCHAR},
+			</if>
+			<if test="makeTime != null">
+				#{makeTime},
+			</if>
+			<if test="seqNo != null">
+				#{seqNo,jdbcType=VARCHAR},
+			</if>
+			<if test="simNo != null">
+				#{simNo,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=VARCHAR},
+			</if>
+			<if test="termNo != null">
+				#{termNo,jdbcType=VARCHAR},
+			</if>
+			<if test="termType != null">
+				#{termType,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+			<if test="verHardware != null">
+				#{verHardware,jdbcType=SMALLINT},
+			</if>
+			<if test="verProtocol != null">
+				#{verProtocol,jdbcType=SMALLINT},
+			</if>
+			<if test="verSoftware != null">
+				#{verSoftware,jdbcType=SMALLINT},
+			</if>
+			<if test="waitor != null">
+				#{waitor,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="getTerminalByPageBean" parameterType="cn.guangtong.utils.TerminalPageBean"
+		resultType="java.util.Map">
+		SELECT
+		a.termId,a.makeFactory,a.devNo,date_format(a.updateTime,'%Y-%c-%d
+		%h:%i:%s') as updateTime,a.termNo,a.termType,a.instAlladdress,a.owner
+		FROM logistics_beidou.terminal a
+		where 1=1
+		<if test='termId!=null&amp;&amp;!termId.equals("")'>
+			and termId like "%"#{termId}"%"
+		</if>
+		<if test='devNo!=null&amp;&amp;!devNo.equals("")'>
+			and devNo like "%"#{devNo}"%"
+		</if>
+		<if test='termType!=null&amp;&amp;!termType.equals("")'>
+			and termType like "%"#{termType}"%"
+		</if>
+		<if test='instAlladdress!=null&amp;&amp;!instAlladdress.equals("")'>
+			and instAlladdress like "%"#{instAlladdress}"%"
+		</if>
+		<if test='makeFactory!=null&amp;&amp;!makeFactory.equals("")'>
+			and makeFactory like "%"#{makeFactory}"%"
+		</if>
+		<if test='termNo!=null&amp;&amp;!termNo.equals("")'>
+			and termNo like "%"#{termNo}"%"
+		</if>
+		<if test='updateTime!=null&amp;&amp;!updateTime.equals("")'>
+			and updateTime like "%"#{updateTime}"%"
+		</if>
+		LIMIT #{begin},#{end}
+	</select>
+
+	<select id="getTerminalByPageBeanCounts" parameterType="cn.guangtong.utils.TerminalPageBean"
+		resultType="int">
+		SELECT
+		COUNT(*)
+		FROM(SELECT
+		a.makeFactory,a.devNo,a.makeTime,a.termNo,a.termType,a.installTime
+		FROM logistics_beidou.terminal a ) temp
+	</select>
+
+	<select id="getTerminalByTermNo" parameterType="String"
+		resultType="cn.guangtong.entity.beidou.Terminal">
+		SELECT a.termNo,a.devNo,a.makeNo,a.installAddress,a.termType,
+		date_format(a.updateTime,'%Y-%c-%d %h:%i:%s')as updateTime 
+		FROM logistics_beidou.terminal a
+		WHERE
+		a.termId=#{termId}
+	</select>
+
+	<delete id="delete" parameterType="String">
+		delete from
+		logistics_beidou.terminal
+		where termId = #{termId}
+	</delete>
+
+	<update id="upDateTerminal" parameterType="cn.guangtong.entity.beidou.Terminal">
+		update logistics_beidou.terminal
+		<set>
+			<if test="createDate != null">
+				createDate = #{createDate},
+			</if>
+			<if test="deleted != null">
+				deleted = #{deleted,jdbcType=BIT},
+			</if>
+			<if test="owner != null">
+				owner = #{owner,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="tenantId != null">
+				tenantId = #{tenantId,jdbcType=INTEGER},
+			</if>
+			<if test="bind != null">
+				bind = #{bind,jdbcType=BIT},
+			</if>
+			<if test="devNo != null">
+				devNo = #{devNo,jdbcType=VARCHAR},
+			</if>
+			<if test="instAlladdress != null">
+				installAddress = #{instAlladdress,jdbcType=VARCHAR},
+			</if>
+			<if test="installTime != null">
+				installTime = #{installTime},
+			</if>
+			<if test="makeFactory != null">
+				makeFactory = #{makeFactory,jdbcType=VARCHAR},
+			</if>
+			<if test="makeNo != null">
+				makeNo = #{makeNo,jdbcType=VARCHAR},
+			</if>
+			<if test="makeTime != null">
+				makeTime = #{makeTime},
+			</if>
+			<if test="seqNo != null">
+				seqNo = #{seqNo,jdbcType=VARCHAR},
+			</if>
+			<if test="simNo != null">
+				simNo = #{simNo,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				state = #{state,jdbcType=VARCHAR},
+			</if>
+			<if test="termNo != null">
+				termNo = #{termNo,jdbcType=VARCHAR},
+			</if>
+			<if test="termType != null">
+				termType = #{termType,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				updateTime = #{updateTime},
+			</if>
+			<if test="verHardware != null">
+				verHardware = #{verHardware,jdbcType=SMALLINT},
+			</if>
+			<if test="verProtocol != null">
+				verProtocol = #{verProtocol,jdbcType=SMALLINT},
+			</if>
+			<if test="verSoftware != null">
+				verSoftware = #{verSoftware,jdbcType=SMALLINT},
+			</if>
+			<if test="waitor != null">
+				waitor = #{waitor,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where termId = #{termId,jdbcType=INTEGER}
+	</update>
+
+</mapper>

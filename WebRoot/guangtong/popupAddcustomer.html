@@ -1,0 +1,100 @@
+<meta charset="utf-8" />
+<div class="pophead_xk skyblue"><span><span><img src="img/u6.png"></span><span>新增客户</span></span><i><img src="img/close.png" alt="" /></i></div>
+<div class="popbody_xk  noborder gray1">
+	<table cellspacing="0" class="poptable2_xk poptable2_xk_zyl">
+		<tbody>
+			<tr>
+				<th>客户名称：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>联系人：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>联系电话：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>地址：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>邮箱：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>QQ：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>微信：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td class="popcomfirm_xk" colspan="2">
+					<a class="button blue save">保存</a>
+					<a class="button orange">放弃</a>
+				</td>
+			</tr>
+
+		</tfoot>
+	</table>
+</div>
+<script type="text/javascript">
+	//增加
+	function iCustomerInfo() {
+		$(".popcomfirm_xk .save").click(function() {
+			data_json = {
+				"cname": $(".poptable2_xk_zyl tbody tr:eq(0)  td input").val(),
+				"contactname": $(".poptable2_xk_zyl tbody tr:eq(1)  td input").val(),
+				"tel": $(".poptable2_xk_zyl tbody tr:eq(2)  td input").val(),
+				"addr": $(".poptable2_xk_zyl tbody tr:eq(3)  td input").val(),
+				"email": $(".poptable2_xk_zyl tbody tr:eq(4)  td input").val(),
+				"qqaccount": $(".poptable2_xk_zyl tbody tr:eq(5)  td input").val(),
+				"wechataccount": $(".poptable2_xk_zyl tbody tr:eq(6)  td input").val(),
+			}
+			switch("") {
+				case data_json["cname"]:
+					alert("客户名称不能为空！");
+					break;
+				case data_json["contactname"]:
+					alert("联系人不能为空！");
+					break;
+				case data_json["tel"]:
+					alert("联系电话不能为空！");
+					break;
+				case data_json["addr"]:
+					alert("地址不能为空！");
+					break;
+				case data_json["email"]:
+					alert("邮箱不能为空！");
+					break;
+				case data_json["qqAccount"]:
+					alert("QQ不能为空！");
+					break;
+				case data_json["wechatAccount"]:
+					alert("微信不能为空！");
+					break;
+				default:
+					$.ajax(config.url + "customer/iCustomerInfo", {
+						data: data_json,
+						dataType: "json",
+						type: "POST",
+						timeout: 10000,
+						success: function(data) {
+							//console.log(data.success);
+							alert(data.msg);
+						}
+					});
+					$("popwindow_xk .popup_xk").html("");
+					$(".popwindow_xk").css("visibility", "hidden");
+					getCustomerInfosByPage();
+					break;
+			}
+		});
+	}
+	iCustomerInfo();
+</script>

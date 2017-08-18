@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.cms.AdminDao">
+
+	<select id="getAdminByName" parameterType="string" resultType="cn.guangtong.entity.cms.Admin">
+		select * from logistics_cms.admin a where
+		a.username=#{username}
+	</select>
+
+	<!-- 获取所有的超级管理员 -->
+	<select id="getAdminAtype" resultType="cn.guangtong.entity.cms.Admin">
+		select * from logistics_cms.admin a where a.aType=1
+	</select>
+
+	<update id="adminUpdate" parameterType="cn.guangtong.entity.cms.Admin">
+		update logistics_cms.admin a
+		<set>
+			<if test="username!=null">username=#{username},</if>
+			<if test="password!=null">password=#{password},</if>
+			<if test="updateTime!=null">updateTime=#{updateTime},</if>
+			<if test="aType!=null">aType=#{aType},</if>
+		</set>
+		where a.id=#{id}
+	</update>
+
+	<select id="getAll" resultType="cn.guangtong.entity.cms.Admin">
+		select * from logistics_cms.admin
+	</select>
+
+	<select id="getByAdminNameAndPassword" parameterType="string" resultType="cn.guangtong.entity.cms.Admin">
+		select * from logistics_cms.admin a where
+		a.username=#{0}
+		and a.password=#{1}
+	</select>
+
+	<select id="getAllByPid" parameterType="int" resultType="cn.guangtong.entity.cms.Admin">
+		select a.id,a.username,a.pid from logistics_cms.admin a where
+		a.pid=#{pid}
+	</select>
+
+	<!-- 超级管理员 管理管理员 -->
+	<select id="getAdmins" parameterType="cn.guangtong.utils.AdminPageBean" resultType="cn.guangtong.entity.cms.Admin">
+		select id,pid,username,password,
+		date_format(startTime,'%Y-%c-%d %h:%i:%s') as startTime,
+		date_format(endTime,'%Y-%c-%d %h:%i:%s') as endTime,
+		date_format(loginTime,'%Y-%c-%d %h:%i:%s') as loginTime,
+		aType from logistics_cms.admin
+		WHERE atype!=1
+		<if test='username!=null &amp;&amp; !username.equals("")'>
+			and username like concat(concat('%',#{username}),'%')
+		</if>
+		<if test='loginTime!=null &amp;&amp; !loginTime.equals("")'>
+			and loginTime like concat(concat('%',#{loginTime}),'%')
+		</if>
+		<if test='isValid!=null &amp;&amp; isValid.getintvalue()!=1 &amp;&amp; currTime!=null&amp;&amp; !currTime.equals("") '>
+			and startTime >= #{currTime} and #{currTime} >= endTime
+		</if>
+		<if test='isValid!=null &amp;&amp; isValid.getintvalue()!=0 &amp;&amp; currTime!=null&amp;&amp; !currTime.equals("") '>
+			and #{currTime}>startTime or endTime > #{currTime}
+		</if>
+		<if test='atype!=null &amp;&amp; !atype.equals("")'>
+			and atype=#{atype}
+		</if>
+		<if test='pid!=null &amp;&amp; !pid.equals("")'>
+			and pid=#{pid}
+		</if>
+
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+	<!-- 超级管理员 管理 -->
+	<select id="getCounts" resultType="int">
+		select count(*) from logistics_cms.admin
+		WHERE atype!=1
+		<if test='username!=null &amp;&amp; !username.equals("")'>
+			and username like concat(concat('%',#{username}),'%')
+		</if>
+		<if test='loginTime!=null &amp;&amp; !loginTime.equals("")'>
+			and loginTime like concat(concat('%',#{loginTime}),'%')
+		</if>
+		<if test='isValid!=null &amp;&amp; isValid.getintvalue()!=1 &amp;&amp; currTime!=null&amp;&amp; !currTime.equals("") '>
+			and startTime >= #{currTime} and #{currTime} >= endTime
+		</if>
+		<if test='isValid!=null &amp;&amp; isValid.getintvalue()!=0 &amp;&amp; currTime!=null&amp;&amp; !currTime.equals("") '>
+			and #{currTime}>startTime or endTime > #{currTime}
+		</if>
+		<if test='atype!=null &amp;&amp; !atype.equals("")'>
+			and atype=#{atype}
+		</if>
+		<if test='pid!=null &amp;&amp; !pid.equals("")'>
+			and pid=#{pid}
+		</if>
+	</select>
+
+	<!-- 普通用户 -->
+	<select id="getAdmin" parameterType="cn.guangtong.utils.AdminPageBean" resultType="cn.guangtong.entity.cms.Admin">
+		select id,pid,username,password,
+		date_format(startTime,'%Y-%c-%d %h:%i:%s') as startTime,
+		date_format(endTime,'%Y-%c-%d %h:%i:%s') as endTime,
+		date_format(loginTime,'%Y-%c-%d %h:%i:%s') as loginTime,
+		aType from logistics_cms.admin
+		WHERE atype!=1
+		and pid=#{adminId}
+		
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+	<!-- 普通用户 -->
+	<select id="getCount" resultType="int">
+		select count(*) from logistics_cms.admin
+		WHERE atype!=1
+		and pid=#{adminId}
+		<if test='username!=null &amp;&amp; !username.equals("")'>
+			and username like concat(concat('%',#{username}),'%')
+		</if>
+		<if test='loginTime!=null &amp;&amp; !loginTime.equals("")'>
+			and loginTime like concat(concat('%',#{loginTime}),'%')
+		</if>
+		<if test='isValid!=null &amp;&amp; isValid.getintvalue()!=1 &amp;&amp; currTime!=null&amp;&amp; !currTime.equals("") '>
+			and startTime >= #{currTime} and #{currTime} >= endTime
+		</if>
+		<if test='isValid!=null &amp;&amp; isValid.getintvalue()!=0 &amp;&amp; currTime!=null&amp;&amp; !currTime.equals("") '>
+			and #{currTime}>startTime or endTime > #{currTime}
+		</if>
+		<if test='atype!=null &amp;&amp; !atype.equals("")'>
+			and atype=#{atype}
+		</if>
+		<if test='pid!=null &amp;&amp; !pid.equals("")'>
+			and pid=#{pid}
+		</if>
+	</select>
+
+	<insert id="addAdmin" parameterType="cn.guangtong.entity.cms.Admin" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		logistics_cms.admin (username,password,startTime,endTime,atype,pid)
+		values
+		(#{username},#{password},#{startTime},#{endTime},#{atype},#{pid})
+	</insert>
+
+	<delete id="deleteAdmin" parameterType="int">
+		delete from logistics_cms.admin where id=#{id}
+	</delete>
+
+	<update id="updateAdmin" parameterType="int">
+		update logistics_cms.admin
+		<set>
+			<if test="pid!=null &amp;&amp; !pid.equals('')">pid=#{pid},</if>
+			<if test="username!=null &amp;&amp; !username.equals('')">username=#{username},</if>
+			<if test="password!=null &amp;&amp; !password.equals('')">password=#{password},</if>
+			<if test="atype!=null &amp;&amp; !atype.equals('')">atype=#{atype},</if>
+			<if test="startTime!=null &amp;&amp; !startTime.equals('')">startTime=#{startTime},</if>
+			<if test="endTime!=null &amp;&amp; !endTime.equals('')">endTime=#{endTime},</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<select id="getAdminById" parameterType="int" resultType="cn.guangtong.entity.cms.Admin">
+		select id,pid,username,password,
+		date_format(startTime,'%Y-%c-%d %h:%i:%s') as startTime,
+		date_format(endTime,'%Y-%c-%d %h:%i:%s') as endTime,
+		date_format(loginTime,'%Y-%c-%d %h:%i:%s') as loginTime,
+		aType from logistics_cms.admin
+		where id=#{id}
+	</select>
+	<!-- 判断用户名是否可用 -->
+	<select id="judgeAdminByName" parameterType="string" resultType="int">
+		SELECT COUNT(*) FROM logistics_cms.admin a WHERE
+		a.username=#{userName}
+	</select>
+	
+	
+	<update id="upLoginTime" parameterType="string">
+		update logistics_cms.admin a
+		set a.loginTime=#{1}
+		where a.id=#{0}
+	</update>
+	
+</mapper>

@@ -1,0 +1,434 @@
+<meta charset="utf-8" />
+<script src="js/ajaxfileupload.js"></script>
+<div class="pophead_xk skyblue">
+	<span><span><img src="img/u6.png"></span><span>新增车辆</span></span><i><img
+		src="img/close.png" alt="" /></i>
+</div>
+<div class="popbody_xk  noborder gray1" style="width:400px;max-height: 600px;overflow-y:auto;">
+	<table cellspacing="0" class="poptable2_xk poptable2_xk_zyl">
+		<tbody>
+			<tr>
+				<th>车牌号：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>编号：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>车架号：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>发动机号：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>车辆类型:</th>
+				<td>
+					<select name="" class="select">
+						<!--<option value="">货车</option>-->
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>特别运输类型</th>
+				<td>
+					<select name="" class="select">
+						<!-- <option value="1">集港物流</option>
+						<option value="2">危险品零售</option>
+						<option value="3">仓储配送</option>
+						<option value="4">冷链配送</option>
+						<option value="5">干线运输</option>
+						<option value="6">长途客车</option>
+						<option value="7">其他</option> -->
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>车载设备编号：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>车辆颜色</th>
+				<td>
+					<!--<select name="" class="select">
+						<option value="">蓝色</option>
+					</select>--><input type="text" class="search" />
+				</td>
+			</tr>
+			<tr>
+				<th>所属企业：</th>
+				<td>
+					<!-- <input type="text" class="search" /> -->
+					<select name="" class="select">
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>车队名称:</th>
+				<td>
+					<select name="" class="select">
+						<option value="">请选择车队</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<th>默认驾驶员：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>车辆管理费有效期：</th>
+				<td><input type="text" class="search time_plugin_lv_onclick" time_plugin_lv_type="2" /></td>
+			</tr>
+			<!--<tr>
+				<th>行驶证年检：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>-->
+			<tr>
+				<th>营运证有效期：</th>
+				<td><input type="text" class="search time_plugin_lv_onclick" time_plugin_lv_type="2" /></td>
+			</tr>
+			<tr>
+				<th>营运证年检：</th>
+				<td><input type="text" class="search time_plugin_lv_onclick" time_plugin_lv_type="2" /></td>
+			</tr>
+			<tr>
+				<th>车辆二级维护月份：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>交强险承保公司：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>车辆强制保险单号：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>交强险有效期：</th>
+				<td><input type="text" class="search time_plugin_lv_onclick" time_plugin_lv_type="2" /></td>
+			</tr>
+			<tr>
+				<th>承保公司服务电话：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>商业险承保公司名称：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>商业保险有效期：</th>
+				<td><input type="text" class="search time_plugin_lv_onclick" time_plugin_lv_type="2" /></td>
+			</tr>
+			<tr>
+				<th>保险类型：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>商业险保险单号：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>商业险联系电话：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>接收自动排单：</th>
+				<td>
+					<select name="" class="select">
+						<option value="1">是</option>
+						<option value="0">否</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>车辆照片：</th>
+				<td><img src="img/zxj.png" height="60px" alt="上传照片" style="padding-top: 10px;padding-left: 10px;"> <input type="file" name='file' id="uploadImage1" style="display: none;" /></td>
+			</tr>
+			<tr>
+				<th>行驶证照片：</th>
+				<td><img src="img/zxj.png" height="60px" alt="上传照片" style="padding-top: 10px;padding-left: 10px;"> <input type="file" name='file' id="uploadImage2" style="display: none;" /></td>
+			</tr>
+			<tr>
+				<th>营运证照片：</th>
+				<td><img src="img/zxj.png" height="60px" alt="上传照片" style="padding-top: 10px;padding-left: 10px;"> <input type="file" name='file' id="uploadImage3" style="display: none;" /></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td class="popcomfirm_xk" colspan="2">
+					<a class="button blue save">保存</a>
+					<a class="button orange">放弃</a>
+				</td>
+			</tr>
+
+		</tfoot>
+	</table>
+</div>
+
+<script>
+	function sVehicleInfoQuery_zyl() {
+		//上传图片
+		$(".popbody_xk").on('click', 'img[alt="上传照片"]', function() {
+			$('img[alt="上传照片"]').attr("class", "");
+			$(this).attr("class", "thisname_lv_img");
+			$(this).next("input:file").click();
+		});
+
+		$(".popbody_xk").on('change', 'input:file', function() {
+			UploadImg($(this).attr("id"));
+
+		});
+
+		$.ajax(config.url + "vehicle/sVehicleInfoQuery", {
+			dataType: "json",
+			type: "POST",
+			timeout: 10000,
+			success: function(data) {
+				for(var i = 0; i < data.obj[0].length; i++) {
+					$(".poptable2_xk_zyl tbody tr:eq(4) td select").append(
+						'<option value="' + data.obj[0][i].id + '" zyl_id="' + data.obj[0][i].id + '">' +
+						data.obj[0][i].desc + '</option>');
+				}
+				for(var l = 0; l < data.obj[1].length; l++) {
+					$(".poptable2_xk_zyl tbody tr:eq(5) td select").append(
+						'<option value="' + data.obj[1][l].id + '" zyl_id="' + data.obj[1][l].id + '">' +
+						data.obj[1][l].sName + '</option>');
+				}
+				for(var k = 0; k < data.obj[2].length; k++) {
+					$(".poptable2_xk_zyl tbody tr:eq(8) td select").append(
+						'<option value="' + data.obj[2][k].id + '" zyl_id="' + data.obj[2][k].id + '">' +
+						data.obj[2][k].cName + '</option>');
+				}
+				/* for(var j = 0; j < data.obj[1].length; j++) {
+				$(".poptable2_xk_zyl tbody tr:eq(8) td select").append('<option value="' + data.obj[1][j].id + '"zyl_id="' + data.obj[1][j].id + '">' + data.obj[1][j].tName + '</option>');
+				};*/
+
+				getVehicleTeamByCooperationId();
+				iVehicleInfo();
+				$(".poptable2_xk_zyl tbody tr:eq(8) td select").change(
+					function() {
+						getVehicleTeamByCooperationId();
+					}
+
+				);
+				
+
+			}
+
+		});
+	};
+
+	function getVehicleTeamByCooperationId() {
+		data_json_zyl = {
+			"cooperationId": $(".poptable2_xk_zyl tbody tr:eq(8) td select option:selected")
+				.attr("zyl_id"),
+		}
+		$.ajax(config.url + "vehicleteam/getVehicleTeamByCooperationId", {
+			data: data_json_zyl,
+			dataType: "json",
+			type: "POST",
+			timeout: 10000,
+			success: function(data) {
+				//console.log(data.success);
+				//alert(data.msg);
+				if(data.success) {
+					$(".poptable2_xk_zyl tbody tr:eq(9) td select").find(
+						"option").remove();
+					$(".poptable2_xk_zyl tbody tr:eq(9) td select").append(
+							'<option value="">' + "请选择车队" + '</option>');
+					for(var j = 0; j < data.obj.length; j++) {
+						$(".poptable2_xk_zyl tbody tr:eq(9) td select").append(
+							'<option value="' + data.obj[j].id + '"zyl_id="' + data.obj[j].id + '">' +
+							data.obj[j].tName + '</option>');
+					};
+					
+				}
+				
+			}
+		});
+	}
+
+	function iVehicleInfo() {
+		$(".popcomfirm_xk .save")
+			.click(
+				function() {
+					data_json = {
+						"num": $(
+								".poptable2_xk_zyl tbody tr:eq(0) td input")
+							.val(),
+						"nickname":$(".poptable2_xk_zyl tbody tr:eq(1) td input").val(),
+						"VIN": $(
+								".poptable2_xk_zyl tbody tr:eq(2) td input")
+							.val(),
+						"engineNum": $(
+								".poptable2_xk_zyl tbody tr:eq(3) td input")
+							.val(),
+						"modelId": $(
+								".poptable2_xk_zyl tbody tr:eq(4) td select option:selected")
+							.val(),
+						"specialId": $(
+								".poptable2_xk_zyl tbody tr:eq(5) td select option:selected")
+							.val(),
+						"simNo": $(
+								".poptable2_xk_zyl tbody tr:eq(6) td input")
+							.val(),
+						"VMColor": $(
+								".poptable2_xk_zyl tbody tr:eq(7) td input")
+							.val(),
+						"cooperationId": $(
+								".poptable2_xk_zyl tbody tr:eq(8) td select option:selected")
+							.val(),
+						"teamId": $(
+								".poptable2_xk_zyl tbody tr:eq(9) td select option:selected")
+							.val(),
+						"defaultDriverName": $(
+								".poptable2_xk_zyl tbody tr:eq(10) td input")
+							.val(),
+						"VMAvalidDate": $(
+								".poptable2_xk_zyl tbody tr:eq(11) td input")
+							.val(),
+						"operationLicenseDate": $(
+								".poptable2_xk_zyl tbody tr:eq(12) td input")
+							.val(),
+						"operationYearCheck": $(
+								".poptable2_xk_zyl tbody tr:eq(13) td input")
+							.val(),
+						"secondMaintainDate": $(
+								".poptable2_xk_zyl tbody tr:eq(14) td input")
+							.val(),
+						"TCICompany": $(
+								".poptable2_xk_zyl tbody tr:eq(15) td input")
+							.val(),
+						"TCINum": $(
+								".poptable2_xk_zyl tbody tr:eq(16) td input")
+							.val(),
+						"TCIValidDate": $(
+								".poptable2_xk_zyl tbody tr:eq(17) td input")
+							.val(),
+						"TCITel": $(
+								".poptable2_xk_zyl tbody tr:eq(18) td input")
+							.val(),
+						"VCICompany": $(
+								".poptable2_xk_zyl tbody tr:eq(19) td input")
+							.val(),
+						"VCIValidDate": $(
+								".poptable2_xk_zyl tbody tr:eq(20) td input")
+							.val(),
+						"VCIType": $(
+								".poptable2_xk_zyl tbody tr:eq(21) td input")
+							.val(),
+						"VCINum": $(
+								".poptable2_xk_zyl tbody tr:eq(22) td input")
+							.val(),
+						"VCITel": $(
+								".poptable2_xk_zyl tbody tr:eq(23) td input")
+							.val(),
+						"receiveAutoSend": $(
+								".poptable2_xk_zyl tbody tr:eq(24) td select option:selected")
+							.val(),
+						"vehicleImg": $(
+								".poptable2_xk_zyl tbody tr:eq(25) td img")
+							.attr("img_id"),
+						"vehicleLicenseImg": $(
+								".poptable2_xk_zyl tbody tr:eq(26) td img")
+							.attr("img_id"),
+						"operationLicenseImg": $(
+								".poptable2_xk_zyl tbody tr:eq(27) td img")
+							.attr("img_id"),
+					}
+					switch("") {
+							case data_json["num"]:
+								alert("车牌号不能为空！");
+								break;
+							case data_json["nickname"]:
+								alert("编号不能为空！");
+								break;
+							case data_json["VIN"]:
+								alert("车架号不能为空！");
+								break;
+							case data_json["engineNum"]:
+								alert("发动机号不能为空！");
+								break;
+							case data_json["simNo"]:
+								alert("车载设备编号不能为空！");
+								break;
+							case data_json["VMColor"]:
+								alert("车辆颜色不能为空！");
+								break;
+							case data_json["defaultDriverName"]:
+								alert("默认驾驶员不能为空！");
+								break;
+							case data_json["VMAvalidDate"]:
+								alert("车辆管理费有效期不能为空！");
+								break;
+							case data_json["operationLicenseDate"]:
+								alert("营运证有效期不能为空！");
+								break;
+							case data_json["operationYearCheck"]:
+								alert("营运证年检不能为空！");
+								break;
+							case data_json["secondMaintainDate"]:
+								alert("车辆二级维护月份不能为空！");
+								break;
+							case data_json["TCICompany"]:
+								alert("交强险承保不能为空！");
+								break;
+							case data_json["TCINum"]:
+								alert("车辆强制保险单号不能为空！");
+								break;
+							case data_json["TCIValidDate"]:
+								alert("交强险有效期不能为空！");
+								break;
+							case data_json["TCITel"]:
+								alert("承保公司服务电话不能为空！");
+								break;
+							case data_json["VCICompany"]:
+								alert("商业险承保公司名称不能为空！");
+								break;
+							case data_json["VCIValidDate"]:
+								alert("商业保险有效期不能为空！");
+								break;
+							case data_json["VCIType"]:
+								alert("保险类型不能为空！");
+								break;
+							case data_json["VCINum"]:
+								alert("商业险保险单号不能为空！");
+								break;
+							case data_json["VCITel"]:
+								alert("商业险联系电话不能为空！");
+								break;
+						    case data_json["vehicleImg"]:
+								alert("车辆照片不能为空！");
+								break;
+							case data_json["vehicleLicenseImg"]:
+								alert("行驶证照片不能为空！");
+								break;
+							case data_json["operationLicenseImg"]:
+								alert("营运证照片不能为空！");
+								break;
+						default: $.ajax(config.url + "vehicle/iVehicleInfo", {
+							data: data_json,
+							dataType: "json",
+							type: "POST",
+							timeout: 10000,
+							success: function(data) {
+								//console.log(data.success);
+								alert(data.msg);
+								
+								$("popwindow_xk .popup_xk").html("");
+								$(".popwindow_xk").css("visibility", "hidden");
+								sVehicleInfoA();
+							}
+						});
+						
+						break;
+					}
+
+				});
+	};
+
+	sVehicleInfoQuery_zyl();
+</script>

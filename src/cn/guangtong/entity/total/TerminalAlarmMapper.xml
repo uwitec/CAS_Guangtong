@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.total.TerminalAlarmDao">
+
+	<!-- 分页查询终端报警信息 普通-->
+	<select id="getTerminalFormsByOther" parameterType="cn.guangtong.utils.TerminalFormPageBean"
+		resultType="cn.guangtong.entity.total.TerminalAlarm">
+		SELECT 
+			a.id,b.num AS plateNo,a.simNo,a.driverName,b.VMColor AS	plateColor,
+			a.longitude,a.latitude,a.location,a.velocity,a.solution,a.type,a.adminId,a.dealWay,
+			DATE_FORMAT(a.dealTime,'%Y-%c-%d %h:%i:%s') AS dealTime,a.quantity 
+		FROM 
+			logistics_beidou.terminalalarm a
+		LEFT JOIN 
+			logistics_vehicle.vehicle_info b
+		ON 
+			a.simNo=b.simNo
+		RIGHT JOIN
+			logistics_cms.admin_vehicle c
+		ON	
+			c.vehicleid = b.id
+		WHERE
+			1 = 1
+		AND
+			c.adminid = #{adminId} 
+		AND
+			b.num != ''
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and a.dealTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and a.dealTime &lt;= #{endTime}
+			</if>
+			<if test='type!=null &amp;&amp; !type.equals("")'>
+				and a.type = #{type}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and a.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+
+	<!-- 分页查询终端报警信息导出 普通-->
+	<select id="getTerminalFormsExcelByOther" parameterType="cn.guangtong.utils.TerminalFormPageBean"
+		resultType="cn.guangtong.entity.total.TerminalAlarm">
+		SELECT 
+			a.id,b.num AS plateNo,a.simNo,a.driverName,b.VMColor AS	plateColor,
+			a.longitude,a.latitude,a.location,a.velocity,a.solution,a.type,a.adminId,a.dealWay,
+			DATE_FORMAT(a.dealTime,'%Y-%c-%d %h:%i:%s') AS dealTime,a.quantity 
+		FROM 
+			logistics_beidou.terminalalarm a
+		LEFT JOIN 
+			logistics_vehicle.vehicle_info b
+		ON 
+			a.simNo=b.simNo
+		RIGHT JOIN
+			logistics_cms.admin_vehicle c
+		ON	
+			c.vehicleid = b.id
+		WHERE
+			1 = 1
+		AND
+			c.adminid = #{adminId} 
+		AND
+			b.num != ''
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and a.dealTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and a.dealTime &lt;= #{endTime}
+			</if>
+			<if test='type!=null &amp;&amp; !type.equals("")'>
+				and a.type = #{type}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and a.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+	</select>
+
+	<!-- 统计终端报警信息条数 普通-->
+	<select id="getCountsByOther" parameterType="cn.guangtong.utils.TerminalFormPageBean"
+		resultType="int">
+		SELECT 
+			count(*) 
+		FROM 
+			logistics_beidou.terminalalarm a
+		LEFT JOIN 
+			logistics_vehicle.vehicle_info b
+		ON 
+			a.simNo=b.simNo
+		RIGHT JOIN
+			logistics_cms.admin_vehicle c
+		ON	
+			c.vehicleid = b.id
+		WHERE
+			1 = 1
+		AND
+			c.adminid = #{adminId} 
+		AND
+			b.num != ''
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and dealTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and dealTime &lt;= #{endTime}
+			</if>
+			<if test='type!=null &amp;&amp; !type.equals("")'>
+				and type = #{type}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+	</select>
+
+	<!-- 分页查询终端报警信息 超管-->
+	<select id="getTerminalForms" parameterType="cn.guangtong.utils.TerminalFormPageBean"
+		resultType="cn.guangtong.entity.total.TerminalAlarm">
+		SELECT 
+			a.id,b.num AS plateNo,a.simNo,a.driverName,b.VMColor AS	plateColor,
+			a.longitude,a.latitude,a.location,a.velocity,a.solution,a.type,a.adminId,a.dealWay,
+			DATE_FORMAT(a.dealTime,'%Y-%c-%d %h:%i:%s') AS dealTime,a.quantity 
+		FROM 
+			logistics_beidou.terminalalarm a
+		LEFT JOIN 
+			logistics_vehicle.vehicle_info b
+		ON 
+			a.simNo=b.simNo
+		<where>
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and a.dealTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and a.dealTime &lt;= #{endTime}
+			</if>
+			<if test='type!=null &amp;&amp; !type.equals("")'>
+				and a.type = #{type}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and a.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+		</where>
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+
+	<!-- 分页查询终端报警信息导出 超管-->
+	<select id="getTerminalFormsExcel" parameterType="cn.guangtong.utils.TerminalFormPageBean"
+		resultType="cn.guangtong.entity.total.TerminalAlarm">
+		SELECT 
+			a.id,b.num AS plateNo,a.simNo,a.driverName,b.VMColor AS	plateColor,
+			a.longitude,a.latitude,a.location,a.velocity,a.solution,a.type,a.adminId,a.dealWay,
+			DATE_FORMAT(a.dealTime,'%Y-%c-%d %h:%i:%s') AS dealTime,a.quantity 
+		FROM 
+			logistics_beidou.terminalalarm a
+		LEFT JOIN 
+			logistics_vehicle.vehicle_info b
+		ON 
+			a.simNo=b.simNo
+		<where>
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and a.dealTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and a.dealTime &lt;= #{endTime}
+			</if>
+			<if test='type!=null &amp;&amp; !type.equals("")'>
+				and a.type = #{type}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and a.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+	<!-- 统计终端报警信息条数 超管-->
+	<select id="getCounts" parameterType="cn.guangtong.utils.TerminalFormPageBean"
+		resultType="int">
+		select count(*) from logistics_beidou.terminalalarm
+		<where>
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and dealTime &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and dealTime &lt;= #{endTime}
+			</if>
+			<if test='type!=null &amp;&amp; !type.equals("")'>
+				and type = #{type}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	<!-- 增加一条终端报警信息 -->
+	<insert id="iterminalAlarmInfo" parameterType="cn.guangtong.entity.total.TerminalAlarm"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO logistics_beidou.terminalalarm
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id!=''">id,</if>
+			<if test="plateNo!=''">plateNo,</if>
+			<if test="driverName!=''">driverName,</if>
+			<if test="plateColor!=''">plateColor,</if>
+			<if test="longitude!=''">longitude,</if>
+			<if test="latitude!=''">latitude,</if>
+			<if test="location!=''">location,</if>
+			<if test="velocity!=''">velocity,</if>
+			<if test="solution!=''">solution,</if>
+			<if test="type!=''">type,</if>
+			<if test="adminId!=''">adminId,</if>
+			<if test="dealWay!=''">dealWay,</if>
+			<if test="dealTime!=''">dealTime,</if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+			<if test="id!=''">#{id},</if>
+			<if test="plateNo!=''">#{plateNo},</if>
+			<if test="driverName!=''">#{driverName},</if>
+			<if test="plateColor!=''">#{plateColor},</if>
+			<if test="longitude!=''">#{longitude},</if>
+			<if test="latitude!=''">#{latitude},</if>
+			<if test="location!=''">#{location},</if>
+			<if test="velocity!=''">#{velocity},</if>
+			<if test="solution!=''">#{solution},</if>
+			<if test="type!=''">#{type},</if>
+			<if test="adminId!=''">#{adminId},</if>
+			<if test="dealWay!=''">#{dealWay},</if>
+			<if test="dealTime!=''">#{dealTime},</if>
+		</trim>
+	</insert>
+	
+	
+	<!--终端报警统计总条数  普通-->
+	<select id="getChartCounts" parameterType="cn.guangtong.utils.TerminalPageBean"
+		resultType="int">
+		select count(*) from (SELECT
+		a.gpsId,
+		b.num as plateNo,
+		b.VMColor as plateColor,
+		a.alarmState,
+		a.createDate,
+		a.simNo
+		FROM
+		logistics_beidou.gpsinfo a,
+		logistics_vehicle.vehicle_info b,
+        logistics_cms.admin_vehicle c
+		where
+		a.simNo = b.simNo AND b.id=c.vehicleid
+        AND c.adminid = #{adminId} 
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and a.createDate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and a.createDate &lt;= #{endTime}
+		</if>
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			and a.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		) tmp
+	</select>
+	<!-- 分页终端报警统计  普通-->
+	<select id="getTerminalChartsPage" parameterType="cn.guangtong.utils.TerminalPageBean"
+		resultType="cn.guangtong.excel.TerminalChart">
+		SELECT
+		a.gpsId,
+		b.num as plateNo,
+		b.VMColor as plateColor,
+		a.alarmState,
+		a.createDate,
+		a.simNo
+		FROM
+		logistics_beidou.gpsinfo a,
+		logistics_vehicle.vehicle_info b,
+        logistics_cms.admin_vehicle c
+		where
+		a.simNo = b.simNo AND b.id=c.vehicleid
+        AND c.adminid = #{adminId} 
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and a.createDate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and a.createDate &lt;= #{endTime}
+		</if>
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			and a.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+	<!--导出终端报警统计 普通  -->
+	<select id="getTerminalCharts" parameterType="cn.guangtong.utils.TerminalPageBean"
+		resultType="cn.guangtong.excel.TerminalChart">
+		SELECT
+		a.gpsId,
+		b.num as plateNo,
+		b.VMColor as plateColor,
+		a.alarmState,
+		a.createDate,
+		a.simNo
+		FROM
+		logistics_beidou.gpsinfo a,
+		logistics_vehicle.vehicle_info b,
+        logistics_cms.admin_vehicle c
+		where
+		a.simNo = b.simNo AND b.id=c.vehicleid
+        AND c.adminid = #{adminId} 
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and a.createDate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and a.createDate &lt;= #{endTime}
+		</if>
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			and a.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+	</select>
+	
+	<!--终端报警统计总条数  超管-->
+	<select id="getChartCountsSuperTube" parameterType="cn.guangtong.utils.TerminalPageBean"
+		resultType="int">
+		select count(*) from (SELECT
+		a.gpsId,
+		b.num as plateNo,
+		b.VMColor as plateColor,
+		a.alarmState,
+		a.createDate,
+		a.simNo
+		FROM
+		logistics_beidou.gpsinfo a,
+		logistics_vehicle.vehicle_info b
+		where
+		a.simNo = b.simNo 
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and a.createDate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and a.createDate &lt;= #{endTime}
+		</if>
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			and a.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		) tmp
+	</select>
+	<!-- 分页终端报警统计  超管-->
+	<select id="getTerminalChartsPageSuperTube" parameterType="cn.guangtong.utils.TerminalPageBean"
+		resultType="cn.guangtong.excel.TerminalChart">
+		SELECT
+		a.gpsId,
+		b.num as plateNo,
+		b.VMColor as plateColor,
+		a.alarmState,
+		a.createDate,
+		a.simNo
+		FROM
+		logistics_beidou.gpsinfo a,
+		logistics_vehicle.vehicle_info b
+		where
+		a.simNo = b.simNo 
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and a.createDate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and a.createDate &lt;= #{endTime}
+		</if>
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			and a.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+	<!--导出终端报警统计 超管  -->
+	<select id="getTerminalChartsSuperTube" parameterType="cn.guangtong.utils.TerminalPageBean"
+		resultType="cn.guangtong.excel.TerminalChart">
+		SELECT
+		a.gpsId,
+		b.num as plateNo,
+		b.VMColor as plateColor,
+		a.alarmState,
+		a.createDate,
+		a.simNo
+		FROM
+		logistics_beidou.gpsinfo a,
+		logistics_vehicle.vehicle_info b
+		where
+		a.simNo = b.simNo 
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and a.createDate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and a.createDate &lt;= #{endTime}
+		</if>
+		<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+			and a.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+	</select>
+
+	<!-- 通过simNo 查询终端报警 -->
+	<select id="getTerminalChartsBySimNo" parameterType="java.lang.String"
+		resultType="map">
+		SELECT
+		alarmState
+		FROM
+		logistics_beidou.gpsinfo
+		<where>
+			<if test='simNo!=null &amp;&amp; !simNo.equals("")'>
+				simNo = #{simNo}
+			</if>
+		</where>
+	</select>
+	<select id="getALLNewestAlarm" parameterType="java.lang.String"
+		resultType="cn.guangtong.entity.total.TerminalAlarm">
+		select id,
+		dealTime,plateNo,type
+		from
+		logistics_beidou.terminalalarm where dealTime &lt;#{dealTime}
+		order by
+		dealTime desc
+	</select>
+</mapper>

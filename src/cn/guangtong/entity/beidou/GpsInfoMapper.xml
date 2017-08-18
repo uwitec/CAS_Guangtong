@@ -1,0 +1,1287 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.beidou.GpsInfoDao">
+<!-- 油耗折线图  普通-->
+	<select id="findFuleStatisticsCharts" parameterType="cn.guangtong.model.FuleStatisticsCharts"
+		resultType="map">
+		SELECT a.staticDate time,a.gas,a.gas/a.mileage
+		fuleConsumption
+		FROM
+		logistics_beidou.vehicle b
+		LEFT JOIN
+		logistics_beidou.fuelconsumption a
+		ON a.plateNo=b.plateNo
+		LEFT JOIN logistics_vehicle.vehicle_info c ON
+		b.simNo=c.simNo
+		LEFT JOIN logistics_cms.admin_vehicle d ON
+        c.id=d.vehicleid 
+		WHERE
+		b.simNo=#{simNo} AND d.adminid=#{adminId}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND a.staticDate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND a.staticDate &lt;= #{endTime}
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			GROUP BY DAY(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			GROUP BY MONTH(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			GROUP BY YEAR(a.staticDate),c.num
+		</if>
+	</select>
+	
+	<!-- 油耗折线图  超管-->
+	<select id="findFuleStatisticsChartsSuperTube" parameterType="cn.guangtong.model.FuleStatisticsCharts"
+		resultType="map">
+		SELECT a.staticDate time,a.gas,a.gas/a.mileage
+		fuleConsumption
+		FROM
+		logistics_beidou.vehicle b
+		LEFT JOIN
+		logistics_beidou.fuelconsumption a
+		ON a.plateNo=b.plateNo
+		LEFT JOIN logistics_vehicle.vehicle_info c ON
+		b.simNo=c.simNo
+		WHERE
+		b.simNo=#{simNo}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND a.staticDate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND a.staticDate &lt;= #{endTime}
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			GROUP BY DAY(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			GROUP BY MONTH(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			GROUP BY YEAR(a.staticDate),c.num
+		</if>
+	</select>
+
+	<!-- 油耗统计分页  普通-->
+	<select id="findFuleStatisticsPage" parameterType="cn.guangtong.utils.FuleStatisticsPageBean"
+		resultType="cn.guangtong.model.FuleStatistics">
+		SELECT
+		b.simNo,c.num as plateNo,c.VMColor as plateColor,
+		date_format(a.staticDate,'%Y-%c-%d %h:%i:%s') as time,c.fuelTank,a.gas,a.mileage fuleConsumption
+		FROM
+		logistics_beidou.vehicle b
+		LEFT JOIN logistics_beidou.fuelconsumption a
+		ON a.plateNo=b.plateNo
+		LEFT JOIN logistics_vehicle.vehicle_info c ON
+		b.simNo=c.simNo
+		LEFT JOIN logistics_cms.admin_vehicle d ON
+        c.id=d.vehicleid 
+        WHERE 1=1 AND c.num!='' AND d.adminid=#{adminId}
+		<if test='simNo!=null &amp;&amp; !simNo.equals("")'>
+		    AND	b.simNo=#{simNo}
+		</if>
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND a.staticDate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND a.staticDate &lt;= #{endTime}
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			GROUP BY DAY(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			GROUP BY MONTH(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			GROUP BY YEAR(a.staticDate),c.num
+		</if>
+		limit #{begin},#{end}
+	</select>
+
+	<!-- 导出油耗统计  普通-->
+	<select id="findFuleStatistics" parameterType="cn.guangtong.utils.FuleStatisticsPageBean"
+		resultType="cn.guangtong.model.FuleStatistics">
+		SELECT
+		b.simNo,c.num as plateNo,c.VMColor as plateColor,date_format(a.staticDate,'%Y-%c-%d %h:%i:%s') as time,c.fuelTank,a.gas,a.mileage fuleConsumption
+		FROM
+		logistics_beidou.vehicle b
+		LEFT JOIN logistics_beidou.fuelconsumption a
+		ON a.plateNo=b.plateNo
+		LEFT JOIN logistics_vehicle.vehicle_info c ON
+		b.simNo=c.simNo
+		LEFT JOIN logistics_cms.admin_vehicle d ON
+        c.id=d.vehicleid 
+        WHERE 1=1 AND c.num!='' AND d.adminid=#{adminId}
+		<if test='simNo!=null &amp;&amp; !simNo.equals("")'>
+			AND b.simNo=#{simNo}
+		</if>
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND a.staticDate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND a.staticDate &lt;= #{endTime}
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			GROUP BY DAY(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			GROUP BY MONTH(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			GROUP BY YEAR(a.staticDate),c.num
+		</if>
+	</select>
+
+	<!-- 油耗统计总数  普通-->
+	<select id="findFuleStatisticsCounts" parameterType="cn.guangtong.utils.FuleStatisticsPageBean"
+		resultType="int">
+		SELECT COUNT(*) FROM(SELECT
+		b.simNo,c.num as plateNo,c.VMColor as
+		plateColor,a.staticDate
+		time,c.fuelTank,a.gas,a.mileage fuleConsumption
+		FROM
+		logistics_beidou.vehicle b
+		LEFT JOIN
+		logistics_beidou.fuelconsumption a
+		ON a.plateNo=b.plateNo
+		LEFT JOIN
+		logistics_vehicle.vehicle_info c ON
+		b.simNo=c.simNo
+		LEFT JOIN logistics_cms.admin_vehicle d ON
+        c.id=d.vehicleid 
+        WHERE 1=1 AND c.num!='' AND d.adminid=#{adminId}
+		<if test='simNo!=null &amp;&amp; !simNo.equals("")'>
+		    AND b.simNo=#{simNo}
+		</if>
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND a.staticDate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND a.staticDate &lt;= #{endTime}
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			group by day(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			group by Month(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			group by year(a.staticDate),c.num
+		</if>
+		) temp
+	</select>
+
+	<!-- 油耗统计分页  超管-->
+	<select id="findFuleStatisticsPageSuperTube" parameterType="cn.guangtong.utils.FuleStatisticsPageBean"
+		resultType="cn.guangtong.model.FuleStatistics">
+		SELECT
+		b.simNo,c.num as plateNo,c.VMColor as plateColor,
+		date_format(a.staticDate,'%Y-%c-%d
+		%h:%i:%s') as time,c.fuelTank,a.gas,a.mileage fuleConsumption
+		FROM
+		logistics_beidou.vehicle b
+		LEFT JOIN logistics_beidou.fuelconsumption a
+		ON a.plateNo=b.plateNo
+		LEFT JOIN logistics_vehicle.vehicle_info c ON
+		b.simNo=c.simNo
+		WHERE 1=1 AND c.num!=''
+		<if test='simNo!=null &amp;&amp; !simNo.equals("")'>
+			AND b.simNo=#{simNo}
+		</if>
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND a.staticDate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND a.staticDate &lt;= #{endTime}
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			GROUP BY DAY(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			GROUP BY MONTH(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			GROUP BY YEAR(a.staticDate),c.num
+		</if>
+		limit #{begin},#{end}
+	</select>
+
+	<!-- 导出油耗统计  超管-->
+	<select id="findFuleStatisticsSuperTube" parameterType="cn.guangtong.utils.FuleStatisticsPageBean"
+		resultType="cn.guangtong.model.FuleStatistics">
+		SELECT
+		b.simNo,c.num as plateNo,c.VMColor as plateColor,date_format(a.staticDate,'%Y-%c-%d %h:%i:%s') as time,c.fuelTank,a.gas,a.mileage fuleConsumption
+		FROM
+		logistics_beidou.vehicle b
+		LEFT JOIN logistics_beidou.fuelconsumption a
+		ON a.plateNo=b.plateNo
+		LEFT JOIN logistics_vehicle.vehicle_info c ON
+		b.simNo=c.simNo
+		WHERE 1=1 AND c.num!=''
+		<if test='simNo!=null &amp;&amp; !simNo.equals("")'>
+			AND b.simNo=#{simNo}
+		</if>
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND a.staticDate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND a.staticDate &lt;= #{endTime}
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			GROUP BY DAY(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			GROUP BY MONTH(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			GROUP BY YEAR(a.staticDate),c.num
+		</if>
+	</select>
+
+	<!-- 油耗统计总数  超管-->
+	<select id="findFuleStatisticsCountsSuperTube" parameterType="cn.guangtong.utils.FuleStatisticsPageBean"
+		resultType="int">
+		SELECT COUNT(*) FROM(SELECT
+		b.simNo,c.num as plateNo,c.VMColor as
+		plateColor,a.staticDate
+		time,c.fuelTank,a.gas,a.mileage fuleConsumption
+		FROM
+		logistics_beidou.vehicle b
+		LEFT JOIN
+		logistics_beidou.fuelconsumption a
+		ON a.plateNo=b.plateNo
+		LEFT JOIN
+		logistics_vehicle.vehicle_info c ON
+		b.simNo=c.simNo
+		WHERE 1=1 AND c.num!=''
+		<if test='simNo!=null &amp;&amp; !simNo.equals("")'>
+			AND b.simNo=#{simNo}
+		</if>
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND a.staticDate &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND a.staticDate &lt;= #{endTime}
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			group by day(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			group by Month(a.staticDate),c.num
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			group by year(a.staticDate),c.num
+		</if>
+		) temp
+	</select>
+
+	<select id="getNowVehicleStatus" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		SELECT
+		a.longitude,a.mileage,a.plateNo,a.recordVelocity,a.runStatus,a.sendTime,a.simNo,a.status,a.valid,a.velocity,b.tel,b.password,
+		b.face,b.driverType,b.cooperationId,b.idCardNum,b.idCardFrontImg,b.idCardBackImg,b.idCardValidDate,b.addr,b.driverClass,
+		b.DLNum,b.DLImg2,b.DLImg,b.DLValidDate,b.CCBPNum,b.CCBPImg,b.CCBPValidDate,b.professionNum,b.professionImg,b.professionImg2,
+		b.professionCount,b.professionValidDate,b.professionYearCheck,b.reviewTime,b.reviewStatus,b.reviewNote,b.available,b.cooperationAvailable,
+		b.registrationId,b.EcontactTel,b.Econtact,b.iosCid,b.androidCid,b.isdel,b.defaultVehicleNum,b.imageForm,b.remarks,b.lastEditor,
+		b.updateTime,c.engineNum,c.VIN,c.vehicleImg,c.VMAvalidDate,c.brandModel,c.vehicleLicenseImg,c.operationLicenseImg,c.operationLicenseNum,
+		c.operationLicenseDate,c.operationYearCheck,c.rankCheckDate,c.secondMaintainDate,c.TCICompany,c.TCINum,c.TCIValidDate,c.TCITel,c.VCICompany,
+		c.VCIValidDate,c.VCINum,c.VCIType,c.VCITel,c.operationType,c.createTime,c.vehicleLicenseImg2,c.simNo,c.defaultDriverName,c.updateTime,
+		d.driverId,d.vehicleId,d.onlineTime,d.driverStatus,d.driverAvailable,d.cooprationAvailable,d.vTotalCapacity,d.vRemainCapacity,
+		d.vehicleModel,d.receiveAutoSend,d.positionUpdateTime,MAX(a.createDate)
+		createDate
+		FROM logistics_beidou.gpsinfo a,
+		logistics_driver.driver_info b,
+		logistics_vehicle.vehicle_info c,
+		logistics_driver.driver_online d
+		WHERE
+		a.simNo=c.simNo AND
+		d.vehicleId=c.id AND
+		d.driverId=b.id AND a.simNo=#{simNO};
+	</select>
+
+	<!-- 查询所有车辆实时位置监控 -->
+	<select id="sRealtimePosition" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		SELECT
+		g.direction,g.plateNo,g.latitude,g.longitude,g.simNo,g.location,g.vehicleid,g.velocity,v.driver
+		FROM gpsrealdata g
+		left join
+		vehicle v
+		on g.simNo=v.simNo
+		WHERE
+		g.online=1
+	</select>
+
+	<!-- 根据simNo查询车辆信息 -->
+	<select id="sVehicleConditionInformation" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		SELECT *
+		FROM
+		logistics_beidou.gpsinfo
+		WHERE
+		simNo = #{simNo}
+	</select>
+
+	<!-- 轨迹报表 普通-->
+	<select id="tableOfLocusByOther" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="cn.guangtong.excel.RunLocus">
+		SELECT 
+			lbv.num AS plateNo,
+			lbv.VMColor AS plateColor,
+			lbg.longitude AS longitude,
+			lbg.latitude AS latitude,
+			lbg.location AS	location,
+			DATE_FORMAT(lbg.sendTime,'%Y-%c-%d%h:%i:%s') AS sendTime,
+			lbg.velocity AS	velocity,
+			lbg.direction AS direction
+		FROM 
+			logistics_beidou.gpsinfo lbg
+		LEFT JOIN 
+			logistics_vehicle.vehicle_info lbv
+		ON 
+			lbg.simNo = lbv.simNo
+		LEFT JOIN 
+			logistics_cms.admin_vehicle a		
+		ON 
+			a.vehicleid=lbv.id
+		WHERE 1	= 1
+		AND 
+			a.adminid=#{adminId} 
+		<if test='simNo != null &amp;&amp; !simNo.equals("")'>
+			and lbg.simNo = #{simNo}
+		</if>
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND lbg.sendTime &lt;= #{endTime}
+		</if>
+		limit #{begin},#{pageCount}
+	</select>
+
+	<!-- 轨迹报表总记录数 普通-->
+	<select id="countOfLocusByOther" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="int">
+		SELECT 
+			count(*)
+		FROM 
+			logistics_beidou.gpsinfo lbg
+		LEFT JOIN 
+			logistics_vehicle.vehicle_info lbv
+		ON 
+			lbg.simNo = lbv.simNo
+		LEFT JOIN 
+			logistics_cms.admin_vehicle a		
+		ON 
+			a.vehicleid=lbv.id
+		WHERE 1	= 1
+		AND 
+			a.adminid=#{adminId} 
+		<if test='simNo != null &amp;&amp; !simNo.equals("")'>
+			and lbg.simNo = #{simNo}
+		</if>
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND lbg.sendTime &lt;= #{endTime}
+		</if>
+	</select>
+	
+	<!-- 轨迹报表导出 普通-->
+	<select id="tableOfLocusExcelByOther" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="cn.guangtong.excel.RunLocus">
+		SELECT 
+			lbv.num AS plateNo,
+			lbv.VMColor AS plateColor,
+			lbg.longitude AS longitude,
+			lbg.latitude AS latitude,
+			lbg.location AS	location,
+			DATE_FORMAT(lbg.sendTime,'%Y-%c-%d%h:%i:%s') AS sendTime,
+			lbg.velocity AS	velocity,
+			lbg.direction AS direction
+		FROM 
+			logistics_beidou.gpsinfo lbg
+		LEFT JOIN 
+			logistics_vehicle.vehicle_info lbv
+		ON 
+			lbg.simNo = lbv.simNo
+		LEFT JOIN 
+			logistics_cms.admin_vehicle a		
+		ON 
+			a.vehicleid=lbv.id
+		WHERE 1	= 1
+		AND 
+			a.adminid=#{adminId} 
+		<if test='simNo != null &amp;&amp; !simNo.equals("")'>
+			and lbg.simNo = #{simNo}
+		</if>
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND lbg.sendTime &lt;= #{endTime}
+		</if>
+	</select>
+	
+	<!-- 轨迹报表 超管-->
+	<select id="tableOfLocus" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="cn.guangtong.excel.RunLocus">
+		SELECT 
+			lbv.num AS plateNo,
+			lbv.VMColor AS plateColor,
+			lbg.longitude AS longitude,
+			lbg.latitude AS latitude,
+			lbg.location AS	location,
+			DATE_FORMAT(lbg.sendTime,'%Y-%c-%d%h:%i:%s') AS sendTime,
+			lbg.velocity AS	velocity,
+			lbg.direction AS direction
+		FROM 
+			logistics_beidou.gpsinfo lbg
+		LEFT JOIN 
+			logistics_vehicle.vehicle_info lbv
+		ON 
+			lbg.simNo = lbv.simNo
+		WHERE 
+			1 = 1
+		<if test='simNo != null &amp;&amp; !simNo.equals("")'>
+			and lbg.simNo = #{simNo}
+		</if>
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND lbg.sendTime &lt;= #{endTime}
+		</if>
+		limit #{begin},#{pageCount}
+	</select>
+	
+	<!-- 轨迹报表导出 超管-->
+	<select id="tableOfLocusExcel" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="cn.guangtong.excel.RunLocus">
+		SELECT 
+			lbv.num AS plateNo,
+			lbv.VMColor AS plateColor,
+			lbg.longitude AS longitude,
+			lbg.latitude AS latitude,
+			lbg.location AS	location,
+			DATE_FORMAT(lbg.sendTime,'%Y-%c-%d%h:%i:%s') AS sendTime,
+			lbg.velocity AS	velocity,
+			lbg.direction AS direction
+		FROM 
+			logistics_beidou.gpsinfo lbg
+		LEFT JOIN 
+			logistics_vehicle.vehicle_info lbv
+		ON 
+			lbg.simNo = lbv.simNo
+		WHERE 
+			1 = 1
+		<if test='simNo != null &amp;&amp; !simNo.equals("")'>
+			and lbg.simNo = #{simNo}
+		</if>
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND lbg.sendTime &lt;= #{endTime}
+		</if>
+	</select>
+
+	<!-- 轨迹报表总记录数 超管-->
+	<select id="countOfLocus" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="int">
+		SELECT 
+			count(*)
+		FROM 
+			logistics_beidou.gpsinfo lbg
+		LEFT JOIN 
+			logistics_vehicle.vehicle_info lbv
+		ON 
+			lbg.simNo = lbv.simNo
+		WHERE 
+			1 = 1
+		<if test='simNo != null &amp;&amp; !simNo.equals("")'>
+			and lbg.simNo = #{simNo}
+		</if>
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			AND lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			AND lbg.sendTime &lt;= #{endTime}
+		</if>
+	</select>
+
+	<!-- 里程报表数据  普通-->
+	<select id="mileageOfTableByOther" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="cn.guangtong.excel.Mileage">
+		SELECT
+		(MAX(lbg.mileage)-MIN(lbg.mileage))
+		mileage,lbv.VMColor AS
+		plateColor ,lbv.num AS plateNo
+		FROM logistics_cms.admin_vehicle a
+		LEFT JOIN 
+		logistics_vehicle.vehicle_info lbv ON a.vehicleid = lbv.id
+		LEFT JOIN
+		logistics_beidou.gpsinfo lbg
+		ON lbv.simNo = lbg.simNo		
+		WHERE 1 = 1
+		and a.adminid=#{adminId}
+		<if
+			test='startTime != null &amp;&amp; !startTime.equals("") &amp;&amp; endTime != null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime between #{startTime} and #{endTime}
+		</if>
+		<if test='simNos != null &amp;&amp; simNos.size() > 0'>
+			and lbg.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		GROUP BY lbg.simNo
+		limit #{begin},#{pageCount}
+	</select>
+	
+	<!-- 里程报表记录数 普通-->
+	<select id="countOfMileageByOther" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="int">
+		SELECT COUNT(*) FROM (
+		SELECT
+		(MAX(lbg.mileage)-MIN(lbg.mileage))
+		mileage,lbv.VMColor AS
+		plateColor ,lbv.num AS plateNo
+		FROM logistics_cms.admin_vehicle a
+		LEFT JOIN 
+		logistics_vehicle.vehicle_info lbv ON a.vehicleid = lbv.id
+		LEFT JOIN
+		logistics_beidou.gpsinfo lbg
+		ON lbv.simNo = lbg.simNo		
+		WHERE 1 = 1
+		and a.adminid=#{adminId}
+		<if
+			test='startTime != null &amp;&amp; !startTime.equals("") &amp;&amp; endTime != null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime between #{startTime} and #{endTime}
+		</if>
+		<if test='simNos != null &amp;&amp; simNos.size() > 0'>
+			and lbg.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		GROUP BY lbg.simNo) a
+	</select>
+	
+	<!-- 里程报表数据导出 普通-->
+	<select id="mileageOfTableExcelByOther" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="cn.guangtong.excel.Mileage">
+		SELECT
+		(MAX(lbg.mileage)-MIN(lbg.mileage))
+		mileage,lbv.VMColor AS
+		plateColor ,lbv.num AS plateNo
+		FROM logistics_cms.admin_vehicle a
+		LEFT JOIN 
+		logistics_vehicle.vehicle_info lbv ON a.vehicleid = lbv.id
+		LEFT JOIN
+		logistics_beidou.gpsinfo lbg
+		ON lbv.simNo = lbg.simNo		
+		WHERE 1 = 1
+		and a.adminid=#{adminId}
+		<if
+			test='startTime != null &amp;&amp; !startTime.equals("") &amp;&amp; endTime != null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime between #{startTime} and #{endTime}
+		</if>
+		<if test=' simNos != null &amp;&amp; simNos.size() > 0'>
+			and lbv.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		GROUP BY lbg.simNo
+	</select>
+	
+	<!-- 里程报表数据  超管-->
+	<select id="mileageOfTable" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="cn.guangtong.excel.Mileage">
+		SELECT
+		(MAX(lbg.mileage)-MIN(lbg.mileage))
+		mileage,lbv.VMColor AS
+		plateColor ,lbv.num AS plateNo
+		FROM
+		logistics_vehicle.vehicle_info lbv
+		LEFT JOIN
+		logistics_beidou.gpsinfo lbg
+		ON lbv.simNo = lbg.simNo		
+		WHERE 1 = 1
+		<if
+			test='startTime != null &amp;&amp; !startTime.equals("") &amp;&amp; endTime != null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime between #{startTime} and #{endTime}
+		</if>
+		<if test='simNos != null &amp;&amp; simNos.size() > 0'>
+			and lbg.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		GROUP BY lbg.simNo
+		limit #{begin},#{pageCount}
+	</select>
+
+	<!-- 里程报表数据导出 超管-->
+	<select id="mileageOfTableExcel" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="cn.guangtong.excel.Mileage">
+		SELECT
+		(MAX(lbg.mileage)-MIN(lbg.mileage))
+		mileage,lbv.VMColor as
+		plateColor ,lbv.num as plateNo
+		FROM
+		logistics_beidou.gpsinfo lbg
+		RIGHT
+		JOIN
+		logistics_vehicle.vehicle_info lbv ON lbg.simNo=lbv.simNo
+		WHERE 1
+		=
+		1
+		<if
+			test='startTime != null &amp;&amp; !startTime.equals("") &amp;&amp; endTime != null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime between #{startTime} and #{endTime}
+		</if>
+		<if test=' simNos != null &amp;&amp; simNos.size() > 0'>
+			and lbv.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		GROUP BY lbg.simNo
+	</select>
+
+	<!-- 里程报表记录数 超管-->
+	<select id="countOfMileage" parameterType="cn.guangtong.controller.vehicle.VehiclePageBean"
+		resultType="int">
+		SELECT COUNT(*) FROM (
+		SELECT
+		(MAX(lbg.mileage)-MIN(lbg.mileage))
+		mileage,lbv.VMColor as plateColor
+		,lbv.num as plateNo
+		FROM
+		logistics_beidou.gpsinfo lbg
+		RIGHT JOIN
+		logistics_vehicle.vehicle_info
+		lbv ON lbg.simNo=lbv.simNo
+		WHERE 1
+		= 1
+		<if
+			test='startTime != null &amp;&amp; !startTime.equals("") &amp;&amp; endTime != null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime between #{startTime} and #{endTime}
+		</if>
+		<if test='simNos != null &amp;&amp; simNos.size() > 0'>
+			and lbg.simNo in
+			<foreach collection="simNos" item="simNos" index="index"
+				open="(" close=")" separator=",">
+				#{simNos}
+			</foreach>
+		</if>
+		GROUP BY lbg.simNo) a
+	</select>
+
+<!-- 数据上报统计表 分页 普通 -->
+	<select id="getTableOfDateReportPage" parameterType="cn.guangtong.utils.DataReportPageBean"
+		resultType="cn.guangtong.model.DataReport">
+		select lbv.num as plateNo,lbv.VMColor as
+		plateColor,
+		date_format(lbg.sendTime,'%Y-%c-%d %h:%i:%s')as sendTime,
+		count(*) as
+		count
+		from
+		logistics_beidou.gpsinfo lbg
+		left
+		join
+		logistics_vehicle.vehicle_info
+		lbv on
+		lbg.simNo = lbv.simNo
+		LEFT JOIN logistics_cms.admin_vehicle a ON lbv.id=a.vehicleid
+        WHERE
+	    1 = 1 AND a.adminid=#{adminId}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='simNo != null &amp;&amp; !simNo.equals("") '>
+			and lbg.simNo = #{simNo}
+		</if>
+		group by lbv.num
+		order by ${sortInfo} ${sortType}
+		limit
+		#{begin},#{end}
+	</select>
+
+	<!-- 数据上报统计表  导出 普通-->
+	<select id="getTableOfDateReport" parameterType="cn.guangtong.utils.DataReportPageBean"
+		resultType="cn.guangtong.model.DataReport">
+		select lbv.num as plateNo,lbv.VMColor as
+		plateColor,date_format(lbg.sendTime,'%Y-%c-%d %h:%i:%s')as
+		sendTime,count(*) as count
+		from
+		logistics_beidou.gpsinfo lbg
+		left
+		join
+		logistics_vehicle.vehicle_info
+		lbv on
+		lbg.simNo = lbv.simNo
+		LEFT JOIN logistics_cms.admin_vehicle a ON lbv.id=a.vehicleid
+        WHERE
+	    1 = 1 AND a.adminid=#{adminId}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='simNo != null &amp;&amp; !simNo.equals("") '>
+			and lbg.simNo = #{simNo}
+		</if>
+		group by lbv.num
+	</select>
+
+	<!-- 获取数据上报信息列表分页总条数  普通-->
+	<select id="getCountOfDateReport" parameterType="cn.guangtong.utils.DataReportPageBean"
+		resultType="int">
+		select count(*) from(
+		select lbv.num as plateNo,lbv.VMColor as
+		plateColor,lbg.sendTime,count(*) as
+		count
+		from
+		logistics_beidou.gpsinfo
+		lbg
+		left
+		join
+		logistics_vehicle.vehicle_info
+		lbv on
+		lbg.simNo = lbv.simNo
+		LEFT JOIN logistics_cms.admin_vehicle a ON lbv.id=a.vehicleid
+        WHERE
+	    1 = 1 AND a.adminid=#{adminId}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='simNo != null &amp;&amp; !simNo.equals("") '>
+			and lbg.simNo = #{simNo}
+		</if>
+		group by lbv.num) count
+	</select>
+
+	<!-- 数据上报统计表 分页 超管 -->
+	<select id="getTableOfDateReportPageSuperTube" parameterType="cn.guangtong.utils.DataReportPageBean"
+		resultType="cn.guangtong.model.DataReport">
+		select lbv.num as plateNo,lbv.VMColor as
+		plateColor,
+		date_format(lbg.sendTime,'%Y-%c-%d %h:%i:%s')as sendTime,
+		count(*) as
+		count
+		from
+		logistics_beidou.gpsinfo lbg
+		left
+		join
+		logistics_vehicle.vehicle_info
+		lbv on
+		lbg.simNo = lbv.simNo
+		where 1 = 1
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='simNo != null &amp;&amp; !simNo.equals("") '>
+			and lbg.simNo = #{simNo}
+		</if>
+		group by lbv.num
+		order by ${sortInfo} ${sortType}
+		limit
+		#{begin},#{end}
+	</select>
+
+	<!-- 数据上报统计表  导出 超管-->
+	<select id="getTableOfDateReportSuperTube" parameterType="cn.guangtong.utils.DataReportPageBean"
+		resultType="cn.guangtong.model.DataReport">
+		select lbv.num as plateNo,lbv.VMColor as
+		plateColor,date_format(lbg.sendTime,'%Y-%c-%d %h:%i:%s')as
+		sendTime,count(*) as count
+		from
+		logistics_beidou.gpsinfo lbg
+		left
+		join
+		logistics_vehicle.vehicle_info
+		lbv on
+		lbg.simNo = lbv.simNo
+		where 1 = 1
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='simNo != null &amp;&amp; !simNo.equals("") '>
+			and lbg.simNo = #{simNo}
+		</if>
+		group by lbv.num
+	</select>
+
+	<!-- 获取数据上报信息列表分页总条数  超管-->
+	<select id="getCountOfDateReportSuperTube" parameterType="cn.guangtong.utils.DataReportPageBean"
+		resultType="int">
+		select count(*) from(
+		select lbv.num as plateNo,lbv.VMColor as
+		plateColor,lbg.sendTime,count(*) as
+		count
+		from
+		logistics_beidou.gpsinfo
+		lbg
+		left
+		join
+		logistics_vehicle.vehicle_info
+		lbv on
+		lbg.simNo = lbv.simNo
+		where 1 = 1
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='simNo != null &amp;&amp; !simNo.equals("") '>
+			and lbg.simNo = #{simNo}
+		</if>
+		group by lbv.num) count
+	</select>
+
+	<!-- 数组上报统计折线图  普通-->
+	<select id="getChartOfDataReport" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		select lbg.sendTime as sendTime,count(*) as count
+		from
+		logistics_beidou.gpsinfo lbg 
+        LEFT JOIN logistics_vehicle.vehicle_info a ON lbg.simNo=a.simNo
+        LEFT JOIN logistics_cms.admin_vehicle b ON a.id=b.vehicleid 
+		where 1 = 1 AND b.adminid=#{adminId}
+		<if test='simNo != null &amp;&amp; !simNo.equals("")'>
+			and lbg.simNo = #{simNo}
+		</if>
+		<if test='startTime != null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime != null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			group by day(lbg.sendTime)
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			group by month(lbg.sendTime)
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			group by year(lbg.sendTime)
+		</if>
+
+	</select>
+<!-- 数组上报统计折线图 超管 -->
+	<select id="getChartOfDataReportSuperTube" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		select lbg.sendTime as sendTime,count(*) as count
+		from
+		logistics_beidou.gpsinfo lbg
+		where 1 = 1
+		<if test='simNo != null &amp;&amp; !simNo.equals("")'>
+			and lbg.simNo = #{simNo}
+		</if>
+		<if test='startTime != null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime != null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			group by day(lbg.sendTime)
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			group by month(lbg.sendTime)
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			group by year(lbg.sendTime)
+		</if>
+
+	</select>
+
+	<!-- 在线率分页查询 普通-->
+	<select id="getTongjiOnlinePageByOther" parameterType="cn.guangtong.utils.GpsInfoFormPageBean"
+		resultType="cn.guangtong.excel.OnlineRate">
+		SELECT
+		b.num AS plateNo,
+		COUNT(*) AS total,
+		lbg.sendTime AS
+		sendTime,
+		b.VMColor AS plateColor
+		FROM logistics_beidou.gpsinfo lbg
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b ON lbg.simNo = b.simNo
+		LEFT JOIN logistics_cms.admin_vehicle lcav ON lcav.vehicleid = b.id
+		WHERE 1 = 1
+		AND lcav.adminid= #{adminId}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='simNo != null &amp;&amp; simNo.size() > 0 '>
+			and lbg.simNo in
+			<foreach collection="simNo" item="simNo" index="index" open="("
+				close=")" separator=",">
+				#{simNo}
+			</foreach>
+		</if>
+		GROUP BY b.simNo
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+
+	<!-- 导出上线率分页查询 普通-->
+	<select id="getTongjiOnlineByOther" parameterType="cn.guangtong.utils.GpsInfoFormPageBean"
+		resultType="cn.guangtong.excel.OnlineRate">
+		SELECT
+		b.num AS plateNo,
+		COUNT(*) AS total,
+		lbg.sendTime AS
+		sendTime,
+		b.VMColor AS plateColor
+		FROM logistics_beidou.gpsinfo lbg
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b ON lbg.simNo = b.simNo
+		LEFT JOIN logistics_cms.admin_vehicle lcav ON lcav.vehicleid = b.id
+		WHERE 1 = 1
+		AND lcav.adminid= #{adminId}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='simNo != null &amp;&amp; simNo.size() > 0 '>
+			and lbg.simNo in
+			<foreach collection="simNo" item="simNo" index="index" open="("
+				close=")" separator=",">
+				#{simNo}
+			</foreach>
+		</if>
+
+		GROUP BY b.simNo
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+	
+	<!-- 上线统计总数 普通-->
+	<select id="getTongjiCountsByOther" parameterType="cn.guangtong.utils.GpsInfoFormPageBean"
+		resultType="int">
+		select count(*) from (SELECT
+		b.num AS plateNo,
+		COUNT(*) AS total,
+		lbg.sendTime AS
+		sendTime,
+		b.VMColor AS plateColor
+		FROM logistics_beidou.gpsinfo lbg
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b ON lbg.simNo = b.simNo
+		LEFT JOIN logistics_cms.admin_vehicle lcav ON lcav.vehicleid = b.id
+		WHERE 1 = 1
+		AND lcav.adminid= #{adminId}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='simNo != null &amp;&amp; simNo.size() > 0 '>
+			and lbg.simNo in
+			<foreach collection="simNo" item="simNo" index="index" open="("
+				close=")" separator=",">
+				#{simNo}
+			</foreach>
+		</if>
+		GROUP BY b.simNo
+		) tmp
+	</select>
+
+	<!-- 在线率分页查询 超管-->
+	<select id="getTongjiOnlinePage" parameterType="cn.guangtong.utils.GpsInfoFormPageBean"
+		resultType="cn.guangtong.excel.OnlineRate">
+		SELECT
+		b.num AS plateNo,
+		count(*) AS total,
+		lbg.sendTime AS
+		sendTime,
+		b.VMColor as plateColor
+		FROM logistics_beidou.gpsinfo lbg
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b ON lbg.simNo = b.simNo
+		WHERE 1 = 1
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='simNo != null &amp;&amp; simNo.size() > 0 '>
+			and lbg.simNo in
+			<foreach collection="simNo" item="simNo" index="index" open="("
+				close=")" separator=",">
+				#{simNo}
+			</foreach>
+		</if>
+		GROUP BY b.simNo
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+
+	<!-- 导出上线率分页查询 超管-->
+	<select id="getTongjiOnline" parameterType="cn.guangtong.utils.GpsInfoFormPageBean"
+		resultType="cn.guangtong.excel.OnlineRate">
+		SELECT
+		b.num AS plateNo,
+		count(*) AS total,
+		lbg.sendTime AS
+		sendTime,
+		b.VMColor as plateColor
+		FROM logistics_beidou.gpsinfo lbg
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b ON lbg.simNo = b.simNo
+		WHERE 1 = 1
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='simNo != null &amp;&amp; simNo.size() > 0 '>
+			and lbg.simNo in
+			<foreach collection="simNo" item="simNo" index="index" open="("
+				close=")" separator=",">
+				#{simNo}
+			</foreach>
+		</if>
+
+		GROUP BY b.simNo
+		order by ${sortInfo} ${sortType}
+		limit #{begin},#{end}
+	</select>
+	<!-- 上线统计总数 超管-->
+	<select id="getTongjiCounts" parameterType="cn.guangtong.utils.GpsInfoFormPageBean"
+		resultType="int">
+		select count(*) from (SELECT
+		b.num AS plateNo,
+		count(*) AS total,
+		lbg.sendTime AS
+		sendTime,
+		b.VMColor as plateColor
+		FROM
+		logistics_beidou.gpsinfo lbg
+		LEFT JOIN
+		logistics_vehicle.vehicle_info b
+		ON lbg.simNo = b.simNo
+		WHERE 1 = 1
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='simNo != null &amp;&amp; simNo.size() > 0 '>
+			and lbg.simNo in
+			<foreach collection="simNo" item="simNo" index="index" open="("
+				close=")" separator=",">
+				#{simNo}
+			</foreach>
+		</if>
+		GROUP BY b.simNo
+		) tmp
+	</select>
+
+	<!-- 上线率统计图 普通-->
+	<select id="getChartOfOnlineRateByOther" resultType="java.util.Map">
+		SELECT lbg.plateNo AS plateNo,count(*) AS count,lbg.sendTime AS
+		sendTime
+		FROM logistics_beidou.gpsinfo lbg
+		LEFT JOIN 
+			logistics_vehicle.vehicle_info lbv
+		ON 
+			lbg.simNo = lbv.simNo
+		LEFT JOIN 
+			logistics_cms.admin_vehicle a		
+		ON 
+			a.vehicleid=lbv.id
+		WHERE 1 = 1
+		AND a.adminid = #{adminId}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='simNo != null &amp;&amp; simNo.size() > 0 '>
+			and simNo in
+			<foreach collection="simNo" item="simNo" index="index" open="("
+				close=")" separator=",">
+				#{simNo}
+			</foreach>
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			group by day(lbg.sendTime),lbg.plateNo
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			group by month(lbg.sendTime),lbg.plateNo
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			group by year(lbg.sendTime),lbg.plateNo
+		</if>
+	</select>
+
+	<!-- 上线率统计图 超管-->
+	<select id="getChartOfOnlineRate" resultType="java.util.Map">
+		select lbg.plateNo as plateNo,count(*) as count,lbg.sendTime as
+		sendTime
+		from logistics_beidou.gpsinfo lbg
+		where 1 = 1
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and lbg.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and lbg.sendTime &lt;= #{endTime}
+		</if>
+		<if test='simNo != null &amp;&amp; simNo.size() > 0 '>
+			and simNo in
+			<foreach collection="simNo" item="simNo" index="index" open="("
+				close=")" separator=",">
+				#{simNo}
+			</foreach>
+		</if>
+		<if test='type != null &amp;&amp; type.equals("day")'>
+			group by day(lbg.sendTime),lbg.plateNo
+		</if>
+		<if test='type != null &amp;&amp; type.equals("month")'>
+			group by month(lbg.sendTime),lbg.plateNo
+		</if>
+		<if test='type != null &amp;&amp; type.equals("year")'>
+			group by year(lbg.sendTime),lbg.plateNo
+		</if>
+	</select>
+
+	<!-- 地图轨迹 -->
+	<select id="mapTrajectory" parameterType="string"
+		resultType="cn.guangtong.entity.beidou.GpsInfo">
+		select lbg.gpsId,lbg.latitude,lbg.longitude,lbg.direction,lbg.location,lbg.sendTime,lbg.velocity,lbg.alarmState,lbg.`status`,lbg.plateNo
+		FROM logistics_beidou.gpsinfo lbg
+		WHERE
+		lbg.simNo =#{0}
+		AND lbg.sendTime &gt;= #{1}
+		AND lbg.sendTime &lt;= #{2}
+		UNION ALL
+		SELECT ggd.gpsId,ggd.latitude,ggd.longitude,ggd.direction,ggd.location,ggd.sendTime,ggd.velocity,ggd.alarmState,ggd.`status` ,ggd.plateNo
+		FROM gpsdb.gpsinfo ggd
+  		  WHERE ggd.plateNo=#{0}
+		AND ggd.sendTime &gt;= #{1}
+		AND ggd.sendTime &lt;= #{2}
+	</select>
+	<!-- 通过id查询运行轨迹信息 -->
+	<select id="getLocusInfoById" parameterType="string"
+		resultType="cn.guangtong.model.LocusInfo">
+		SELECT
+		a.gpsId,
+		b.num as plateNo,
+		a.simNo,
+		e.`desc`,
+		b.VMColor,
+		a.velocity,
+		a.direction,
+		a.longitude,
+		a.latitude,
+		a.location,
+		date_format(a.createDate,'%Y-%c-%d %h:%i:%s')as createDate,
+		a.STATUS,
+		a.alarmState
+		FROM
+		logistics_beidou.gpsinfo a
+		LEFT
+		JOIN
+		logistics_vehicle.vehicle_info
+		b
+		ON a.simNo = b.simNo
+		LEFT JOIN
+		logistics_vehicle.model_info e ON
+		b.modelId = e.id
+		WHERE
+	 	a.gpsId= #{0}
+		and b.num=#{1}
+
+		UNION ALL 
+ 		SELECT ggd.gpsId,
+		ggd.plateNo,
+		ggd.simNo,
+		'其它' `desc`,
+		null VMColor,
+		ggd.velocity,
+		ggd.direction,
+		ggd.longitude,
+		ggd.latitude,
+		ggd.location,
+		date_format(ggd.createDate,'%Y-%c-%d %h:%i:%s')as createDate,
+		ggd.STATUS,
+		ggd.alarmState
+		FROM gpsdb.gpsinfo ggd
+		WHERE
+	    ggd.gpsId
+		= #{0}
+		and ggd.plateNo=#{1}
+	</select>
+	<!-- 进出区域 普通 -->
+	<select id="IsAccessArea" parameterType="string"
+		resultType="cn.guangtong.model.AccessArea">
+		SELECT
+		b.num,b.VMColor,b.nickname,a.simNo,a.longitude,a.latitude,a.location,a.direction,a.velocity,a.alarmState,a.status
+		FROM logistics_beidou.gpsinfo a LEFT JOIN
+		logistics_vehicle.vehicle_info b ON a.simNo=b.simNo
+		LEFT JOIN logistics_cms.admin_vehicle c ON b.id=c.vehicleid
+		WHERE 1=1 AND
+		c.adminid=#{adminId}
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and a.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and a.sendTime &lt;= #{endTime}
+		</if>
+	</select>
+	<!-- 进出区域 超管 -->
+	<select id="IsAccessAreaSuperTube" parameterType="string"
+		resultType="cn.guangtong.model.AccessArea">
+		SELECT
+		b.num,b.VMColor,b.nickname,a.simNo,a.longitude,a.latitude,a.location,a.direction,a.velocity,a.alarmState,a.status
+		FROM logistics_beidou.gpsinfo a LEFT JOIN
+		logistics_vehicle.vehicle_info b ON a.simNo=b.simNo
+		WHERE 1=1
+		<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+			and a.sendTime &gt;= #{startTime}
+		</if>
+		<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+			and a.sendTime &lt;= #{endTime}
+		</if>
+	</select>
+</mapper>

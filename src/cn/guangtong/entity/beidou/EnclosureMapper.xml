@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.beidou.EnclosureDao">
+
+	<insert id="insert" parameterType="cn.guangtong.entity.beidou.Enclosure" useGeneratedKeys="true" keyProperty="enclosureId">
+		insert into logistics_beidou.enclosure
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="enclosureId != null &amp;&amp; !enclosureId.equals('')">
+				enclosureId,
+			</if>
+			<if test="createDate != null&amp;&amp; !createDate.equals('')">
+				createDate,
+			</if>
+			<if test="deleted != null&amp;&amp;!deleted.equals('')">
+				deleted,
+			</if>
+			<if test="owner != null&amp;&amp;!owner.equals('')">
+				owner,
+			</if>
+			<if test="remark != null&amp;&amp;!remark.equals('')">
+				remark,
+			</if>
+			<if test="tenantId != null&amp;&amp;!tenantId.equals('')">
+				tenantId,
+			</if>
+			<if test="alarmType != null&amp;&amp;!alarmType.equals('')">
+				alarmType,
+			</if>
+			<if test="byTime != null&amp;&amp;!byTime.equals('')">
+				byTime,
+			</if>
+			<if test="centerLat != null&amp;&amp;!centerLat.equals('')">
+				centerLat,
+			</if>
+			<if test="centerLng != null&amp;&amp;!centerLng.equals('')">
+				centerLng,
+			</if>
+			<if test="delay != null&amp;&amp;!delay.equals('')">
+				delay,
+			</if>
+			<if test="enclosureType != null&amp;&amp;!enclosureType.equals('')">
+				enclosureType,
+			</if>
+			<if test="endDate != null&amp;&amp;!endDate.equals('')">
+				endDate,
+			</if>
+			<if test="gpsId != null&amp;&amp;!gpsId.equals('')">
+				gpsId,
+			</if>
+			<if test="keyPoint != null&amp;&amp;!keyPoint.equals('')">
+				keyPoint,
+			</if>
+			<if test="limitSpeed != null&amp;&amp;!limitSpeed.equals('')">
+				limitSpeed,
+			</if>
+			<if test="lineWidth != null&amp;&amp;!lineWidth.equals('')">
+				lineWidth,
+			</if>
+			<if test="maxSpeed != null&amp;&amp;!maxSpeed.equals('')">
+				maxSpeed,
+			</if>
+			<if test="name != null&amp;&amp;!name.equals('')">
+				name,
+			</if>
+			<if test="offSetDelay != null&amp;&amp;!offSetDelay.equals('')">
+				offSetDelay,
+			</if>
+			<if test="plateNo != null&amp;&amp;!plateNo.equals('')">
+				plateNo,
+			</if>
+			<if test="points != null&amp;&amp;!points.equals('')">
+				points,
+			</if>
+			<if test="radius != null&amp;&amp;!radius.equals('')">
+				radius,
+			</if>
+			<if test="sn != null&amp;&amp;!sn.equals('')">
+				sn,
+			</if>
+			<if test="startDate != null&amp;&amp;!startDate.equals('')">
+				startDate,
+			</if>
+			<if test="status != null&amp;&amp;!status.equals('')">
+				status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="enclosureId != null&amp;&amp;!enclosureId.equals('')">
+				#{enclosureId,jdbcType=INTEGER},
+			</if>
+			<if test="createDate != null&amp;&amp;!createDate.equals('')">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deleted != null&amp;&amp;!deleted.equals('')">
+				#{deleted,jdbcType=BIT},
+			</if>
+			<if test="owner != null&amp;&amp;!owner.equals('')">
+				#{owner,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null&amp;&amp;!remark.equals('')">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="tenantId != null&amp;&amp;!tenantId.equals('')">
+				#{tenantId,jdbcType=INTEGER},
+			</if>
+			<if test="alarmType != null&amp;&amp;!alarmType.equals('')">
+				#{alarmType,jdbcType=VARCHAR},
+			</if>
+			<if test="byTime != null&amp;&amp;!byTime.equals('')">
+				#{byTime,jdbcType=BIT},
+			</if>
+			<if test="centerLat != null&amp;&amp;!centerLat.equals('')">
+				#{centerLat,jdbcType=DOUBLE},
+			</if>
+			<if test="centerLng != null&amp;&amp;!centerLng.equals('')">
+				#{centerLng,jdbcType=DOUBLE},
+			</if>
+			<if test="delay != null&amp;&amp;!delay.equals('')">
+				#{delay,jdbcType=INTEGER},
+			</if>
+			<if test="enclosureType != null&amp;&amp;!enclosureType.equals('')">
+				#{enclosureType,jdbcType=VARCHAR},
+			</if>
+			<if test="endDate != null&amp;&amp;!endDate.equals('')">
+				#{endDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="gpsId != null&amp;&amp;!gpsId.equals('')">
+				#{gpsId,jdbcType=VARCHAR},
+			</if>
+			<if test="keyPoint != null&amp;&amp;!keyPoint.equals('')">
+				#{keyPoint,jdbcType=INTEGER},
+			</if>
+			<if test="limitSpeed != null&amp;&amp;!limitSpeed.equals('')">
+				#{limitSpeed,jdbcType=BIT},
+			</if>
+			<if test="lineWidth != null&amp;&amp;!lineWidth.equals('')">
+				#{lineWidth,jdbcType=DOUBLE},
+			</if>
+			<if test="maxSpeed != null&amp;&amp;!maxSpeed.equals('')">
+				#{maxSpeed,jdbcType=DOUBLE},
+			</if>
+			<if test="name != null&amp;&amp;!name.equals('')">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="offSetDelay != null&amp;&amp;!offSetDelay.equals('')">
+				#{offSetDelay,jdbcType=INTEGER},
+			</if>
+			<if test="plateNo != null&amp;&amp;!plateNo.equals('')">
+				#{plateNo,jdbcType=VARCHAR},
+			</if>
+			<if test="points != null&amp;&amp;!points.equals('')">
+				#{points,jdbcType=VARCHAR},
+			</if>
+			<if test="radius != null&amp;&amp;!radius.equals('')">
+				#{radius,jdbcType=DOUBLE},
+			</if>
+			<if test="sn != null&amp;&amp;!sn.equals('')">
+				#{sn,jdbcType=INTEGER},
+			</if>
+			<if test="startDate != null&amp;&amp;!startDate.equals('')">
+				#{startDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null&amp;&amp;!status.equals('')">
+				#{status,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="getEnclosureAll" resultType="cn.guangtong.entity.beidou.Enclosure">
+		SELECT * FROM
+		logistics_beidou.enclosure a
+		WHERE a.enclosureType!='route' and
+		deleted
+		!= 1
+	</select>
+
+	<select id="getLinesegmentServiceAll" resultType="cn.guangtong.entity.beidou.Enclosure">
+		SELECT * FROM
+		logistics_beidou.enclosure a
+		WHERE
+		a.enclosureType
+		='route'
+		AND
+		a.deleted!=1
+	</select>
+
+	<select id="getLinesegmentkeyPointAll" resultType="cn.guangtong.entity.beidou.Enclosure">
+		SELECT * FROM
+		logistics_beidou.enclosure a
+		WHERE
+		a.enclosureType
+		='route'
+		AND
+		a.keyPoint=1
+		AND
+		a.deleted!=1
+	</select>
+	<update id="updateByEnclosure" parameterType="cn.guangtong.entity.beidou.Enclosure">
+		update logistics_beidou.enclosure
+		<set>
+			<if test="createDate != null&amp;&amp;!createDate.equals('')">
+				createDate = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deleted != null&amp;&amp;!deleted.equals('')">
+				deleted = #{deleted,jdbcType=BIT},
+			</if>
+			<if test="owner != null&amp;&amp;!owner.equals('')">
+				owner = #{owner,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null&amp;&amp;!remark.equals('')">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="tenantId != null&amp;&amp;!tenantId.equals('')">
+				tenantId = #{tenantId,jdbcType=INTEGER},
+			</if>
+			<if test="alarmType != null&amp;&amp;!alarmType.equals('')">
+				alarmType = #{alarmType,jdbcType=VARCHAR},
+			</if>
+			<if test="byTime != null&amp;&amp;!byTime.equals('')">
+				byTime = #{byTime,jdbcType=BIT},
+			</if>
+			<if test="centerLat != null&amp;&amp;!centerLat.equals('')">
+				centerLat = #{centerLat,jdbcType=DOUBLE},
+			</if>
+			<if test="centerLng != null&amp;&amp;!centerLng.equals('')">
+				centerLng = #{centerLng,jdbcType=DOUBLE},
+			</if>
+			<if test="delay != null&amp;&amp;!delay.equals('')">
+				delay = #{delay,jdbcType=INTEGER},
+			</if>
+			<if test="enclosureType != null&amp;&amp;!enclosureType.equals('')">
+				enclosureType = #{enclosureType,jdbcType=VARCHAR},
+			</if>
+			<if test="endDate != null&amp;&amp;!endDate.equals('')">
+				endDate = #{endDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="gpsId != null&amp;&amp;!gpsId.equals('')">
+				gpsId = #{gpsId,jdbcType=VARCHAR},
+			</if>
+			<if test="keyPoint != null&amp;&amp;!keyPoint.equals('')">
+				keyPoint = #{keyPoint,jdbcType=INTEGER},
+			</if>
+			<if test="limitSpeed != null&amp;&amp;!limitSpeed.equals('')">
+				limitSpeed = #{limitSpeed,jdbcType=BIT},
+			</if>
+			<if test="lineWidth != null&amp;&amp;!lineWidth.equals('')">
+				lineWidth = #{lineWidth,jdbcType=DOUBLE},
+			</if>
+			<if test="maxSpeed != null&amp;&amp;!maxSpeed.equals('')">
+				maxSpeed = #{maxSpeed,jdbcType=DOUBLE},
+			</if>
+			<if test="name != null&amp;&amp;!name.equals('')">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="offSetDelay != null&amp;&amp;!offSetDelay.equals('')">
+				offsetDelay = #{offSetDelay,jdbcType=INTEGER},
+			</if>
+			<if test="plateNo != null&amp;&amp;!plateNo.equals('')">
+				plateNo = #{plateNo,jdbcType=VARCHAR},
+			</if>
+			<if test="points != null&amp;&amp;!points.equals('')">
+				points = #{points,jdbcType=VARCHAR},
+			</if>
+			<if test="radius != null&amp;&amp;!radius.equals('')">
+				radius = #{radius,jdbcType=DOUBLE},
+			</if>
+			<if test="sn != null&amp;&amp;!sn.equals('')">
+				sn = #{sn,jdbcType=INTEGER},
+			</if>
+			<if test="startDate != null&amp;&amp;!startDate.equals('')">
+				startDate = #{startDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null&amp;&amp;!status.equals('')">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where enclosureId = #{enclosureId,jdbcType=INTEGER}
+	</update>
+	<update id="deleteEnclosure" parameterType="int">
+		update
+		logistics_beidou.enclosure
+		set deleted = 1 where
+		enclosureId=#{enclosureId}
+	</update>
+	<select id="getEnclosureByid" parameterType="int" resultType="cn.guangtong.entity.beidou.Enclosure">
+		SELECT * from logistics_beidou.enclosure WHERE
+		enclosureId=#{enclosureId}
+	</select>
+</mapper>

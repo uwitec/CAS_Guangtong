@@ -1,0 +1,237 @@
+<meta charset="utf-8" />
+<div class="pophead_xk skyblue">
+	<span><span><img src="img/u6.png"></span><span>新增驾驶员</span></span><i><img src="img/close.png" alt="" /></i>
+</div>
+<div class="popbody_xk  noborder gray1" style="width:500px;max-height: 600px;overflow-y:auto;">
+	<table cellspacing="0" class="poptable2_xk poptable2_xk_zyl">
+		<tbody>
+			<tr>
+				<th>驾驶员姓名：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>所属企业：</th>
+				<td><select name="" class="select">
+					</select></td>
+			</tr>
+			<tr>
+				<th>联系方式：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>现居住地址：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>身份证号：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>身分证有效期：</th>
+				<td><input type="text" class="search time_plugin_lv_onclick" time_plugin_lv_type="2" /></td>
+			</tr>
+			<tr>
+				<th>行驶车辆车牌号：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>驾驶证号：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>驾驶证有效期：</th>
+				<td><input type="text" class="search time_plugin_lv_onclick" time_plugin_lv_type="2" /></td>
+			</tr>
+			<tr>
+				<th>准驾车型：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>从业资格证号：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>证发机构名称：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>从业资格有效期：</th>
+				<td><input type="text" class="search time_plugin_lv_onclick startTime" time_plugin_lv_type="2" /></td>
+			</tr>
+			<tr>
+				<th>从业资格年检：</th>
+				<td><input type="text" class="search time_plugin_lv_onclick startTime" time_plugin_lv_type="2" /></td>
+			</tr>
+			<tr>
+				<th>从业资格继续教育次数：</th>
+				<td><input type="text" class="search" /></td>
+			</tr>
+			<tr>
+				<th>身份证正面：</th>
+				<td><img src="img/zxj.png" height="60px" alt="上传照片" style="padding-top: 10px;padding-left: 10px;"> <input type="file" name='file' id="uploadImage1" style="display: none;" /></td>
+			</tr>
+			<tr>
+				<th>身份正反面：</th>
+				<td><img src="img/zxj.png" height="60px" alt="上传照片" style="padding-top: 10px;padding-left: 10px;"> <input type="file" name='file' id="uploadImage2" style="display: none;" /></td>
+			</tr>
+			<tr>
+				<th>驾驶证正面：</th>
+				<td><img src="img/zxj.png" height="60px" alt="上传照片" style="padding-top: 10px;padding-left: 10px;"> <input type="file" name='file' id="uploadImage3" style="display: none;" /></td>
+			</tr>
+			<tr>
+				<th>驾驶证副本：</th>
+				<td><img src="img/zxj.png" height="60px" alt="上传照片" style="padding-top: 10px;padding-left: 10px;"> <input type="file" name='file' id="uploadImage4" style="display: none;" /></td>
+			</tr>
+			<tr>
+				<th>从业资格证图片：</th>
+				<td><img src="img/zxj.png" height="60px" alt="上传照片" style="padding-top: 10px;padding-left: 10px;"> <input type="file" name='file' id="uploadImage5" style="display: none;" /></td>
+			</tr>
+			<tr>
+				<th>从业资格继续教育图片：</th>
+				<td><img src="img/zxj.png" height="60px" alt="上传照片" style="padding-top: 10px;padding-left: 10px;"> <input type="file" name='file' id="uploadImage6" style="display: none;" /></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td class="popcomfirm_xk" colspan="2"><a class="button blue save">保存</a> <a class="button orange">放弃</a></td>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+<script>
+function sDriverInfoOne(){
+    $(".popbody_xk").on('click','img[alt="上传照片"]', function() {
+		$('img[alt="上传照片"]').attr("class","");
+		$(this).attr("class","thisname_lv_img");
+			$(this).next("input:file").click();
+	})
+	
+	$(".popbody_xk").on('change','input:file', function() {
+		UploadImg($(this).attr("id"));
+		
+	})
+	
+	
+	$.ajax(config.url + "driver/sDriverInfoOne", {
+		dataType: "json",
+		type: "POST",
+		timeout: 10000,
+		success: function(data) {
+			for(var i=0;i<data.obj[0].length;i++){
+				$(".poptable2_xk_zyl tbody tr:eq(1)  td select").append('<option value="' + data.obj[0][i].id + '" zyl_id="' + data.obj[0][i].id + '">' + data.obj[0][i].cName + '</option>');
+			}
+			iDriverInfo();
+		}
+	});
+}
+	function iDriverInfo() {
+		$(".popcomfirm_xk .save").click(function() {
+			data_json = {
+				"dName" : $(".poptable2_xk_zyl tbody tr:eq(0) td input").val(),
+				"cName" : $(".poptable2_xk_zyl tbody tr:eq(1) td input").val(),
+				"tel" : $(".poptable2_xk_zyl tbody tr:eq(2) td input").val(),
+				"addr" : $(".poptable2_xk_zyl tbody tr:eq(3) td input").val(),
+				"idCardNum" : $(".poptable2_xk_zyl tbody tr:eq(4) td input").val(),
+				"idCardValidDate" : $(".poptable2_xk_zyl tbody tr:eq(5) td input").val(),
+				"defaultVehicleNum" : $(".poptable2_xk_zyl tbody tr:eq(6) td input").val(),
+				"DLNum" : $(".poptable2_xk_zyl tbody tr:eq(7) td input").val(),
+				"DLValidDate" : $(".poptable2_xk_zyl tbody tr:eq(8) td input").val(),
+				"driverClass" : $(".poptable2_xk_zyl tbody tr:eq(9) td input").val(),
+				"professionNum" : $(".poptable2_xk_zyl tbody tr:eq(10) td input").val(),
+				"institutionName" : $(".poptable2_xk_zyl tbody tr:eq(11) td input").val(),
+				"professionValidDate" : $(".poptable2_xk_zyl tbody tr:eq(12) td input").val(),
+				"professionYearCheck" : $(".poptable2_xk_zyl tbody tr:eq(13) td input").val(),
+				"professionCount" : $(".poptable2_xk_zyl tbody tr:eq(14) td input").val(),
+				"idCardFrontImg" : $(".poptable2_xk_zyl tbody tr:eq(15) td img").attr("img_id"),
+				"idCardBackImg" : $(".poptable2_xk_zyl tbody tr:eq(16) td img").attr("img_id"),
+				"DLImg" : $(".poptable2_xk_zyl tbody tr:eq(17) td img").attr("img_id"),
+				"DLImg2" : $(".poptable2_xk_zyl tbody tr:eq(18) td img").attr("img_id"),
+				"professionImg" : $(".poptable2_xk_zyl tbody tr:eq(19) td img").attr("img_id"),
+				"professionImg2" : $(".poptable2_xk_zyl tbody tr:eq(20) td img").attr("img_id"),
+			};
+			switch ("") {
+			 case data_json["dName"]:
+				alert("驾驶员姓名不能为空！");
+				break;
+			case data_json["tel"]:
+				alert("联系方式不能为空！");
+				break;
+			case data_json["addr"]:
+				alert("现居住地址不能为空！");
+				break;
+			case data_json["idCardNum"]:
+				alert("身份证号不能为空！");
+				break;
+			case data_json["idCardValidDate"]:
+				alert("身份证有效期不能为空！");
+				break;
+			case data_json["defaultVehicleNum"]:
+				alert("车牌号不能为空！");
+				break;
+			case data_json["DLNum"]:
+				alert("驾驶证号不能为空！");
+				break;
+			case data_json["DLValidDate"]:
+				alert("驾驶证有效期不能为空！");
+				break;
+			case data_json["driverClass"]:
+				alert("准驾车型不能为空！");
+				break;
+			case data_json["professionNum"]:
+				alert("从业资格证号不能为空！");
+				break;
+			case data_json["institutionName"]:
+				alert("证发机构名称不能为空！");
+				break;
+			case data_json["professionValidDate"]:
+				alert("从业资格有效期不能为空！");
+				break;
+			case data_json["professionYearCheck"]:
+				alert("从业资格年检不能为空！");
+				break;
+			case data_json["professionCount"]:
+				alert("从业资格继续教育次数不能为空！");
+				break;
+			case data_json["professionCount"]:
+				alert("身份证正面不能为空！");
+				break;
+			case data_json["idCardFrontImg"]:
+				alert("身份证反面不能为空！");
+				break;
+			case data_json["DLImg"]:
+				alert("驾驶证正面不能为空！");
+				break;
+			case data_json["DLImg2"]:
+				alert("驾驶证副本不能为空！");
+				break;
+			case data_json["professionImg"]:
+				alert("从业资格证不能为空！");
+				break;
+			case data_json["professionImg2"]:
+				alert("从业资格继续教育照片不能为空！");
+				break; 
+			default:
+				$.ajax(config.url + "driver/iDriverInfo", {
+					data : data_json,
+					dataType : "json",
+					type : "POST",
+					timeout : 10000,
+					success : function(data) {
+						//console.log(data.success);
+						if (data.success == true) {
+							alert("添加成功");
+							
+							$("popwindow_xk .popup_xk").html("");
+							$(".popwindow_xk").css("visibility", "hidden");
+							sDriverInfoA();
+						}
+					}
+				});
+				break;
+			}
+
+		});
+	}
+	sDriverInfoOne();
+	
+</script>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.guangtong.dao.beidou.AlarmsInfoDao">
+	<select id="getAlarmsInfo" parameterType="java.lang.Integer"
+		resultType="cn.guangtong.entity.beidou.AlarmsInfo">
+		select *
+		from logistics_beidou.alarmsInfo
+		where userId = #{userId,jdbcType=INTEGER}
+	</select>
+	<insert id="insertAlarmsInfo" parameterType="cn.guangtong.entity.beidou.AlarmsInfo"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into logistics_beidou.alarmsInfo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				userId,
+			</if>
+			<if test="emergencyalarm != null">
+				emergencyAlarm,
+			</if>
+			<if test="overspeedalarm != null">
+				overspeedAlarm,
+			</if>
+			<if test="fatiguedriving != null">
+				fatigueDriving,
+			</if>
+			<if test="earlywarning != null">
+				earlyWarning,
+			</if>
+			<if test="gnssfailure != null">
+				gnssFailure,
+			</if>
+			<if test="antennafailure != null">
+				antennaFailure,
+			</if>
+			<if test="antennashort != null">
+				antennashort,
+			</if>
+			<if test="undervoltage != null">
+				undervoltage,
+			</if>
+			<if test="poweroff != null">
+				powerOff,
+			</if>
+			<if test="monitorfailure != null">
+				monitorfailure,
+			</if>
+			<if test="modulefault != null">
+				moduleFault,
+			</if>
+			<if test="camerafault != null">
+				cameraFault,
+			</if>
+			<if test="meterfault != null">
+				meterfault,
+			</if>
+			<if test="drivetimeout != null">
+				driveTimeout,
+			</if>
+			<if test="overtimepark != null">
+				overtimePark,
+			</if>
+			<if test="exitarea != null">
+				exitArea,
+			</if>
+			<if test="exitroute != null">
+				exitRoute,
+			</if>
+			<if test="traveltime != null">
+				travelTime,
+			</if>
+			<if test="routedevalarm != null">
+				routeDevAlarm,
+			</if>
+			<if test="vvssalarm != null">
+				vvssAlarm,
+			</if>
+			<if test="vabnormaloil != null">
+				vAbnormaLoil,
+			</if>
+			<if test="vtheft != null">
+				vTheft,
+			</if>
+			<if test="vignition != null">
+				vIgnition,
+			</if>
+			<if test="vdisplacement != null">
+				vDisplacement,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="emergencyalarm != null">
+				#{emergencyalarm,jdbcType=INTEGER},
+			</if>
+			<if test="overspeedalarm != null">
+				#{overspeedalarm,jdbcType=INTEGER},
+			</if>
+			<if test="fatiguedriving != null">
+				#{fatiguedriving,jdbcType=INTEGER},
+			</if>
+			<if test="earlywarning != null">
+				#{earlywarning,jdbcType=INTEGER},
+			</if>
+			<if test="gnssfailure != null">
+				#{gnssfailure,jdbcType=INTEGER},
+			</if>
+			<if test="antennafailure != null">
+				#{antennafailure,jdbcType=INTEGER},
+			</if>
+			<if test="antennashort != null">
+				#{antennashort,jdbcType=INTEGER},
+			</if>
+			<if test="undervoltage != null">
+				#{undervoltage,jdbcType=INTEGER},
+			</if>
+			<if test="poweroff != null">
+				#{poweroff,jdbcType=INTEGER},
+			</if>
+			<if test="monitorfailure != null">
+				#{monitorfailure,jdbcType=INTEGER},
+			</if>
+			<if test="modulefault != null">
+				#{modulefault,jdbcType=INTEGER},
+			</if>
+			<if test="camerafault != null">
+				#{camerafault,jdbcType=INTEGER},
+			</if>
+			<if test="meterfault != null">
+				#{meterfault,jdbcType=INTEGER},
+			</if>
+			<if test="drivetimeout != null">
+				#{drivetimeout,jdbcType=INTEGER},
+			</if>
+			<if test="overtimepark != null">
+				#{overtimepark,jdbcType=INTEGER},
+			</if>
+			<if test="exitarea != null">
+				#{exitarea,jdbcType=INTEGER},
+			</if>
+			<if test="exitroute != null">
+				#{exitroute,jdbcType=INTEGER},
+			</if>
+			<if test="traveltime != null">
+				#{traveltime,jdbcType=INTEGER},
+			</if>
+			<if test="routedevalarm != null">
+				#{routedevalarm,jdbcType=INTEGER},
+			</if>
+			<if test="vvssalarm != null">
+				#{vvssalarm,jdbcType=INTEGER},
+			</if>
+			<if test="vabnormaloil != null">
+				#{vabnormaloil,jdbcType=INTEGER},
+			</if>
+			<if test="vtheft != null">
+				#{vtheft,jdbcType=INTEGER},
+			</if>
+			<if test="vignition != null">
+				#{vignition,jdbcType=INTEGER},
+			</if>
+			<if test="vdisplacement != null">
+				#{vdisplacement,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateAlarmsInfo" parameterType="cn.guangtong.entity.beidou.AlarmsInfo">
+		update logistics_beidou.alarmsInfo
+		<set>
+			<if test="emergencyalarm != null">
+				userId = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="emergencyalarm != null">
+				emergencyAlarm = #{emergencyalarm,jdbcType=INTEGER},
+			</if>
+			<if test="overspeedalarm != null">
+				overspeedAlarm = #{overspeedalarm,jdbcType=INTEGER},
+			</if>
+			<if test="fatiguedriving != null">
+				fatigueDriving = #{fatiguedriving,jdbcType=INTEGER},
+			</if>
+			<if test="earlywarning != null">
+				earlyWarning = #{earlywarning,jdbcType=INTEGER},
+			</if>
+			<if test="gnssfailure != null">
+				gnssFailure = #{gnssfailure,jdbcType=INTEGER},
+			</if>
+			<if test="antennafailure != null">
+				antennaFailure = #{antennafailure,jdbcType=INTEGER},
+			</if>
+			<if test="antennashort != null">
+				antennashort = #{antennashort,jdbcType=INTEGER},
+			</if>
+			<if test="undervoltage != null">
+				undervoltage = #{undervoltage,jdbcType=INTEGER},
+			</if>
+			<if test="poweroff != null">
+				powerOff = #{poweroff,jdbcType=INTEGER},
+			</if>
+			<if test="monitorfailure != null">
+				monitorfailure = #{monitorfailure,jdbcType=INTEGER},
+			</if>
+			<if test="modulefault != null">
+				moduleFault = #{modulefault,jdbcType=INTEGER},
+			</if>
+			<if test="camerafault != null">
+				cameraFault = #{camerafault,jdbcType=INTEGER},
+			</if>
+			<if test="meterfault != null">
+				meterfault = #{meterfault,jdbcType=INTEGER},
+			</if>
+			<if test="drivetimeout != null">
+				driveTimeout = #{drivetimeout,jdbcType=INTEGER},
+			</if>
+			<if test="overtimepark != null">
+				overtimePark = #{overtimepark,jdbcType=INTEGER},
+			</if>
+			<if test="exitarea != null">
+				exitArea = #{exitarea,jdbcType=INTEGER},
+			</if>
+			<if test="exitroute != null">
+				exitRoute = #{exitroute,jdbcType=INTEGER},
+			</if>
+			<if test="traveltime != null">
+				travelTime = #{traveltime,jdbcType=INTEGER},
+			</if>
+			<if test="routedevalarm != null">
+				routeDevAlarm = #{routedevalarm,jdbcType=INTEGER},
+			</if>
+			<if test="vvssalarm != null">
+				vvssAlarm = #{vvssalarm,jdbcType=INTEGER},
+			</if>
+			<if test="vabnormaloil != null">
+				vAbnormaLoil = #{vabnormaloil,jdbcType=INTEGER},
+			</if>
+			<if test="vtheft != null">
+				vTheft = #{vtheft,jdbcType=INTEGER},
+			</if>
+			<if test="vignition != null">
+				vIgnition = #{vignition,jdbcType=INTEGER},
+			</if>
+			<if test="vdisplacement != null">
+				vDisplacement = #{vdisplacement,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+</mapper>

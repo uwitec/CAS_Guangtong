@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.cms.AdminCooperationDao">
+
+	<delete id="deleteByAdminId" parameterType="java.lang.Integer">
+		delete from logistics_cms.admin_cooperation
+		where adminId =
+		#{adminId,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insert" parameterType="cn.guangtong.entity.cms.AdminCooperation">
+		insert into logistics_cms.admin_cooperation
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="adminid != null">
+				adminId,
+			</if>
+			<if test="cooperationid != null">
+				cooperationId,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="adminid != null">
+				#{adminid,jdbcType=CHAR},
+			</if>
+			<if test="cooperationid != null">
+				#{cooperationid,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+
+	<!-- 获取所有的超级管理员 -->
+	<select id="getCooperationAll" resultType="map">
+		SELECT b.id,b.cName FROM
+		logistics_cooperation.cooperation_info b
+	</select>
+
+	<!-- 根据adminId获取关联的企业列表 -->
+	<select id="getCooperationByAdminId" parameterType="string" resultType="map">
+		SELECT b.id,b.cName FROM
+		logistics_cms.admin_cooperation a LEFT JOIN logistics_cooperation.cooperation_info b ON
+		a.cooperationId=b.id
+		WHERE
+		a.adminid=#{adminId}
+	</select>
+
+	<select id="getCooperationIdByAdminId" parameterType="string" resultType="string">
+		SELECT cooperationId FROM logistics_cms.admin_cooperation
+		WHERE adminid=#{adminId}
+	</select>
+
+
+</mapper>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.beidou.TerminalCommandDao">
+<!-- 插入一条指令 -->
+	<insert id="insert" parameterType="cn.guangtong.entity.beidou.TerminalCommand" useGeneratedKeys="true" keyProperty="cmdid">
+		insert into
+		logistics_beidou.terminalcommand (cmdId, createDate, deleted,
+		owner,
+		remark, tenantId,
+		SN, cmd, cmdData, cmdType,
+		plateNo, simNo, status,
+		updateDate, userId, vehicleId
+		)
+		values (#{cmdid,jdbcType=INTEGER},
+		#{createdate,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT},
+		#{owner,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+		#{tenantid,jdbcType=INTEGER},
+		#{sn,jdbcType=INTEGER},
+		#{cmd,jdbcType=VARCHAR}, #{cmddata,jdbcType=VARCHAR},
+		#{cmdtype,jdbcType=INTEGER},
+		#{plateno,jdbcType=VARCHAR},
+		#{simno,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+		#{updatedate,jdbcType=TIMESTAMP}, #{userid,jdbcType=INTEGER},
+		#{vehicleid,jdbcType=INTEGER}
+		)
+	</insert>
+	<!-- 查询指令内容 -->
+	<select id="getTerminalCommandInfo" parameterType="int"
+		resultType="cn.guangtong.entity.beidou.TerminalCommand">
+		SELECT a.cmdId as cmdid,a.cmdType as cmdtype ,a.status as status,a.simNo as simno,a.SN as sn,
+		DATE_FORMAT(a.createDate,'%Y-%c-%d %h:%i:%s') AS createdate, 
+		DATE_FORMAT(a.updateDate,'%Y-%c-%d %h:%i:%s') AS updatedate, 
+	    b.VMColor as plateColor,b.num as plateno FROM
+		logistics_beidou.terminalcommand a
+		LEFT JOIN logistics_vehicle.vehicle_info b
+		ON a.vehicleId=b.id
+		WHERE a.cmdId =#{cmdid} 
+	</select>
+	<!-- 查询终端参数 根据命令id -->
+	<select id="getTerminalCommandInfoByComId" parameterType="int"
+		resultType="cn.guangtong.entity.beidou.Terminalparam">
+		SELECT * FROM logistics_beidou.terminalparam
+		WHERE commandId=#{comId}
+	</select>
+	<!-- 命令日志记录信息 普通-->
+	<select id="commandLogOfTableByOther" parameterType="cn.guangtong.utils.CommandLogPageBean"
+		resultType="cn.guangtong.entity.beidou.CommandLog">
+		SELECT 
+		lbv.num AS plateNo, 
+		lbv.VMColor AS plateColor, 
+		lbc.content AS content, 
+		DATE_FORMAT(lbt.updateDate,'%Y-%c-%d %h:%i:%s') AS sendTime, 
+		lbt.status AS STATUS
+		FROM logistics_beidou.terminalcommand lbt
+		LEFT JOIN
+		logistics_vehicle.vehicle_info lbv
+		ON lbv.simNo=lbt.simNo 
+		LEFT JOIN 
+		logistics_cms.admin_vehicle a 
+		ON a.vehicleid = lbv.id    
+		LEFT JOIN logistics_beidou.cmdcontent lbc ON lbt.cmdType = lbc.cmdType 
+		<where>
+			AND a.adminid = #{adminId}
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and lbt.updateDate &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and lbt.updateDate &lt;= #{endTime}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and lbt.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+		</where>
+		limit #{begin},#{pageCount}
+	</select>
+
+	<!-- 命令日志记录信息导出 普通-->
+	<select id="commandLogOfTableExcelByOther" parameterType="cn.guangtong.utils.CommandLogPageBean"
+		resultType="cn.guangtong.entity.beidou.CommandLog">
+		SELECT 
+		lbv.num AS plateNo, 
+		lbv.VMColor AS plateColor, 
+		lbc.content AS content, 
+		DATE_FORMAT(lbt.updateDate,'%Y-%c-%d %h:%i:%s') AS sendTime, 
+		lbt.status AS STATUS
+		FROM logistics_beidou.terminalcommand lbt
+		LEFT JOIN
+		logistics_vehicle.vehicle_info lbv
+		ON lbv.simNo=lbt.simNo 
+		LEFT JOIN 
+		logistics_cms.admin_vehicle a 
+		ON a.vehicleid = lbv.id    
+		LEFT JOIN logistics_beidou.cmdcontent lbc ON lbt.cmdType = lbc.cmdType
+		<where>
+			AND a.adminid = #{adminId}
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and lbt.updateDate &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and lbt.updateDate &lt;= #{endTime}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and lbt.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+	<!-- 命令日志记录数 普通-->
+	<select id="countOfLogByOther" parameterType="cn.guangtong.utils.CommandLogPageBean"
+		resultType="int">
+		SELECT count(*)
+		FROM logistics_beidou.terminalcommand lbt
+		LEFT JOIN
+		logistics_vehicle.vehicle_info lbv
+		ON lbv.simNo=lbt.simNo 
+		LEFT JOIN 
+		logistics_cms.admin_vehicle a 
+		ON a.vehicleid = lbv.id    
+		LEFT JOIN logistics_beidou.cmdcontent lbc ON lbt.cmdType = lbc.cmdType
+		<where>
+			AND a.adminid = #{adminId}
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and lbt.updateDate &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and lbt.updateDate &lt;= #{endTime}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and lbt.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	
+	<!-- 命令日志记录信息 超管-->
+	<select id="commandLogOfTable" parameterType="cn.guangtong.utils.CommandLogPageBean"
+		resultType="cn.guangtong.entity.beidou.CommandLog">
+		SELECT 
+		lbv.num AS plateNo, 
+		lbv.VMColor AS plateColor, 
+		lbc.content AS content, 
+		DATE_FORMAT(lbt.updateDate,'%Y-%c-%d %h:%i:%s') AS sendTime, 
+		lbt.status AS STATUS
+		FROM logistics_beidou.terminalcommand lbt
+		LEFT JOIN
+		logistics_vehicle.vehicle_info lbv
+		ON lbv.simNo=lbt.simNo 
+		LEFT JOIN logistics_beidou.cmdcontent lbc ON lbt.cmdType = lbc.cmdType 	
+		<where>
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and lbt.updateDate &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and lbt.updateDate &lt;= #{endTime}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and lbt.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+		</where>
+		limit #{begin},#{pageCount}
+	</select>
+
+	<!-- 命令日志记录信息导出 超管-->
+	<select id="commandLogOfTableExcel" parameterType="cn.guangtong.utils.CommandLogPageBean"
+		resultType="cn.guangtong.entity.beidou.CommandLog">
+		SELECT 
+		lbv.num AS plateNo, 
+		lbv.VMColor AS plateColor, 
+		lbc.content AS content, 
+		DATE_FORMAT(lbt.updateDate,'%Y-%c-%d %h:%i:%s') AS sendTime, 
+		lbt.status AS STATUS
+		FROM logistics_beidou.terminalcommand lbt
+		LEFT JOIN
+		logistics_vehicle.vehicle_info lbv
+		ON lbv.simNo=lbt.simNo 
+		LEFT JOIN logistics_beidou.cmdcontent lbc ON lbt.cmdType = lbc.cmdType 	
+		<where>
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and lbt.updateDate &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and lbt.updateDate &lt;= #{endTime}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and lbt.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+	<!-- 命令日志记录数 超管-->
+	<select id="countOfLog" parameterType="cn.guangtong.utils.CommandLogPageBean"
+		resultType="int">
+		SELECT count(*)
+		FROM logistics_beidou.terminalcommand lbt
+		LEFT JOIN
+		logistics_vehicle.vehicle_info lbv
+		ON lbv.simNo=lbt.simNo 
+		LEFT JOIN logistics_beidou.cmdcontent lbc ON lbt.cmdType = lbc.cmdType 	
+		<where>
+			<if test='startTime!=null &amp;&amp; !startTime.equals("")'>
+				and lbt.updateDate &gt;= #{startTime}
+			</if>
+			<if test='endTime!=null &amp;&amp; !endTime.equals("")'>
+				and lbt.updateDate &lt;= #{endTime}
+			</if>
+			<if test="simNos!=null &amp;&amp; simNos.size() > 0">
+				and lbt.simNo in
+				<foreach collection="simNos" item="simNos" index="index"
+					open="(" close=")" separator=",">
+					#{simNos}
+				</foreach>
+			</if>
+		</where>
+	</select>
+</mapper>

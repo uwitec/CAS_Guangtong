@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.guangtong.dao.beidou.EnclosureBindDao">
+	<insert id="insertSelective" parameterType="cn.guangtong.entity.beidou.EnclosureBinding">
+		insert into logistics_beidou.enclosurebinding
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bindid != null">
+				bindId,
+			</if>
+			<if test="createdate != null">
+				createDate,
+			</if>
+			<if test="deleted != null">
+				deleted,
+			</if>
+			<if test="owner != null">
+				owner,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="tenantid != null">
+				tenantId,
+			</if>
+			<if test="depid != null">
+				depId,
+			</if>
+			<if test="enclosureid != null">
+				enclosureId,
+			</if>
+			<if test="vehicleid != null">
+				vehicleId,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bindid != null">
+				#{bindid,jdbcType=INTEGER},
+			</if>
+			<if test="createdate != null">
+				#{createdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deleted != null">
+				#{deleted,jdbcType=BIT},
+			</if>
+			<if test="owner != null">
+				#{owner,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="tenantid != null">
+				#{tenantid,jdbcType=INTEGER},
+			</if>
+			<if test="depid != null">
+				#{depid,jdbcType=INTEGER},
+			</if>
+			<if test="enclosureid != null">
+				#{enclosureid,jdbcType=INTEGER},
+			</if>
+			<if test="vehicleid != null">
+				#{vehicleid,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<select id="getEnclosureBindByType" parameterType="java.lang.String" resultType="map">
+		SELECT * FROM logistics_beidou.enclosurebinding a LEFT JOIN
+		logistics_beidou.enclosure b ON a.enclosureId=b.enclosureId
+		LEFT
+		JOIN
+		logistics_beidou.vehicle c ON a.vehicleId=c.vehicleId
+		where
+		a.deleted!=1
+		<if test='type.equals("Shape")'>
+			and b.enclosureType!='route'
+		</if>
+		<if test='type.equals("Route")'>
+			and b.enclosureType='route'
+		</if>
+		<if test='type.equals("keyPoint")'>
+			and b.enclosureType='route' and b.keyPoint=1
+		</if>
+
+	</select>
+	<update id="upEnclosureBind" parameterType="int">
+		update
+		logistics_beidou.enclosurebinding
+		set deleted = 1 where
+		enclosureId=#{0}
+	</update>
+	<update id="deleteEnclosureByid" parameterType="int">
+		update
+		logistics_beidou.enclosurebinding
+		set deleted = 1 where
+		enclosureId=#{enclosureid}
+	</update>
+	<select id="getByEnclosureid" parameterType="int" resultType="map">
+		SELECT * from logistics_beidou.enclosurebinding a LEFT
+		JOIN
+		logistics_beidou.vehicle b ON a.vehicleId=b.vehicleId
+		WHERE a.enclosureId=#{enclosureid}
+		AND
+		a.deleted!=1
+	</select>
+	
+	
+	<select id="getEnclosureBindSimNoByEnclosureid" parameterType="int" resultType="java.lang.String">
+		SELECT vehicleId from logistics_beidou.enclosurebinding
+		WHERE enclosureId=#{enclosureid}
+		AND
+		deleted!=1
+	</select>
+	
+</mapper>
